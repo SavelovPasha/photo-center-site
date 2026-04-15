@@ -15,6 +15,41 @@ const copyStatus = document.querySelector("#copyStatus");
 
 let activeFilter = "all";
 
+function formatPhoneValue(value) {
+  const digits = value.replace(/\D/g, "");
+  let normalized = digits;
+
+  if (!normalized.length) {
+    return "+7 ";
+  }
+
+  if (normalized.startsWith("8")) {
+    normalized = "7" + normalized.slice(1);
+  } else if (!normalized.startsWith("7")) {
+    normalized = "7" + normalized;
+  }
+
+  normalized = normalized.slice(0, 11);
+  const local = normalized.slice(1);
+
+  let result = "+7";
+
+  if (local.length > 0) {
+    result += " " + local.slice(0, 3);
+  }
+  if (local.length >= 4) {
+    result += " " + local.slice(3, 6);
+  }
+  if (local.length >= 7) {
+    result += "-" + local.slice(6, 8);
+  }
+  if (local.length >= 9) {
+    result += "-" + local.slice(8, 10);
+  }
+
+  return result;
+}
+
 function setPriceFilter(filter) {
   activeFilter = filter;
   tabs.forEach((tab) => {
@@ -45,6 +80,24 @@ tabs.forEach((tab) => {
 
 searchInput.addEventListener("input", applyFilters);
 
+orderPhone.addEventListener("focus", () => {
+  if (!orderPhone.value.trim()) {
+    orderPhone.value = "+7 ";
+  }
+});
+
+orderPhone.addEventListener("input", () => {
+  orderPhone.value = formatPhoneValue(orderPhone.value);
+  updateOrderMessage();
+});
+
+orderPhone.addEventListener("blur", () => {
+  if (orderPhone.value.trim() === "+7") {
+    orderPhone.value = "";
+    updateOrderMessage();
+  }
+});
+
 serviceCards.forEach((card) => {
   card.addEventListener("click", () => {
     const filter = card.dataset.targetFilter || "all";
@@ -72,7 +125,7 @@ function updateOrderMessage(clearStatus = true) {
   }
 }
 
-[orderName, orderPhone, orderService, orderDetails, orderTime].forEach((field) => {
+[orderName, orderService, orderDetails, orderTime].forEach((field) => {
   field.addEventListener("input", updateOrderMessage);
 });
 

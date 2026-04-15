@@ -136,6 +136,7 @@ main > * {
 
 .brand,
 .nav,
+.header-actions,
 .hero-actions,
 .contact-actions,
 .hero-tags,
@@ -196,6 +197,16 @@ main > * {
   background: var(--yellow);
   color: var(--ink);
   box-shadow: none;
+}
+
+.header-actions {
+  gap: 10px;
+}
+
+.header-cta-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.28);
 }
 
 .hero {
