@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="220" height="96" viewBox="0 0 220 96" role="img" aria-labelledby="title desc">
+  <title id="title">ФотоЦентр</title>
+  <desc id="desc">Логотип ФотоЦентр</desc>
+  <rect width="220" height="96" rx="14" fill="#ffffff"/>
+  <text x="110" y="38" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="34" font-weight="700" fill="#111111">ФОТО</text>
+  <text x="113" y="69" text-anchor="middle" font-family="'Segoe Script', 'Brush Script MT', cursive" font-size="29" font-style="italic" font-weight="700" fill="#ff4b2b">Центр</text>
+</svg>
