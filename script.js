@@ -144,7 +144,7 @@ function saveLead() {
   localStorage.setItem("fotochkaLeads", JSON.stringify(leads.slice(0, 30)));
 }
 
-orderForm.addEventListener("submit", async (event) => {
+orderForm.addEventListener("submit", (event) => {
   event.preventDefault();
   copyStatus.classList.remove("error");
 
@@ -156,17 +156,8 @@ orderForm.addEventListener("submit", async (event) => {
 
   saveLead();
   updateOrderMessage();
-  copyStatus.textContent = "Отправляем заявку...";
-
-  try {
-    HTMLFormElement.prototype.submit.call(orderForm);
-    orderForm.reset();
-    updateOrderMessage(false);
-    copyStatus.textContent = "Заявка принята. Мы скоро свяжемся с вами.";
-  } catch (error) {
-    copyStatus.classList.add("error");
-    copyStatus.textContent = "Не получилось отправить заявку. Попробуйте еще раз или свяжитесь с нами по телефону.";
-  }
+  copyStatus.textContent = "Переходим к подтверждению отправки...";
+  HTMLFormElement.prototype.submit.call(orderForm);
 });
 
 copyOrder.addEventListener("click", async () => {
