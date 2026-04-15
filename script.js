@@ -1,4 +1,4 @@
-const tabs = document.querySelectorAll(".tab");
+﻿const tabs = document.querySelectorAll(".tab");
 const cards = document.querySelectorAll(".price-card");
 const serviceCards = document.querySelectorAll(".service-card[data-target-filter]");
 const searchInput = document.querySelector("#priceSearch");
@@ -159,24 +159,13 @@ orderForm.addEventListener("submit", async (event) => {
   copyStatus.textContent = "Отправляем заявку...";
 
   try {
-    const response = await fetch(orderForm.action, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-      },
-      body: new FormData(orderForm),
-    });
-
-    if (!response.ok) {
-      throw new Error("Form submit failed");
-    }
-
+    HTMLFormElement.prototype.submit.call(orderForm);
     orderForm.reset();
     updateOrderMessage(false);
     copyStatus.textContent = "Заявка принята. Мы скоро свяжемся с вами.";
   } catch (error) {
     copyStatus.classList.add("error");
-    copyStatus.textContent = "Не получилось отправить. Откройте сайт через localhost или попробуйте после публикации сайта.";
+    copyStatus.textContent = "Не получилось отправить заявку. Попробуйте еще раз или свяжитесь с нами по телефону.";
   }
 });
 

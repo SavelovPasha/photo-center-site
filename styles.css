@@ -942,6 +942,15 @@ h2 {
   gap: 12px;
 }
 
+.form-submit-frame {
+  width: 0;
+  height: 0;
+  border: 0;
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
 .copy-status {
   min-height: 22px;
   margin: 0;
