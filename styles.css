@@ -203,6 +203,52 @@ main > * {
   gap: 10px;
 }
 
+.header-menu {
+  position: relative;
+}
+
+.header-menu-toggle {
+  cursor: pointer;
+}
+
+.header-menu-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  display: grid;
+  min-width: 180px;
+  gap: 6px;
+  padding: 8px;
+  border: 1px solid rgba(23, 21, 31, 0.14);
+  border-radius: 8px;
+  background: rgba(18, 23, 28, 0.96);
+  box-shadow: 0 20px 45px rgba(10, 13, 16, 0.26);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-6px);
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+
+.header-menu.open .header-menu-dropdown {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.header-menu-dropdown a {
+  border-radius: 8px;
+  padding: 12px 14px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.header-menu-dropdown a:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
 .header-cta-secondary {
   background: rgba(255, 255, 255, 0.1);
   color: #fff;
@@ -269,6 +315,81 @@ h1 {
   margin-top: 30px;
 }
 
+.hero-contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.contact-chip {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  place-items: center;
+  border: 0;
+  border-radius: 12px;
+  padding: 0;
+  background: transparent;
+  color: #fff;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.contact-chip-vk {
+  background: transparent;
+}
+
+.contact-chip-telegram {
+  background: transparent;
+}
+
+.contact-chip-max {
+  background: transparent;
+}
+
+.contact-chip-whatsapp {
+  background: transparent;
+}
+
+.contact-chip:hover {
+  transform: translate(-2px, -2px);
+  opacity: 0.92;
+}
+
+.contact-chip-icon {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  place-items: center;
+}
+
+.contact-chip-icon img {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+  display: block;
+}
+
+
+.contact-chip-max .contact-chip-icon {
+  width: 52px;
+  height: 52px;
+}
+
+.contact-chip-max .contact-chip-icon img {
+  width: 52px;
+  height: 52px;
+}
+
+.contact-links-light .contact-chip {
+  background: transparent;
+}
+
+.hero-contact-links .contact-chip {
+  box-shadow: 0 10px 24px rgba(10, 13, 16, 0.18);
+}
+
 .btn {
   display: inline-flex;
   min-height: 48px;
@@ -307,6 +428,33 @@ h1 {
   background: rgba(255, 255, 255, 0.05);
   color: #fff;
   box-shadow: none;
+}
+
+.btn-route {
+  gap: 10px;
+}
+
+.btn-route-icon {
+  display: inline-flex;
+  width: 22px;
+  height: 22px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.btn-route-icon svg {
+  width: 15px;
+  height: 15px;
+  display: block;
+}
+
+.btn-route-dark .btn-route-icon {
+  background: rgba(23, 21, 31, 0.1);
 }
 
 .hero-stats {
@@ -424,6 +572,17 @@ h1 {
 .quick-strip strong {
   font-size: clamp(20px, 2.4vw, 30px);
   font-weight: 950;
+}
+
+.quick-strip strong a,
+.contact-info strong a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.quick-strip strong a:hover,
+.contact-info strong a:hover {
+  text-decoration: underline;
 }
 
 .quick-strip span {
@@ -844,6 +1003,39 @@ h2 {
   line-height: 1.5;
 }
 
+.promo-card-review {
+  display: flex;
+  flex-direction: column;
+}
+
+.promo-card-review .promo-badge {
+  align-self: flex-start;
+}
+
+.promo-card-review p {
+  max-width: 28ch;
+}
+
+.promo-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  margin-top: 18px;
+  align-self: flex-start;
+  border: 2px solid var(--ink);
+  border-radius: 8px;
+  padding: 10px 16px;
+  background: var(--green);
+  color: #fff;
+  font-weight: 900;
+  box-shadow: 6px 6px 0 rgba(23, 21, 31, 0.18);
+}
+
+.promo-action:hover {
+  transform: translate(-2px, -2px);
+}
+
 .order-section {
   background:
     linear-gradient(90deg, rgba(23, 21, 31, 0.05) 1px, transparent 1px),
@@ -1126,6 +1318,25 @@ h2 {
   .site-header {
     align-items: stretch;
     flex-wrap: wrap;
+  }
+
+  .header-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .header-menu {
+    flex: 1 1 auto;
+  }
+
+  .header-menu-toggle {
+    width: 100%;
+  }
+
+  .header-menu-dropdown {
+    left: 0;
+    right: 0;
+    min-width: 0;
   }
 
   .nav {

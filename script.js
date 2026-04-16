@@ -2,6 +2,8 @@
 const cards = document.querySelectorAll(".price-card");
 const serviceCards = document.querySelectorAll(".service-card[data-target-filter]");
 const searchInput = document.querySelector("#priceSearch");
+const headerMenu = document.querySelector(".header-menu");
+const headerMenuToggle = document.querySelector(".header-menu-toggle");
 const orderForm = document.querySelector("#orderForm");
 const orderName = document.querySelector("#orderName");
 const orderPhone = document.querySelector("#orderPhone");
@@ -13,6 +15,34 @@ const orderRedirect = document.querySelector("#orderRedirect");
 const copyStatus = document.querySelector("#copyStatus");
 
 let activeFilter = "all";
+
+if (headerMenu && headerMenuToggle) {
+  headerMenuToggle.addEventListener("click", () => {
+    const isOpen = headerMenu.classList.toggle("open");
+    headerMenuToggle.setAttribute("aria-expanded", String(isOpen));
+  });
+
+  headerMenu.querySelectorAll(".header-menu-dropdown a").forEach((link) => {
+    link.addEventListener("click", () => {
+      headerMenu.classList.remove("open");
+      headerMenuToggle.setAttribute("aria-expanded", "false");
+    });
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!headerMenu.contains(event.target)) {
+      headerMenu.classList.remove("open");
+      headerMenuToggle.setAttribute("aria-expanded", "false");
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      headerMenu.classList.remove("open");
+      headerMenuToggle.setAttribute("aria-expanded", "false");
+    }
+  });
+}
 
 function formatPhoneValue(value) {
   const digits = value.replace(/\D/g, "");
