@@ -10,6 +10,7 @@ const orderDetails = document.querySelector("#orderDetails");
 const orderTime = document.querySelector("#orderTime");
 const generatedMessage = document.querySelector("#generatedMessage");
 const orderMessageInput = document.querySelector("#orderMessageInput");
+const orderRedirect = document.querySelector("#orderRedirect");
 const copyOrder = document.querySelector("#copyOrder");
 const copyStatus = document.querySelector("#copyStatus");
 
@@ -80,6 +81,10 @@ tabs.forEach((tab) => {
 
 searchInput.addEventListener("input", applyFilters);
 
+if (orderRedirect) {
+  orderRedirect.value = new URL("thanks.html", window.location.href).href;
+}
+
 orderPhone.addEventListener("focus", () => {
   if (!orderPhone.value.trim()) {
     orderPhone.value = "+7 ";
@@ -144,7 +149,7 @@ function saveLead() {
   localStorage.setItem("fotochkaLeads", JSON.stringify(leads.slice(0, 30)));
 }
 
-orderForm.addEventListener("submit", async (event) => {
+orderForm.addEventListener("submit", (event) => {
   event.preventDefault();
   copyStatus.classList.remove("error");
 
@@ -157,34 +162,7 @@ orderForm.addEventListener("submit", async (event) => {
   saveLead();
   updateOrderMessage();
   copyStatus.textContent = "Отправляем заявку...";
-
-  try {
-    const formData = new FormData(orderForm);
-    const object = Object.fromEntries(formData.entries());
-    const json = JSON.stringify(object);
-
-    const response = await fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: json,
-    });
-
-    const result = await response.json();
-
-    if (!response.ok || !result.success) {
-      throw new Error(result.message || "Ошибка отправки");
-    }
-
-    orderForm.reset();
-    updateOrderMessage(false);
-    copyStatus.textContent = "Заявка принята. Мы скоро свяжемся с вами.";
-  } catch (error) {
-    copyStatus.classList.add("error");
-    copyStatus.textContent = error.message || "Не получилось отправить заявку. Попробуйте еще раз.";
-  }
+  HTMLFormElement.prototype.submit.call(orderForm);
 });
 
 copyOrder.addEventListener("click", async () => {
