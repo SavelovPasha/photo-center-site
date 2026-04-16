@@ -161,7 +161,6 @@ orderForm.addEventListener("submit", (event) => {
 
   saveLead();
   updateOrderMessage();
-  copyStatus.textContent = "Отправляем заявку...";
   HTMLFormElement.prototype.submit.call(orderForm);
 });
 
