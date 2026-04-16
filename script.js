@@ -144,7 +144,7 @@ function saveLead() {
   localStorage.setItem("fotochkaLeads", JSON.stringify(leads.slice(0, 30)));
 }
 
-orderForm.addEventListener("submit", (event) => {
+orderForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   copyStatus.classList.remove("error");
 
@@ -156,8 +156,35 @@ orderForm.addEventListener("submit", (event) => {
 
   saveLead();
   updateOrderMessage();
-  copyStatus.textContent = "Переходим к подтверждению отправки...";
-  HTMLFormElement.prototype.submit.call(orderForm);
+  copyStatus.textContent = "Отправляем заявку...";
+
+  try {
+    const formData = new FormData(orderForm);
+    const object = Object.fromEntries(formData.entries());
+    const json = JSON.stringify(object);
+
+    const response = await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: json,
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+      throw new Error(result.message || "Ошибка отправки");
+    }
+
+    orderForm.reset();
+    updateOrderMessage(false);
+    copyStatus.textContent = "Заявка принята. Мы скоро свяжемся с вами.";
+  } catch (error) {
+    copyStatus.classList.add("error");
+    copyStatus.textContent = error.message || "Не получилось отправить заявку. Попробуйте еще раз.";
+  }
 });
 
 copyOrder.addEventListener("click", async () => {
