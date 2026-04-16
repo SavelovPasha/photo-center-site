@@ -464,10 +464,11 @@
               срок и удобное время.
             </p>
           </div>
-          <form class="order-form" id="orderForm" action="https://formsubmit.co/savelovpasha@mail.ru" method="POST">
-            <input type="hidden" name="_subject" value="Новая заявка с сайта ФотоЦентр" />
-            <input type="hidden" name="_template" value="table" />
-            <input type="hidden" name="_captcha" value="false" />
+          <form class="order-form" id="orderForm" action="https://api.web3forms.com/submit" method="POST">
+            <input type="hidden" name="access_key" value="afe767cd-ddd7-465e-a331-a4caa3493525" />
+            <input type="hidden" name="subject" value="Новая заявка с сайта ФотоЦентр" />
+            <input type="hidden" name="from_name" value="ФотоЦентр" />
+            <input type="checkbox" name="botcheck" class="hidden-botcheck" tabindex="-1" autocomplete="off" />
             <input type="hidden" name="Сообщение" id="orderMessageInput" />
             <div class="form-row">
               <label>
