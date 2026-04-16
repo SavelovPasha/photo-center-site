@@ -8,10 +8,8 @@ const orderPhone = document.querySelector("#orderPhone");
 const orderService = document.querySelector("#orderService");
 const orderDetails = document.querySelector("#orderDetails");
 const orderTime = document.querySelector("#orderTime");
-const generatedMessage = document.querySelector("#generatedMessage");
 const orderMessageInput = document.querySelector("#orderMessageInput");
 const orderRedirect = document.querySelector("#orderRedirect");
-const copyOrder = document.querySelector("#copyOrder");
 const copyStatus = document.querySelector("#copyStatus");
 
 let activeFilter = "all";
@@ -123,7 +121,6 @@ function buildOrderMessage() {
 
 function updateOrderMessage(clearStatus = true) {
   const message = buildOrderMessage();
-  generatedMessage.textContent = message;
   orderMessageInput.value = message;
   if (clearStatus) {
     copyStatus.textContent = "";
@@ -162,17 +159,4 @@ orderForm.addEventListener("submit", (event) => {
   saveLead();
   updateOrderMessage();
   HTMLFormElement.prototype.submit.call(orderForm);
-});
-
-copyOrder.addEventListener("click", async () => {
-  const message = buildOrderMessage();
-  copyStatus.classList.remove("error");
-
-  try {
-    await navigator.clipboard.writeText(message);
-    copyStatus.textContent = "Готово, текст скопирован.";
-  } catch (error) {
-    generatedMessage.focus();
-    copyStatus.textContent = "Можно выделить текст вручную и отправить в VK.";
-  }
 });
