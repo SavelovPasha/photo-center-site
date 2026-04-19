@@ -1515,13 +1515,13 @@ h2 {
 
   .btn-route {
     min-height: 46px;
-    border-color: rgba(255, 255, 255, 0.42);
-    background: rgba(14, 18, 23, 0.48);
-    backdrop-filter: blur(12px);
+    border-color: rgba(255, 255, 255, 0.34);
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
   }
 
   .btn-route-icon {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.14);
   }
 
   .hero-stats {
