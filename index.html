@@ -209,8 +209,32 @@
             <span class="card-label">хит</span>
             <div>
               <h3>Распечатки и Ксерокопии</h3>
-              <p>Черно-белая и цветная распечатка, A3 и A4, сканирование, ламинация и брошюровка.</p>
+              <p>Черно-белая и цветная печать, копии A4 и A3, документы и учебные материалы.</p>
               <span class="service-price">от 20 ₽</span>
+            </div>
+          </article>
+          <article class="service-card" data-target-filter="scan">
+            <img src="./assets/scanning.png" alt="Сканирование документов и фото" />
+            <div>
+              <h3>Сканирование</h3>
+              <p>Документы, фотографии, отправка файлов и подготовка цифровых копий.</p>
+              <span class="service-price">от 20 ₽</span>
+            </div>
+          </article>
+          <article class="service-card" data-target-filter="lamination">
+            <img src="./assets/lamination.png" alt="Ламинация документов и фотографий" />
+            <div>
+              <h3>Ламинация</h3>
+              <p>Защитим документы, фото и материалы от влаги, заломов и частого использования.</p>
+              <span class="service-price">от 50 ₽</span>
+            </div>
+          </article>
+          <article class="service-card" data-target-filter="binding">
+            <img src="./assets/brochure.png" alt="Брошюровка документов" />
+            <div>
+              <h3>Брошюровка</h3>
+              <p>Соберем рефераты, документы, каталоги и презентации в аккуратный переплет.</p>
+              <span class="service-price">от 150 ₽</span>
             </div>
           </article>
           <article class="service-card" data-target-filter="gifts">
@@ -226,7 +250,7 @@
             <img src="./assets/digitization-card.png" alt="Оцифровка пленок и слайдов" />
             <div>
               <h3>Оцифровка</h3>
-              <p>VHS, S-VHS, miniDV, фотопленка, проявка и сканирование кадров.</p>
+              <p>VHS, S-VHS, miniDV, фотопленка, проявка и перевод старых материалов в цифру.</p>
               <span class="service-price">от 850 ₽</span>
             </div>
           </article>
@@ -250,8 +274,11 @@
           <button class="tab active" type="button" data-filter="all">Все</button>
           <button class="tab" type="button" data-filter="photo">Фото</button>
           <button class="tab" type="button" data-filter="docs">Документы</button>
+          <button class="tab" type="button" data-filter="print">Распечатки</button>
+          <button class="tab" type="button" data-filter="scan">Сканирование</button>
+          <button class="tab" type="button" data-filter="lamination">Ламинация</button>
+          <button class="tab" type="button" data-filter="binding">Брошюровка</button>
           <button class="tab" type="button" data-filter="gifts">Сувениры</button>
-          <button class="tab" type="button" data-filter="print">Печать</button>
           <button class="tab" type="button" data-filter="digital">Оцифровка</button>
         </div>
 
@@ -398,25 +425,35 @@
             </ul>
           </article>
 
-          <article class="price-card" data-category="print lamination">
+          <article class="price-card" data-category="lamination">
             <div class="price-card-top">
               <span class="price-chip">от 50 ₽</span>
-              <span class="price-meta">ламинация и переплет</span>
+              <span class="price-meta">защита документов и фото</span>
             </div>
-            <h3>Ламинирование и брошюровка</h3>
+            <h3>Ламинация</h3>
             <ul>
               <li><span>Ламинирование A3</span><strong>375 ₽</strong></li>
               <li><span>Ламинирование A4</span><strong>150 ₽</strong></li>
               <li><span>Ламинирование A5</span><strong>100 ₽</strong></li>
               <li><span>Ламинирование A6</span><strong>80 ₽</strong></li>
               <li><span>Ламинирование A7</span><strong>50 ₽</strong></li>
+            </ul>
+          </article>
+
+          <article class="price-card" data-category="binding">
+            <div class="price-card-top">
+              <span class="price-chip">от 150 ₽</span>
+              <span class="price-meta">пружина и переплет</span>
+            </div>
+            <h3>Брошюровка</h3>
+            <ul>
               <li><span>Брошюровка до 10 л.</span><strong>150 ₽</strong></li>
               <li><span>Брошюровка до 100 л.</span><strong>400 ₽</strong></li>
               <li><span>Металлическая пружина до 20 л.</span><strong>350 ₽</strong></li>
             </ul>
           </article>
 
-          <article class="price-card" data-category="print digital scan">
+          <article class="price-card" data-category="scan">
             <div class="price-card-top">
               <span class="price-chip">от 20 ₽</span>
               <span class="price-meta">документы и фото с отправкой</span>
@@ -547,9 +584,11 @@
               <select id="orderService" name="Услуга">
                 <option>Фото на документы</option>
                 <option>Печать фото</option>
+                <option>Распечатки и ксерокопии</option>
+                <option>Сканирование</option>
+                <option>Ламинация</option>
+                <option>Брошюровка</option>
                 <option>Сувенир с принтом</option>
-                <option>Копии / распечатка</option>
-                <option>Ламинирование / брошюровка</option>
                 <option>Оцифровка кассет или пленки</option>
               </select>
             </label>

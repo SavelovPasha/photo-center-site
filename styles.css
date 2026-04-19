@@ -762,7 +762,7 @@ h2 {
 
 .service-grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(8, 1fr);
   grid-auto-rows: 245px;
   gap: 14px;
 }
@@ -854,8 +854,14 @@ h2 {
 .service-card:nth-child(2),
 .service-card:nth-child(3),
 .service-card:nth-child(4),
-.service-card:nth-child(5) {
+.service-card:nth-child(5),
+.service-card:nth-child(6),
+.service-card:nth-child(7) {
   grid-column: span 2;
+}
+
+.service-card:nth-child(8) {
+  grid-column: span 4;
 }
 
 .service-card::after {
@@ -903,7 +909,7 @@ h2 {
   justify-content: center;
   position: absolute;
   top: 16px;
-  left: 16px;
+  right: 16px;
   z-index: 3;
   border-radius: 999px;
   padding: 7px 12px;
@@ -1582,7 +1588,10 @@ h2 {
   .service-card:nth-child(2),
   .service-card:nth-child(3),
   .service-card:nth-child(4),
-  .service-card:nth-child(5) {
+  .service-card:nth-child(5),
+  .service-card:nth-child(6),
+  .service-card:nth-child(7),
+  .service-card:nth-child(8) {
     grid-column: span 2;
   }
 
@@ -1751,14 +1760,17 @@ h2 {
   .service-card:nth-child(2),
   .service-card:nth-child(3),
   .service-card:nth-child(4),
-  .service-card:nth-child(5) {
+  .service-card:nth-child(5),
+  .service-card:nth-child(6),
+  .service-card:nth-child(7),
+  .service-card:nth-child(8) {
     grid-column: span 1;
     grid-row: span 1;
   }
 
   .card-label {
     top: 12px;
-    left: 12px;
+    right: 12px;
     padding: 5px 9px;
     font-size: 10px;
     line-height: 1;
@@ -1933,7 +1945,7 @@ h2 {
 
   .card-label {
     top: 10px;
-    left: 10px;
+    right: 10px;
     padding: 4px 8px;
     font-size: 9px;
   }

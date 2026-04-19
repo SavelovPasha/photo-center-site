@@ -132,7 +132,8 @@ function applyFilters() {
   const query = normalize(searchInput.value);
 
   cards.forEach((card) => {
-    const categoryMatch = activeFilter === "all" || card.dataset.category.includes(activeFilter);
+    const categories = card.dataset.category.split(/\s+/);
+    const categoryMatch = activeFilter === "all" || categories.includes(activeFilter);
     const textMatch = normalize(card.textContent).includes(query);
     card.classList.toggle("hidden", !categoryMatch || !textMatch);
   });
