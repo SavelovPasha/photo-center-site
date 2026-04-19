@@ -1424,6 +1424,12 @@ h2 {
     gap: 10px;
   }
 
+  .hero-actions > .btn,
+  .contact-actions > .btn {
+    width: calc(50% - 5px);
+    flex: 0 0 calc(50% - 5px);
+  }
+
   .hero-contact-links,
   .contact-links-light {
     width: 100%;
@@ -1509,21 +1515,42 @@ h2 {
     padding: 22px;
   }
 
-  .btn {
-    width: 100%;
-  }
-
   .btn-route {
     min-height: 46px;
-    border-color: rgba(255, 255, 255, 0.18);
-    background: rgba(255, 255, 255, 0.92);
-    color: var(--ink);
     backdrop-filter: blur(10px);
-    box-shadow: 0 12px 28px rgba(10, 13, 16, 0.18);
   }
 
   .btn-route-icon {
-    background: rgba(23, 21, 31, 0.08);
+    background: rgba(255, 255, 255, 0.14);
+  }
+
+  .hero-actions .btn-secondary {
+    background: #fff;
+    color: var(--ink);
+    box-shadow: 6px 6px 0 rgba(23, 21, 31, 0.28);
+  }
+
+  .hero-actions .btn-route {
+    border-color: rgba(255, 255, 255, 0.24);
+    background: rgba(23, 21, 31, 0.28);
+    color: #fff;
+    box-shadow: none;
+  }
+
+  .hero-actions .btn-route .btn-route-icon {
+    background: rgba(255, 255, 255, 0.22);
+  }
+
+  .contact-actions .btn-secondary,
+  .contact-actions .btn-route-dark {
+    border-color: var(--ink);
+    background: #fff;
+    color: var(--ink);
+    box-shadow: none;
+  }
+
+  .contact-actions .btn-route-dark .btn-route-icon {
+    background: rgba(23, 21, 31, 0.1);
   }
 
   .hero-stats {
@@ -1573,6 +1600,12 @@ h2 {
 
   .hero-text {
     font-size: 15px;
+  }
+
+  .hero-actions > .btn,
+  .contact-actions > .btn {
+    width: calc(50% - 4px);
+    flex-basis: calc(50% - 4px);
   }
 
   .header-cta {
