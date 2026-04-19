@@ -1468,6 +1468,10 @@ h2 {
   line-height: var(--lh-body);
 }
 
+.thanks-actions {
+  align-items: stretch;
+}
+
 .contact-info {
   display: grid;
   gap: 14px;
