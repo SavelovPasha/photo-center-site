@@ -552,14 +552,11 @@
           <div class="order-copy">
             <p class="eyebrow">быстрый бриф</p>
             <h2>Оставь заявку за минуту</h2>
-            <p>
-              Укажи контакт, услугу и пару деталей. Мы посмотрим заявку и свяжемся с тобой, чтобы уточнить цену,
-              срок и удобное время.
-            </p>
-            <div class="order-benefits" aria-label="Что будет дальше">
-              <span>Ответим в сообщениях</span>
-              <span>Подскажем по формату</span>
-              <span>Скажем цену заранее</span>
+            <p>Напишите, что нужно. Мы уточним формат, цену и срок перед работой.</p>
+            <div class="order-benefits order-steps" aria-label="Как оставить заявку">
+              <span><strong>1</strong>Выберите услугу</span>
+              <span><strong>2</strong>Оставьте телефон</span>
+              <span><strong>3</strong>Мы свяжемся и уточним детали</span>
             </div>
           </div>
           <form class="order-form" id="orderForm" action="https://api.web3forms.com/submit" method="POST">
@@ -593,8 +590,8 @@
               </select>
             </label>
             <label>
-              <span>Формат, количество, пожелания <em>(необязательно)</em></span>
-              <textarea id="orderDetails" name="Детали" rows="4" placeholder="Например: 10 фото 10x15, глянец; или кружка с фото и надписью"></textarea>
+              <span>Детали заказа, формат или количество <em>(необязательно)</em></span>
+              <textarea id="orderDetails" name="Детали" rows="4" placeholder="Например: 10 фото 10x15, глянец; кружка с фото; распечатать 20 листов"></textarea>
             </label>
             <label>
               <span>Когда удобно забрать <em>(необязательно)</em></span>
@@ -602,6 +599,7 @@
             </label>
             <div class="order-actions">
               <button class="btn btn-primary" type="submit">Оставить заявку</button>
+              <span class="order-submit-note">Заявка придёт нам на почту. Обычно отвечаем в рабочее время.</span>
             </div>
             <p class="copy-status" id="copyStatus"></p>
           </form>

@@ -1279,23 +1279,37 @@ h2 {
 }
 
 .order-benefits {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
   gap: 10px;
   margin-top: 22px;
 }
 
 .order-benefits span {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(23, 21, 31, 0.14);
-  border-radius: 999px;
-  padding: 10px 14px;
+  gap: 12px;
+  border: 1px solid rgba(23, 21, 31, 0.12);
+  border-radius: 8px;
+  padding: 12px 14px;
   background: rgba(255, 255, 255, 0.76);
   color: var(--ink);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: var(--fw-title);
+}
+
+.order-benefits strong {
+  display: grid;
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 2px solid var(--ink);
+  border-radius: 8px;
+  background: var(--yellow);
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: var(--fw-accent);
+  line-height: 1;
 }
 
 .order-form {
@@ -1373,11 +1387,18 @@ h2 {
 }
 
 .order-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
 }
 
+.order-submit-note {
+  color: var(--muted);
+  font-size: var(--fs-body-sm);
+  font-weight: var(--fw-strong);
+  line-height: 1.45;
+}
 
 .copy-status {
   min-height: 22px;
@@ -1852,6 +1873,7 @@ h2 {
 
   .order-actions {
     display: grid;
+    grid-template-columns: 1fr;
   }
 
   .form-row {
