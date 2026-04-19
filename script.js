@@ -6,7 +6,6 @@ const headerMenu = document.querySelector(".header-menu");
 const headerMenuToggle = document.querySelector(".header-menu-toggle");
 const orderForm = document.querySelector("#orderForm");
 const mobileSticky = document.querySelector(".mobile-sticky");
-const contactsSection = document.querySelector("#contacts");
 const orderName = document.querySelector("#orderName");
 const orderPhone = document.querySelector("#orderPhone");
 const orderService = document.querySelector("#orderService");
@@ -23,14 +22,7 @@ function updateMobileStickyVisibility() {
     return;
   }
 
-  let contactsVisible = false;
-
-  if (contactsSection) {
-    const contactsRect = contactsSection.getBoundingClientRect();
-    contactsVisible = contactsRect.top < window.innerHeight - 120 && contactsRect.bottom > 140;
-  }
-
-  const shouldShow = window.innerWidth <= 760 && window.scrollY > 260 && !contactsVisible;
+  const shouldShow = window.innerWidth <= 760 && window.scrollY > 260;
   mobileSticky.classList.toggle("is-visible", shouldShow);
 }
 
