@@ -5,6 +5,7 @@ const searchInput = document.querySelector("#priceSearch");
 const headerMenu = document.querySelector(".header-menu");
 const headerMenuToggle = document.querySelector(".header-menu-toggle");
 const orderForm = document.querySelector("#orderForm");
+const mobileSticky = document.querySelector(".mobile-sticky");
 const orderName = document.querySelector("#orderName");
 const orderPhone = document.querySelector("#orderPhone");
 const orderService = document.querySelector("#orderService");
@@ -15,6 +16,15 @@ const orderRedirect = document.querySelector("#orderRedirect");
 const copyStatus = document.querySelector("#copyStatus");
 
 let activeFilter = "all";
+
+function updateMobileStickyVisibility() {
+  if (!mobileSticky) {
+    return;
+  }
+
+  const shouldShow = window.innerWidth <= 760 && window.scrollY > 260;
+  mobileSticky.classList.toggle("is-visible", shouldShow);
+}
 
 if (headerMenu && headerMenuToggle) {
   headerMenuToggle.addEventListener("click", () => {
@@ -43,6 +53,10 @@ if (headerMenu && headerMenuToggle) {
     }
   });
 }
+
+updateMobileStickyVisibility();
+window.addEventListener("scroll", updateMobileStickyVisibility, { passive: true });
+window.addEventListener("resize", updateMobileStickyVisibility);
 
 function formatPhoneValue(value) {
   const digits = value.replace(/\D/g, "");
