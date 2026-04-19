@@ -5,6 +5,7 @@ const searchInput = document.querySelector("#priceSearch");
 const actionMenus = document.querySelectorAll(".header-menu, .action-menu");
 const orderForm = document.querySelector("#orderForm");
 const mobileSticky = document.querySelector(".mobile-sticky");
+const contactSection = document.querySelector(".contact-section");
 const orderName = document.querySelector("#orderName");
 const orderPhone = document.querySelector("#orderPhone");
 const orderService = document.querySelector("#orderService");
@@ -21,7 +22,10 @@ function updateMobileStickyVisibility() {
     return;
   }
 
-  const shouldShow = window.innerWidth <= 760 && window.scrollY > 260;
+  const reachedContacts =
+    contactSection &&
+    contactSection.getBoundingClientRect().top <= window.innerHeight - 120;
+  const shouldShow = window.innerWidth <= 760 && window.scrollY > 260 && !reachedContacts;
   mobileSticky.classList.toggle("is-visible", shouldShow);
 }
 
