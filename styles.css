@@ -1366,6 +1366,39 @@ h2 {
     font-size: 17px;
   }
 
+  .hero-actions,
+  .contact-actions {
+    gap: 10px;
+  }
+
+  .hero-contact-links,
+  .contact-links-light {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .contact-chip {
+    width: 48px;
+    height: 48px;
+  }
+
+  .contact-chip-icon,
+  .contact-chip-icon img,
+  .contact-chip-max .contact-chip-icon,
+  .contact-chip-max .contact-chip-icon img {
+    width: 32px;
+    height: 32px;
+  }
+
+  .ticker-content {
+    gap: 22px;
+    padding: 12px 22px;
+  }
+
+  .ticker-content span {
+    font-size: 14px;
+  }
+
   .quick-strip,
   .kit-grid,
   .price-grid {
@@ -1396,7 +1429,31 @@ h2 {
 
   .promo-list,
   .site-footer {
-    display: block;
+    display: grid;
+  }
+
+  .promo-list {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .promo-card {
+    min-height: auto;
+  }
+
+  .promo-card h3 {
+    font-size: clamp(24px, 8vw, 34px);
+    line-height: 1.02;
+  }
+
+  .promo-card p,
+  .contact-card p:not(.eyebrow) {
+    font-size: 16px;
+  }
+
+  .contact-card,
+  .contact-info {
+    padding: 22px;
   }
 
   .btn {
@@ -1420,6 +1477,10 @@ h2 {
     display: grid;
   }
 
+  .site-footer {
+    gap: 8px;
+  }
+
   body {
     padding-bottom: 76px;
   }
@@ -1434,6 +1495,29 @@ h2 {
     min-height: 92vh;
     padding-top: 128px;
     padding-bottom: 58px;
+  }
+
+  .hero-contact-links,
+  .contact-links-light {
+    gap: 8px;
+  }
+
+  .contact-chip {
+    width: 44px;
+    height: 44px;
+  }
+
+  .contact-chip-icon,
+  .contact-chip-icon img,
+  .contact-chip-max .contact-chip-icon,
+  .contact-chip-max .contact-chip-icon img {
+    width: 29px;
+    height: 29px;
+  }
+
+  .ticker-content {
+    gap: 18px;
+    padding-inline: 18px;
   }
 
   .floating-card {
