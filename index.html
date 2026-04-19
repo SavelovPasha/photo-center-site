@@ -48,12 +48,14 @@
           <p class="eyebrow">Видное · Радужная, 2 · печатаем каждый день</p>
           <h1>Фото, документы<br />и подарки без лишней суеты</h1>
           <p class="hero-text">
-            Сделаем фото на документы, распечатаем снимки, подготовим кружку или футболку с принтом,
-            заламинируем, отсканируем и поможем сохранить старые кассеты и пленку.
+            Фото на документы, печать снимков, распечатки, сувениры и оцифровка рядом с домом.
+            Подскажем формат, заранее сориентируем по цене и скажем, когда заказ будет готов.
           </p>
+          <p class="hero-support">Напиши нам в сообщения или оставь заявку — ответим, подскажем и соберём заказ без лишних поездок.</p>
           <div class="hero-actions">
+            <a class="btn btn-primary" href="#order">Оставить заявку</a>
             <div class="action-menu action-menu-hero">
-              <button class="btn btn-primary action-menu-toggle" type="button" aria-expanded="false">
+              <button class="btn btn-secondary action-menu-toggle" type="button" aria-expanded="false">
                 Написать
               </button>
               <div class="action-menu-dropdown" aria-label="Выберите, где написать">
@@ -76,15 +78,15 @@
           <div class="hero-stats" aria-label="Быстрая информация">
             <div class="hero-stat">
               <strong>5.0</strong>
-              <span>рейтинг на Картах</span>
+              <span>на Яндекс Картах</span>
             </div>
             <div class="hero-stat">
               <strong>60</strong>
-              <span>отзывов</span>
+              <span>живых отзывов</span>
             </div>
             <div class="hero-stat">
               <strong>от 20 ₽</strong>
-              <span>печать фото</span>
+              <span>фото за снимок</span>
             </div>
           </div>
         </div>
@@ -187,6 +189,7 @@
           <article class="service-card" data-target-filter="docs">
             <img src="./assets/docs.png" alt="Фото на документы" />
             <div>
+              <span class="card-label">хит</span>
               <h3>Фото на документы</h3>
               <p>Фото 3x4, 3,5x4,5, 5x5, готовые комплекты, ретушь и электронное фото.</p>
               <span class="service-price">от 500 ₽</span>
@@ -195,6 +198,7 @@
           <article class="service-card" data-target-filter="photo">
             <img src="./assets/photos.png" alt="Печать фотографий" />
             <div>
+              <span class="card-label">хит</span>
               <h3>Печать фото</h3>
               <p>От мини-формата 5x7,5 до A3: матовая, глянцевая, сатин и суперглянец.</p>
               <span class="service-price">от 20 ₽</span>
@@ -203,6 +207,7 @@
           <article class="service-card" data-target-filter="print">
             <img src="./assets/copies.png" alt="Распечатки и ксерокопии" />
             <div>
+              <span class="card-label">хит</span>
               <h3>Распечатки и Ксерокопии</h3>
               <p>Черно-белая и цветная распечатка, A3 и A4, сканирование, ламинация и брошюровка.</p>
               <span class="service-price">от 20 ₽</span>
@@ -211,6 +216,7 @@
           <article class="service-card" data-target-filter="gifts">
             <img src="./assets/souvenirs.png" alt="Сувениры с принтом" />
             <div>
+              <span class="card-label">хит</span>
               <h3>Сувениры</h3>
               <p>Кружки, футболки, брелоки, магниты, камни с фото, закладки и новогодние шары.</p>
               <span class="service-price">от 120 ₽</span>
@@ -232,6 +238,7 @@
           <div>
             <p class="eyebrow">прайс</p>
             <h2>Цены по категориям</h2>
+            <p class="price-intro">Не знаешь формат? Напиши нам — подскажем размер, материал и сразу сориентируем по стоимости.</p>
           </div>
           <label class="search-box">
             <span>Найти услугу</span>
@@ -249,8 +256,9 @@
         </div>
 
         <div class="price-grid" id="priceGrid">
-          <article class="price-card" data-category="photo photo-print">
+          <article class="price-card price-card-hot" data-category="photo photo-print">
             <div class="price-card-top">
+              <span class="price-hot-tag">хит</span>
               <span class="price-chip">от 20 ₽</span>
               <span class="price-meta">форматы от 5x7,5 до A3</span>
             </div>
@@ -268,8 +276,9 @@
             <p>Нестандартный формат: кадрирование +15 ₽.</p>
           </article>
 
-          <article class="price-card accent-card" data-category="docs">
+          <article class="price-card accent-card price-card-hot" data-category="docs">
             <div class="price-card-top">
+              <span class="price-hot-tag">хит</span>
               <span class="price-chip">от 450 ₽</span>
               <span class="price-meta">пакеты и электронные форматы</span>
             </div>
@@ -334,8 +343,9 @@
             </ul>
           </article>
 
-          <article class="price-card accent-card" data-category="gifts">
+          <article class="price-card accent-card price-card-hot" data-category="gifts">
             <div class="price-card-top">
+              <span class="price-hot-tag">хит</span>
               <span class="price-chip">от 150 ₽</span>
               <span class="price-meta">брелоки, кружки, подарки</span>
             </div>
@@ -422,8 +432,9 @@
             </ul>
           </article>
 
-          <article class="price-card" data-category="print">
+          <article class="price-card price-card-hot" data-category="print">
             <div class="price-card-top">
+              <span class="price-hot-tag">хит</span>
               <span class="price-chip">от 20 ₽</span>
               <span class="price-meta">ч/б, цвет, A4 и A3</span>
             </div>
@@ -486,6 +497,7 @@
             <span class="promo-badge">-15%</span>
             <h3>Отзыв на Яндекс Картах</h3>
             <p>Оставь отзыв о ФотоЦентре и получи скидку на любую услугу.</p>
+            <span class="promo-note">Скидка действует на любой следующий заказ после отзыва.</span>
             <a
               class="promo-action"
               href="https://yandex.ru/maps/org/foto_tsentr/166665523226/reviews/?add-review=true&display-text=%D0%A4%D0%BE%D1%82%D0%BE%D1%83%D1%81%D0%BB%D1%83%D0%B3%D0%B8&indoorLevel=1&ll=37.713968%2C55.542687&mode=search&sctx=ZAAAAAgBEAAaKAoSCW3KFd7l2kJAEfJetTLhxUtAEhIJKLhYUYNpxj8RiBBXzt4ZrT8iBgABAgMEBSgKOABA31NIAWoCcnWdAc3MzD2gAQCoAQC9AT1NToTCAXuaoKjw7ASYnvOfBr2f8c3lBon71cCPBMzw8YDdBLGQwMS%2BrK6u5gHLmd6u4QLHhvjjrgKY65qPhATf9oWJFvr4tOsGirOq6WaVw7bb4wW519DUvAWcgsiiBMDUgoz8BqiHvb%2BUA4PMivGaAv%2BY2ecanoCogga7gK%2BK%2FQWCAhsoKGNhdGVnb3J5X2lkOigxODQxMDgyNjEpKSmKAgkxODQxMDgyNjGSAgCaAgxkZXNrdG9wLW1hcHOqAi40NTQzMjQwMzQxLDgwMDU3MDM5OTI5LDkxMTA3NTQ0NTU2LDE2NzI3MjQ1NjQ52gIoChIJYI4ev7fbQkARU93M157FS0ASEgkArAj%2Bt5KtPxEAuBFPdjOTP%2BACAQ%3D%3D&sll=37.711250%2C55.542687&sspn=0.028880%2C0.009376&tab=reviews&text=%7B%22text%22%3A%22%D0%A4%D0%BE%D1%82%D0%BE%D1%83%D1%81%D0%BB%D1%83%D0%B3%D0%B8%22%2C%22what%22%3A%5B%7B%22attr_name%22%3A%22category_id%22%2C%22attr_values%22%3A%5B%22184108261%22%5D%7D%5D%7D&utm_source=share&z=16"
@@ -507,6 +519,11 @@
               Укажи контакт, услугу и пару деталей. Мы посмотрим заявку и свяжемся с тобой, чтобы уточнить цену,
               срок и удобное время.
             </p>
+            <div class="order-benefits" aria-label="Что будет дальше">
+              <span>Ответим в сообщениях</span>
+              <span>Подскажем по формату</span>
+              <span>Скажем цену заранее</span>
+            </div>
           </div>
           <form class="order-form" id="orderForm" action="https://api.web3forms.com/submit" method="POST">
             <input type="hidden" name="access_key" value="afe767cd-ddd7-465e-a331-a4caa3493525" />
@@ -517,16 +534,16 @@
             <input type="hidden" name="Сообщение" id="orderMessageInput" />
             <div class="form-row">
               <label>
-                <span>Имя</span>
+                <span>Имя *</span>
                 <input id="orderName" name="Имя" type="text" placeholder="Как к вам обращаться" autocomplete="name" required />
               </label>
               <label>
-                <span>Телефон</span>
+                <span>Телефон *</span>
                 <input id="orderPhone" name="Телефон" type="tel" placeholder="+7 ___ ___-__-__" autocomplete="tel" required />
               </label>
             </div>
             <label>
-              <span>Что нужно</span>
+              <span>Что нужно *</span>
               <select id="orderService" name="Услуга">
                 <option>Фото на документы</option>
                 <option>Печать фото</option>
@@ -537,11 +554,11 @@
               </select>
             </label>
             <label>
-              <span>Формат, количество, пожелания</span>
+              <span>Формат, количество, пожелания <em>(необязательно)</em></span>
               <textarea id="orderDetails" name="Детали" rows="4" placeholder="Например: 10 фото 10x15, глянец; или кружка с фото и надписью"></textarea>
             </label>
             <label>
-              <span>Когда удобно забрать</span>
+              <span>Когда удобно забрать <em>(необязательно)</em></span>
               <input id="orderTime" name="Удобное время" type="text" placeholder="Сегодня вечером, завтра утром, к выходным" />
             </label>
             <div class="order-actions">
@@ -558,6 +575,12 @@
           <p class="eyebrow">контакты</p>
           <h2>Закинь файл в сообщения или приходи в точку</h2>
           <p>Можно заранее отправить фото, макет или вопрос по цене. Так быстрее подготовим заказ и подскажем лучший формат.</p>
+          <div class="contact-trust" aria-label="Почему нам доверяют">
+            <span>5.0 на Яндекс Картах</span>
+            <span>60 отзывов</span>
+            <span>каждый день открыты</span>
+          </div>
+          <p class="contact-hint">Можно отправить фото, макет или просто задать вопрос — подскажем, как сделать удобнее и выгоднее.</p>
           <div class="contact-actions">
             <div class="contact-socials" aria-label="Наши соцсети и мессенджеры">
               <a class="contact-social contact-social-vk" href="https://vk.com/pho_tochka.vidnoe" target="_blank" rel="noreferrer">
