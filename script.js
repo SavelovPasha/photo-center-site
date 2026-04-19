@@ -2,8 +2,7 @@
 const cards = document.querySelectorAll(".price-card");
 const serviceCards = document.querySelectorAll(".service-card[data-target-filter]");
 const searchInput = document.querySelector("#priceSearch");
-const headerMenu = document.querySelector(".header-menu");
-const headerMenuToggle = document.querySelector(".header-menu-toggle");
+const actionMenus = document.querySelectorAll(".header-menu, .action-menu");
 const orderForm = document.querySelector("#orderForm");
 const mobileSticky = document.querySelector(".mobile-sticky");
 const orderName = document.querySelector("#orderName");
@@ -26,33 +25,53 @@ function updateMobileStickyVisibility() {
   mobileSticky.classList.toggle("is-visible", shouldShow);
 }
 
-if (headerMenu && headerMenuToggle) {
-  headerMenuToggle.addEventListener("click", () => {
-    const isOpen = headerMenu.classList.toggle("open");
-    headerMenuToggle.setAttribute("aria-expanded", String(isOpen));
-  });
+function closeActionMenu(menu) {
+  menu.classList.remove("open");
+  const toggle = menu.querySelector(".header-menu-toggle, .action-menu-toggle");
+  if (toggle) {
+    toggle.setAttribute("aria-expanded", "false");
+  }
+}
 
-  headerMenu.querySelectorAll(".header-menu-dropdown a").forEach((link) => {
-    link.addEventListener("click", () => {
-      headerMenu.classList.remove("open");
-      headerMenuToggle.setAttribute("aria-expanded", "false");
+actionMenus.forEach((menu) => {
+  const toggle = menu.querySelector(".header-menu-toggle, .action-menu-toggle");
+  const links = menu.querySelectorAll(".header-menu-dropdown a, .action-menu-dropdown a");
+
+  if (!toggle) {
+    return;
+  }
+
+  toggle.addEventListener("click", () => {
+    const isOpen = menu.classList.toggle("open");
+    toggle.setAttribute("aria-expanded", String(isOpen));
+
+    actionMenus.forEach((otherMenu) => {
+      if (otherMenu !== menu) {
+        closeActionMenu(otherMenu);
+      }
     });
   });
 
-  document.addEventListener("click", (event) => {
-    if (!headerMenu.contains(event.target)) {
-      headerMenu.classList.remove("open");
-      headerMenuToggle.setAttribute("aria-expanded", "false");
-    }
+  links.forEach((link) => {
+    link.addEventListener("click", () => {
+      closeActionMenu(menu);
+    });
   });
+});
 
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      headerMenu.classList.remove("open");
-      headerMenuToggle.setAttribute("aria-expanded", "false");
+document.addEventListener("click", (event) => {
+  actionMenus.forEach((menu) => {
+    if (!menu.contains(event.target)) {
+      closeActionMenu(menu);
     }
   });
-}
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    actionMenus.forEach((menu) => closeActionMenu(menu));
+  }
+});
 
 updateMobileStickyVisibility();
 window.addEventListener("scroll", updateMobileStickyVisibility, { passive: true });
