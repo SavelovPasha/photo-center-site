@@ -299,7 +299,7 @@ main > * {
   background:
     linear-gradient(90deg, rgba(10, 13, 16, 0.92) 0%, rgba(10, 13, 16, 0.58) 42%, rgba(10, 13, 16, 0.16) 100%),
     linear-gradient(0deg, rgba(10, 13, 16, 0.56), rgba(10, 13, 16, 0.06)),
-    url("./assets/hero-main.jpg") center center / cover;
+    url("./assets/hero-main.png") center center / cover;
 }
 
 .hero-copy {
@@ -901,7 +901,10 @@ h2 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 14px;
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 3;
   border-radius: 999px;
   padding: 7px 12px;
   background: rgba(247, 201, 72, 0.92);
@@ -924,13 +927,6 @@ h2 {
   font-size: 14px;
   font-weight: var(--fw-accent);
   box-shadow: 0 10px 24px rgba(247, 201, 72, 0.22);
-}
-
-.price-card h3 {
-  margin: 0;
-  font-size: clamp(24px, 2.3vw, 30px);
-  font-weight: var(--fw-title);
-  line-height: var(--lh-tight);
 }
 
 .service-card h3 {
@@ -957,6 +953,13 @@ h2 {
 
 .service-card:first-child p:not(.card-label) {
   font-size: var(--fs-body);
+}
+
+.price-card h3 {
+  margin: 0;
+  font-size: clamp(24px, 2.3vw, 30px);
+  font-weight: var(--fw-title);
+  line-height: var(--lh-tight);
 }
 
 .price-section {
@@ -1754,7 +1757,8 @@ h2 {
   }
 
   .card-label {
-    margin-bottom: 8px;
+    top: 12px;
+    left: 12px;
     padding: 5px 9px;
     font-size: 10px;
     line-height: 1;
@@ -1928,6 +1932,8 @@ h2 {
   }
 
   .card-label {
+    top: 10px;
+    left: 10px;
     padding: 4px 8px;
     font-size: 9px;
   }
