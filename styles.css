@@ -1213,21 +1213,6 @@ h2 {
   border-bottom: 0;
 }
 
-.price-table th:nth-child(1),
-.price-table td:nth-child(1) {
-  width: 27%;
-}
-
-.price-table th:nth-child(2),
-.price-table td:nth-child(2) {
-  width: 20%;
-}
-
-.price-table th:nth-child(3),
-.price-table td:nth-child(3) {
-  width: auto;
-}
-
 .price-table td:last-child,
 .price-table th:last-child {
   width: 170px;
@@ -2225,8 +2210,7 @@ h2 {
     padding-right: 0;
   }
 
-  .price-table td:nth-child(2)::before,
-  .price-table td:nth-child(3)::before {
+  .price-table td:not(:first-child):not(:last-child)::before {
     display: block;
     margin-bottom: 2px;
     color: var(--muted);
@@ -2234,14 +2218,7 @@ h2 {
     font-weight: var(--fw-accent);
     line-height: 1.2;
     text-transform: uppercase;
-  }
-
-  .price-table td:nth-child(2)::before {
-    content: "Формат";
-  }
-
-  .price-table td:nth-child(3)::before {
-    content: "Описание";
+    content: attr(data-label);
   }
 
   .price-table td:last-child {

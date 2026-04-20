@@ -21,6 +21,22 @@ const serviceChoiceButtons = document.querySelectorAll("[data-service-choice]");
 
 let activeFilter = "all";
 
+function syncPriceTableLabels() {
+  document.querySelectorAll(".price-table").forEach((table) => {
+    const labels = Array.from(table.querySelectorAll("thead th")).map((cell) =>
+      cell.textContent.trim()
+    );
+
+    table.querySelectorAll("tbody tr").forEach((row) => {
+      row.querySelectorAll("td").forEach((cell, index) => {
+        if (labels[index]) {
+          cell.dataset.label = labels[index];
+        }
+      });
+    });
+  });
+}
+
 const filterLabels = {
   all: "все разделы прайса",
   photo: "раздел «Печать фото»",
@@ -34,6 +50,8 @@ const filterLabels = {
   sticker: "раздел «Самоклеящаяся бумага»",
   gifts: "раздел «Сувенирная печать»",
 };
+
+syncPriceTableLabels();
 
 function updateMobileStickyVisibility() {
   if (!mobileSticky) {
