@@ -176,7 +176,7 @@
           <p class="section-lead">Нажмите на услугу — покажем цены по этому разделу и подставим её в заявку.</p>
         </div>
         <div class="service-grid service-grid-full">
-          <article class="service-card" data-target-filter="photo" data-order-service="Печать фото">
+          <article class="service-card service-card-photo" data-target-filter="photo" data-order-service="Печать фото">
             <img src="./assets/photos.png" alt="Печать фотографий" />
             <span class="card-label">хит</span>
             <div>
@@ -185,7 +185,7 @@
               <span class="service-price">от 20 ₽</span>
             </div>
           </article>
-          <article class="service-card" data-target-filter="docs" data-order-service="Фото на документы">
+          <article class="service-card service-card-docs" data-target-filter="docs" data-order-service="Фото на документы">
             <img src="./assets/docs.png" alt="Фото на документы" />
             <span class="card-label">хит</span>
             <div>
@@ -194,7 +194,7 @@
               <span class="service-price">от 500 ₽</span>
             </div>
           </article>
-          <article class="service-card" data-target-filter="print" data-order-service="Ксерокопии и распечатка">
+          <article class="service-card service-card-print" data-target-filter="print" data-order-service="Ксерокопии и распечатка">
             <img src="./assets/copies.png" alt="Распечатки и ксерокопии" />
             <span class="card-label">хит</span>
             <div>
@@ -203,7 +203,7 @@
               <span class="service-price">от 20 ₽</span>
             </div>
           </article>
-          <article class="service-card" data-target-filter="digital" data-order-service="Оцифровка">
+          <article class="service-card service-card-digital" data-target-filter="digital" data-order-service="Оцифровка">
             <img src="./assets/digitization-card.png" alt="Оцифровка пленок и кассет" />
             <div>
               <h3>Оцифровка</h3>
@@ -211,7 +211,7 @@
               <span class="service-price">от 20 ₽</span>
             </div>
           </article>
-          <article class="service-card" data-target-filter="scan" data-order-service="Сканирование">
+          <article class="service-card service-card-scan" data-target-filter="scan" data-order-service="Сканирование">
             <img src="./assets/scanning.png" alt="Сканирование документов и фото" />
             <div>
               <h3>Сканирование</h3>
@@ -219,7 +219,7 @@
               <span class="service-price">от 10 ₽</span>
             </div>
           </article>
-          <article class="service-card" data-target-filter="lamination" data-order-service="Ламинирование">
+          <article class="service-card service-card-lamination" data-target-filter="lamination" data-order-service="Ламинирование">
             <img src="./assets/lamination.png" alt="Ламинация документов и фотографий" />
             <div>
               <h3>Ламинирование</h3>
@@ -227,7 +227,7 @@
               <span class="service-price">от 50 ₽</span>
             </div>
           </article>
-          <article class="service-card" data-target-filter="binding" data-order-service="Брошюровка">
+          <article class="service-card service-card-binding" data-target-filter="binding" data-order-service="Брошюровка">
             <img src="./assets/brochure.png" alt="Брошюровка документов" />
             <div>
               <h3>Брошюровка</h3>
@@ -235,23 +235,23 @@
               <span class="service-price">от 150 ₽</span>
             </div>
           </article>
-          <article class="service-card" data-target-filter="paper" data-order-service="Плотная бумага">
-            <img src="./assets/copies.png" alt="Печать на плотной бумаге" />
+          <article class="service-card service-card-paper" data-target-filter="paper" data-order-service="Плотная бумага">
+            <img src="./assets/thick-paper.png" alt="Плотная бумага для печати" />
             <div>
               <h3>Плотная бумага</h3>
               <p>Матовая и мелованная бумага, A3-A6, разные плотности и варианты печати.</p>
               <span class="service-price">от 45 ₽</span>
             </div>
           </article>
-          <article class="service-card" data-target-filter="sticker" data-order-service="Самоклеящаяся бумага">
-            <img src="./assets/photos.png" alt="Самоклеящаяся бумага" />
+          <article class="service-card service-card-sticker" data-target-filter="sticker" data-order-service="Самоклеющаяся бумага">
+            <img src="./assets/sticker-paper.png" alt="Самоклеющаяся бумага" />
             <div>
-              <h3>Самоклеящаяся бумага</h3>
+              <h3>Самоклеющаяся бумага</h3>
               <p>Бумага и фотобумага A3-A7 для наклеек, подписей, декора и макетов.</p>
               <span class="service-price">от 70 ₽</span>
             </div>
           </article>
-          <article class="service-card" data-target-filter="gifts" data-order-service="Сувенирная печать">
+          <article class="service-card service-card-gifts" data-target-filter="gifts" data-order-service="Сувенирная печать">
             <img src="./assets/souvenirs.png" alt="Сувенирная печать" />
             <span class="card-label">хит</span>
             <div>
@@ -286,7 +286,7 @@
           <button class="tab" type="button" data-filter="binding">Брошюровка</button>
           <button class="tab" type="button" data-filter="lamination">Ламинирование</button>
           <button class="tab" type="button" data-filter="paper">Плотная бумага</button>
-          <button class="tab" type="button" data-filter="sticker">Самоклейка</button>
+          <button class="tab" type="button" data-filter="sticker">Самоклеющаяся бумага</button>
           <button class="tab" type="button" data-filter="gifts">Сувенирная печать</button>
         </div>
         <p class="price-filter-status" id="priceFilterStatus">Показаны все разделы прайса.</p>
@@ -497,21 +497,21 @@
               <span class="price-chip">от 70 ₽</span>
               <span class="price-meta">бумага и фотобумага A3-A7</span>
             </div>
-            <h3>Самоклеящаяся бумага</h3>
+            <h3>Самоклеющаяся бумага</h3>
             <div class="price-table-wrap">
               <table class="price-table">
                 <thead><tr><th>Материал</th><th>Формат</th><th>Описание</th><th>Цена</th></tr></thead>
                 <tbody>
-                  <tr><td>Самоклеящаяся бумага</td><td>A3</td><td>Обычная бумага</td><td>150 ₽</td></tr>
-                  <tr><td>Самоклеящаяся бумага</td><td>A4</td><td>Обычная бумага</td><td>100 ₽</td></tr>
-                  <tr><td>Самоклеящаяся бумага</td><td>A5</td><td>Обычная бумага</td><td>90 ₽</td></tr>
-                  <tr><td>Самоклеящаяся бумага</td><td>A6</td><td>Обычная бумага</td><td>80 ₽</td></tr>
-                  <tr><td>Самоклеящаяся бумага</td><td>A7</td><td>Обычная бумага</td><td>70 ₽</td></tr>
-                  <tr><td>Самоклеящаяся фотобумага</td><td>A3</td><td>Фотобумага</td><td>250 ₽</td></tr>
-                  <tr><td>Самоклеящаяся фотобумага</td><td>A4</td><td>Фотобумага</td><td>150 ₽</td></tr>
-                  <tr><td>Самоклеящаяся фотобумага</td><td>A5</td><td>Фотобумага</td><td>100 ₽</td></tr>
-                  <tr><td>Самоклеящаяся фотобумага</td><td>A6</td><td>Фотобумага</td><td>85 ₽</td></tr>
-                  <tr><td>Самоклеящаяся фотобумага</td><td>A7</td><td>Фотобумага</td><td>75 ₽</td></tr>
+                  <tr><td>Самоклеющаяся бумага</td><td>A3</td><td>Обычная бумага</td><td>150 ₽</td></tr>
+                  <tr><td>Самоклеющаяся бумага</td><td>A4</td><td>Обычная бумага</td><td>100 ₽</td></tr>
+                  <tr><td>Самоклеющаяся бумага</td><td>A5</td><td>Обычная бумага</td><td>90 ₽</td></tr>
+                  <tr><td>Самоклеющаяся бумага</td><td>A6</td><td>Обычная бумага</td><td>80 ₽</td></tr>
+                  <tr><td>Самоклеющаяся бумага</td><td>A7</td><td>Обычная бумага</td><td>70 ₽</td></tr>
+                  <tr><td>Самоклеющаяся фотобумага</td><td>A3</td><td>Фотобумага</td><td>250 ₽</td></tr>
+                  <tr><td>Самоклеющаяся фотобумага</td><td>A4</td><td>Фотобумага</td><td>150 ₽</td></tr>
+                  <tr><td>Самоклеющаяся фотобумага</td><td>A5</td><td>Фотобумага</td><td>100 ₽</td></tr>
+                  <tr><td>Самоклеющаяся фотобумага</td><td>A6</td><td>Фотобумага</td><td>85 ₽</td></tr>
+                  <tr><td>Самоклеющаяся фотобумага</td><td>A7</td><td>Фотобумага</td><td>75 ₽</td></tr>
                 </tbody>
               </table>
             </div>
@@ -661,7 +661,7 @@
               <button type="button" data-service-choice="Брошюровка">Брошюровка</button>
               <button type="button" data-service-choice="Ламинирование">Ламинирование</button>
               <button type="button" data-service-choice="Плотная бумага">Плотная бумага</button>
-              <button type="button" data-service-choice="Самоклеящаяся бумага">Самоклейка</button>
+              <button type="button" data-service-choice="Самоклеющаяся бумага">Самоклеющаяся бумага</button>
               <button type="button" data-service-choice="Сувенирная печать">Сувенирная печать</button>
             </div>
             <label>
@@ -675,7 +675,7 @@
                 <option>Брошюровка</option>
                 <option>Ламинирование</option>
                 <option>Плотная бумага</option>
-                <option>Самоклеящаяся бумага</option>
+                <option>Самоклеющаяся бумага</option>
                 <option>Сувенирная печать</option>
               </select>
             </label>
