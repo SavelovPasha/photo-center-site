@@ -1185,7 +1185,7 @@ h2 {
 
 .price-table {
   width: 100%;
-  min-width: 720px;
+  min-width: 860px;
   border-collapse: collapse;
   color: var(--ink);
   font-size: var(--fs-body-sm);
@@ -1213,9 +1213,24 @@ h2 {
   border-bottom: 0;
 }
 
+.price-table th:nth-child(1),
+.price-table td:nth-child(1) {
+  width: 27%;
+}
+
+.price-table th:nth-child(2),
+.price-table td:nth-child(2) {
+  width: 20%;
+}
+
+.price-table th:nth-child(3),
+.price-table td:nth-child(3) {
+  width: auto;
+}
+
 .price-table td:last-child,
 .price-table th:last-child {
-  width: 150px;
+  width: 170px;
   color: var(--ink);
   font-weight: var(--fw-title);
   white-space: nowrap;
@@ -2208,6 +2223,25 @@ h2 {
 
   .price-table td:not(:first-child):not(:last-child) {
     padding-right: 0;
+  }
+
+  .price-table td:nth-child(2)::before,
+  .price-table td:nth-child(3)::before {
+    display: block;
+    margin-bottom: 2px;
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: var(--fw-accent);
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .price-table td:nth-child(2)::before {
+    content: "Формат";
+  }
+
+  .price-table td:nth-child(3)::before {
+    content: "Описание";
   }
 
   .price-table td:last-child {
