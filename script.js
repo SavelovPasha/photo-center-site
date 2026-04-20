@@ -14,8 +14,23 @@ const orderTime = document.querySelector("#orderTime");
 const orderMessageInput = document.querySelector("#orderMessageInput");
 const orderRedirect = document.querySelector("#orderRedirect");
 const copyStatus = document.querySelector("#copyStatus");
+const priceFilterStatus = document.querySelector("#priceFilterStatus");
+const priceEmptyMessage = document.querySelector("#priceEmptyMessage");
+const serviceChoiceButtons = document.querySelectorAll("[data-service-choice]");
 
 let activeFilter = "all";
+
+const filterLabels = {
+  all: "все разделы прайса",
+  photo: "раздел «Фото»",
+  docs: "раздел «Документы»",
+  print: "раздел «Распечатки»",
+  scan: "раздел «Сканирование»",
+  lamination: "раздел «Ламинация»",
+  binding: "раздел «Брошюровка»",
+  gifts: "раздел «Сувениры»",
+  digital: "раздел «Оцифровка»",
+};
 
 function updateMobileStickyVisibility() {
   if (!mobileSticky) {
@@ -121,7 +136,34 @@ function setPriceFilter(filter) {
   tabs.forEach((tab) => {
     tab.classList.toggle("active", tab.dataset.filter === activeFilter);
   });
+  if (priceFilterStatus) {
+    priceFilterStatus.textContent =
+      activeFilter === "all"
+        ? "Показаны все разделы прайса."
+        : `Показаны цены по выбранной услуге: ${filterLabels[activeFilter] || "выбранный раздел"}.`;
+  }
   applyFilters();
+}
+
+function selectOrderService(serviceName) {
+  if (!serviceName || !orderService) {
+    return;
+  }
+
+  const option = Array.from(orderService.options).find((item) => item.value === serviceName);
+  if (!option) {
+    return;
+  }
+
+  orderService.value = serviceName;
+  syncServiceChoiceButtons();
+  updateOrderMessage();
+}
+
+function syncServiceChoiceButtons() {
+  serviceChoiceButtons.forEach((button) => {
+    button.classList.toggle("active", button.dataset.serviceChoice === orderService.value);
+  });
 }
 
 function normalize(value) {
@@ -130,13 +172,22 @@ function normalize(value) {
 
 function applyFilters() {
   const query = normalize(searchInput.value);
+  let visibleCount = 0;
 
   cards.forEach((card) => {
     const categories = card.dataset.category.split(/\s+/);
     const categoryMatch = activeFilter === "all" || categories.includes(activeFilter);
     const textMatch = normalize(card.textContent).includes(query);
-    card.classList.toggle("hidden", !categoryMatch || !textMatch);
+    const isHidden = !categoryMatch || !textMatch;
+    card.classList.toggle("hidden", isHidden);
+    if (!isHidden) {
+      visibleCount += 1;
+    }
   });
+
+  if (priceEmptyMessage) {
+    priceEmptyMessage.classList.toggle("is-visible", visibleCount === 0);
+  }
 }
 
 tabs.forEach((tab) => {
@@ -173,7 +224,14 @@ serviceCards.forEach((card) => {
   card.addEventListener("click", () => {
     const filter = card.dataset.targetFilter || "all";
     setPriceFilter(filter);
+    selectOrderService(card.dataset.orderService);
     document.querySelector("#prices").scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+});
+
+serviceChoiceButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    selectOrderService(button.dataset.serviceChoice);
   });
 });
 
@@ -195,9 +253,16 @@ function updateOrderMessage(clearStatus = true) {
   }
 }
 
-[orderName, orderService, orderDetails, orderTime].forEach((field) => {
+[orderName, orderDetails, orderTime].forEach((field) => {
   field.addEventListener("input", updateOrderMessage);
 });
+
+orderService.addEventListener("input", () => {
+  syncServiceChoiceButtons();
+  updateOrderMessage();
+});
+
+syncServiceChoiceButtons();
 
 function saveLead() {
   const leads = JSON.parse(localStorage.getItem("fotochkaLeads") || "[]");

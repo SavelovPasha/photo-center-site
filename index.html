@@ -48,10 +48,10 @@
           <p class="eyebrow">Видное · Радужная, 2 · печатаем каждый день</p>
           <h1>Фото, документы<br />и подарки без лишней суеты</h1>
           <p class="hero-text">
-            Фото на документы, печать снимков, распечатки, сувениры и оцифровка рядом с домом.
-            Подскажем формат, заранее сориентируем по цене и скажем, когда заказ будет готов.
+            Фотоцентр в Видном: документы, печать снимков, распечатки, сувениры и оцифровка.
+            Подскажем формат, назовём цену заранее и подготовим заказ без лишних поездок.
           </p>
-          <p class="hero-support">Напиши нам в сообщения или оставь заявку — ответим, подскажем и соберём заказ без лишних поездок.</p>
+          <p class="hero-support">Оставьте заявку или напишите в сообщения — ответим, уточним детали и скажем, когда всё будет готово.</p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="#order">Оставить заявку</a>
             <div class="action-menu action-menu-hero">
@@ -87,6 +87,10 @@
             <div class="hero-stat">
               <strong>от 20 ₽</strong>
               <span>фото за снимок</span>
+            </div>
+            <div class="hero-stat">
+              <strong>каждый день</strong>
+              <span>печатаем в Видном</span>
             </div>
           </div>
         </div>
@@ -169,9 +173,10 @@
         <div class="section-head">
           <p class="eyebrow">что делаем</p>
           <h2>Все, за чем обычно бегут в фотоцентр</h2>
+          <p class="section-lead">Нажмите на услугу — покажем цены по этому разделу и подставим её в заявку.</p>
         </div>
         <div class="service-grid">
-          <article class="service-card" data-target-filter="docs">
+          <article class="service-card" data-target-filter="docs" data-order-service="Фото на документы">
             <img src="./assets/docs.png" alt="Фото на документы" />
             <span class="card-label">хит</span>
             <div>
@@ -180,7 +185,7 @@
               <span class="service-price">от 500 ₽</span>
             </div>
           </article>
-          <article class="service-card" data-target-filter="photo">
+          <article class="service-card" data-target-filter="photo" data-order-service="Печать фото">
             <img src="./assets/photos.png" alt="Печать фотографий" />
             <span class="card-label">хит</span>
             <div>
@@ -189,7 +194,7 @@
               <span class="service-price">от 20 ₽</span>
             </div>
           </article>
-          <article class="service-card" data-target-filter="print">
+          <article class="service-card" data-target-filter="print" data-order-service="Распечатки и ксерокопии">
             <img src="./assets/copies.png" alt="Распечатки и ксерокопии" />
             <span class="card-label">хит</span>
             <div>
@@ -198,7 +203,7 @@
               <span class="service-price">от 20 ₽</span>
             </div>
           </article>
-          <article class="service-card" data-target-filter="scan">
+          <article class="service-card" data-target-filter="scan" data-order-service="Сканирование">
             <img src="./assets/scanning.png" alt="Сканирование документов и фото" />
             <div>
               <h3>Сканирование</h3>
@@ -206,7 +211,7 @@
               <span class="service-price">от 20 ₽</span>
             </div>
           </article>
-          <article class="service-card" data-target-filter="lamination">
+          <article class="service-card" data-target-filter="lamination" data-order-service="Ламинация">
             <img src="./assets/lamination.png" alt="Ламинация документов и фотографий" />
             <div>
               <h3>Ламинация</h3>
@@ -214,7 +219,7 @@
               <span class="service-price">от 50 ₽</span>
             </div>
           </article>
-          <article class="service-card" data-target-filter="binding">
+          <article class="service-card" data-target-filter="binding" data-order-service="Брошюровка">
             <img src="./assets/brochure.png" alt="Брошюровка документов" />
             <div>
               <h3>Брошюровка</h3>
@@ -222,7 +227,7 @@
               <span class="service-price">от 150 ₽</span>
             </div>
           </article>
-          <article class="service-card" data-target-filter="gifts">
+          <article class="service-card" data-target-filter="gifts" data-order-service="Сувенир с принтом">
             <img src="./assets/souvenirs.png" alt="Сувениры с принтом" />
             <span class="card-label">хит</span>
             <div>
@@ -231,7 +236,7 @@
               <span class="service-price">от 120 ₽</span>
             </div>
           </article>
-          <article class="service-card" data-target-filter="digital">
+          <article class="service-card" data-target-filter="digital" data-order-service="Оцифровка кассет или пленки">
             <img src="./assets/digitization-card.png" alt="Оцифровка пленок и слайдов" />
             <div>
               <h3>Оцифровка</h3>
@@ -266,6 +271,10 @@
           <button class="tab" type="button" data-filter="gifts">Сувениры</button>
           <button class="tab" type="button" data-filter="digital">Оцифровка</button>
         </div>
+        <p class="price-filter-status" id="priceFilterStatus">Показаны все разделы прайса.</p>
+        <p class="price-empty-message" id="priceEmptyMessage">
+          Не нашли услугу? <a href="#contacts">Напишите нам</a> — подскажем цену.
+        </p>
 
         <div class="price-grid" id="priceGrid">
           <article class="price-card price-card-hot" data-category="photo photo-print">
@@ -560,6 +569,16 @@
                 <span>Телефон *</span>
                 <input id="orderPhone" name="Телефон" type="tel" placeholder="+7 ___ ___-__-__" autocomplete="tel" required />
               </label>
+            </div>
+            <div class="service-picker" aria-label="Быстрый выбор услуги">
+              <button type="button" data-service-choice="Фото на документы">Документы</button>
+              <button type="button" data-service-choice="Печать фото">Фото</button>
+              <button type="button" data-service-choice="Распечатки и ксерокопии">Распечатки</button>
+              <button type="button" data-service-choice="Сканирование">Сканирование</button>
+              <button type="button" data-service-choice="Ламинация">Ламинация</button>
+              <button type="button" data-service-choice="Брошюровка">Брошюровка</button>
+              <button type="button" data-service-choice="Сувенир с принтом">Сувениры</button>
+              <button type="button" data-service-choice="Оцифровка кассет или пленки">Оцифровка</button>
             </div>
             <label>
               <span>Что нужно *</span>
