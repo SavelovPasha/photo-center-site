@@ -94,7 +94,7 @@
             </div>
           </div>
         </div>
-        <div class="hero-media" aria-label="Фотоуслуги и печать">
+        <div class="hero-media" aria-label="Печать фото и документы">
           <img
             src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=900&q=80"
             alt="Фотоаппарат и распечатанные снимки"
@@ -176,11 +176,11 @@
           <p class="section-lead">Нажмите на услугу — покажем цены по этому разделу и подставим её в заявку.</p>
         </div>
         <div class="service-grid service-grid-full">
-          <article class="service-card" data-target-filter="photo" data-order-service="Фотоуслуги">
+          <article class="service-card" data-target-filter="photo" data-order-service="Печать фото">
             <img src="./assets/photos.png" alt="Печать фотографий" />
             <span class="card-label">хит</span>
             <div>
-              <h3>Фотоуслуги</h3>
+              <h3>Печать фото</h3>
               <p>Печать фото от 5x7,5 до A3, разные бумаги и кадрирование под формат.</p>
               <span class="service-price">от 20 ₽</span>
             </div>
@@ -203,12 +203,20 @@
               <span class="service-price">от 20 ₽</span>
             </div>
           </article>
-          <article class="service-card" data-target-filter="digital" data-order-service="Оцифровка и сканирование">
+          <article class="service-card" data-target-filter="digital" data-order-service="Оцифровка">
+            <img src="./assets/digitization-card.png" alt="Оцифровка пленок и кассет" />
+            <div>
+              <h3>Оцифровка</h3>
+              <p>VHS, miniDV, фотоплёнка, проявка, перенос файлов с носителей и запись на диск.</p>
+              <span class="service-price">от 20 ₽</span>
+            </div>
+          </article>
+          <article class="service-card" data-target-filter="scan" data-order-service="Сканирование">
             <img src="./assets/scanning.png" alt="Сканирование документов и фото" />
             <div>
-              <h3>Оцифровка и сканирование</h3>
-              <p>VHS, miniDV, фотоплёнка, документы, фото, отправка файлов и перенос с носителей.</p>
-              <span class="service-price">от 20 ₽</span>
+              <h3>Сканирование</h3>
+              <p>Документы, фотографии, отправка файлов и подготовка цифровых копий.</p>
+              <span class="service-price">от 10 ₽</span>
             </div>
           </article>
           <article class="service-card" data-target-filter="lamination" data-order-service="Ламинирование">
@@ -231,7 +239,7 @@
             <img src="./assets/copies.png" alt="Печать на плотной бумаге" />
             <div>
               <h3>Плотная бумага</h3>
-              <p>Матовая и мелованная бумага, A3-A6, разные плотности и заливка.</p>
+              <p>Матовая и мелованная бумага, A3-A6, разные плотности и варианты печати.</p>
               <span class="service-price">от 45 ₽</span>
             </div>
           </article>
@@ -270,9 +278,10 @@
 
         <div class="price-tabs" role="tablist" aria-label="Категории прайса">
           <button class="tab active" type="button" data-filter="all">Все</button>
-          <button class="tab" type="button" data-filter="photo">Фотоуслуги</button>
+          <button class="tab" type="button" data-filter="photo">Печать фото</button>
           <button class="tab" type="button" data-filter="docs">Фото на документы</button>
-          <button class="tab" type="button" data-filter="digital">Оцифровка и сканирование</button>
+          <button class="tab" type="button" data-filter="digital">Оцифровка</button>
+          <button class="tab" type="button" data-filter="scan">Сканирование</button>
           <button class="tab" type="button" data-filter="print">Ксерокопии</button>
           <button class="tab" type="button" data-filter="binding">Брошюровка</button>
           <button class="tab" type="button" data-filter="lamination">Ламинирование</button>
@@ -292,7 +301,7 @@
               <span class="price-chip">от 20 ₽</span>
               <span class="price-meta">форматы от A8 до A3</span>
             </div>
-            <h3>Фотоуслуги</h3>
+            <h3>Печать фото</h3>
             <div class="price-table-wrap">
               <table class="price-table">
                 <thead><tr><th>Услуга</th><th>Формат / описание</th><th>Цена</th></tr></thead>
@@ -348,7 +357,7 @@
               <span class="price-chip">от 20 ₽</span>
               <span class="price-meta">VHS, фотоплёнка, скан, отправка</span>
             </div>
-            <h3>Оцифровка и сканирование</h3>
+            <h3>Оцифровка</h3>
             <div class="price-table-wrap">
               <table class="price-table">
                 <thead><tr><th>Услуга</th><th>Формат / описание</th><th>Цена</th></tr></thead>
@@ -365,6 +374,21 @@
                   <tr><td>Срочная оцифровка</td><td>1 день</td><td>×2 к стоимости режима</td></tr>
                   <tr><td>Оцифровка с накопителя</td><td>Перенести файлы из флешки или диска, кроме Blue ray; за 1 ГБ</td><td>150 ₽</td></tr>
                   <tr><td>Диск CD / DVD</td><td>Товар, цена за 1 ед.</td><td>100 ₽</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+
+          <article class="price-card price-table-card" data-category="scan">
+            <div class="price-card-top">
+              <span class="price-chip">от 10 ₽</span>
+              <span class="price-meta">документы, фото, отправка файлов</span>
+            </div>
+            <h3>Сканирование</h3>
+            <div class="price-table-wrap">
+              <table class="price-table">
+                <thead><tr><th>Услуга</th><th>Формат / описание</th><th>Цена</th></tr></thead>
+                <tbody>
                   <tr><td>Сканирование документа</td><td>1 прокат</td><td>20 ₽</td></tr>
                   <tr><td>Отправка файла</td><td>Отправка готового файла</td><td>10 ₽</td></tr>
                   <tr><td>Сканирование фото листом A4</td><td>600 dpi, стандартное сканирование фото</td><td>50 ₽</td></tr>
@@ -387,23 +411,19 @@
                 <thead><tr><th>Услуга</th><th>Формат / описание</th><th>Цена</th></tr></thead>
                 <tbody>
                   <tr><td>Ксерокопия</td><td>A4 черно-белое</td><td>25 ₽</td></tr>
-                  <tr><td>Ксерокопия</td><td>A4 цвет до 50%</td><td>45 ₽</td></tr>
-                  <tr><td>Ксерокопия</td><td>A4 цвет до 100%</td><td>75 ₽</td></tr>
+                  <tr><td>Ксерокопия</td><td>A4 цвет</td><td>45 ₽</td></tr>
                   <tr><td>Доп. прокат</td><td>A4 черно-белое</td><td>12 ₽</td></tr>
-                  <tr><td>Доп. прокат</td><td>A4 цвет до 50%</td><td>20 ₽</td></tr>
-                  <tr><td>Доп. прокат</td><td>A4 цвет до 100%</td><td>35 ₽</td></tr>
+                  <tr><td>Доп. прокат</td><td>A4 цвет</td><td>20 ₽</td></tr>
                   <tr><td>Распечатка</td><td>A4 черно-белое</td><td>20 ₽</td></tr>
-                  <tr><td>Распечатка</td><td>A4 цвет до 50%</td><td>40 ₽</td></tr>
-                  <tr><td>Распечатка</td><td>A4 цвет до 100%</td><td>70 ₽</td></tr>
+                  <tr><td>Распечатка</td><td>A4 цвет</td><td>40 ₽</td></tr>
                   <tr><td>Распечатка</td><td>A3 черно-белое</td><td>50 ₽</td></tr>
-                  <tr><td>Распечатка</td><td>A3 цвет до 50%</td><td>85 ₽</td></tr>
-                  <tr><td>Распечатка</td><td>A3 цвет до 100%</td><td>130 ₽</td></tr>
+                  <tr><td>Распечатка</td><td>A3 цвет</td><td>85 ₽</td></tr>
                   <tr><td>Доп. прокат</td><td>A3 черно-белое</td><td>25 ₽</td></tr>
-                  <tr><td>Доп. прокат</td><td>A3 цвет до 50%</td><td>45 ₽</td></tr>
-                  <tr><td>Доп. прокат</td><td>A3 цвет до 100%</td><td>65 ₽</td></tr>
+                  <tr><td>Доп. прокат</td><td>A3 цвет</td><td>45 ₽</td></tr>
                 </tbody>
               </table>
             </div>
+            <p class="coverage-note">При заливке бумаги свыше 50% стоимость увеличивается на 50%.</p>
           </article>
 
           <article class="price-card price-table-card" data-category="binding">
@@ -454,64 +474,22 @@
               <span class="price-chip">от 45 ₽</span>
               <span class="price-meta">матовая / мелованная бумага</span>
             </div>
-            <h3>Плотная бумага A4, A5, A6</h3>
+            <h3>Плотная бумага</h3>
             <div class="price-table-wrap">
               <table class="price-table">
-                <thead><tr><th>Формат</th><th>Бумага и стороны</th><th>Залитость</th><th>Цена</th></tr></thead>
+                <thead><tr><th>Формат</th><th>Бумага</th><th>Печать</th><th>Цена</th></tr></thead>
                 <tbody>
-                  <tr><td>A4</td><td>Мат / мел 100-190 г, 4+0</td><td>до 50%</td><td>110 ₽</td></tr>
-                  <tr><td>A4</td><td>Мат / мел 100-190 г, 4+0</td><td>до 100%</td><td>160 ₽</td></tr>
-                  <tr><td>A4</td><td>Мат / мел 100-190 г, 4+4</td><td>до 50%</td><td>165 ₽</td></tr>
-                  <tr><td>A4</td><td>Мат / мел 100-190 г, 4+4</td><td>до 100%</td><td>235 ₽</td></tr>
-                  <tr><td>A4</td><td>Мат / мел 200-300 г, 4+0</td><td>до 50%</td><td>140 ₽</td></tr>
-                  <tr><td>A4</td><td>Мат / мел 200-300 г, 4+0</td><td>до 100%</td><td>190 ₽</td></tr>
-                  <tr><td>A4</td><td>Мат / мел 200-300 г, 4+4</td><td>до 50%</td><td>210 ₽</td></tr>
-                  <tr><td>A4</td><td>Мат / мел 200-300 г, 4+4</td><td>до 100%</td><td>285 ₽</td></tr>
-                  <tr><td>A5</td><td>Мат / мел 100-190 г, 4+0</td><td>до 50%</td><td>80 ₽</td></tr>
-                  <tr><td>A5</td><td>Мат / мел 100-190 г, 4+0</td><td>до 100%</td><td>100 ₽</td></tr>
-                  <tr><td>A5</td><td>Мат / мел 100-190 г, 4+4</td><td>до 50%</td><td>120 ₽</td></tr>
-                  <tr><td>A5</td><td>Мат / мел 100-190 г, 4+4</td><td>до 100%</td><td>145 ₽</td></tr>
-                  <tr><td>A5</td><td>Мат / мел 200-300 г, 4+0</td><td>до 50%</td><td>95 ₽</td></tr>
-                  <tr><td>A5</td><td>Мат / мел 200-300 г, 4+0</td><td>до 100%</td><td>130 ₽</td></tr>
-                  <tr><td>A5</td><td>Мат / мел 200-300 г, 4+4</td><td>до 50%</td><td>140 ₽</td></tr>
-                  <tr><td>A5</td><td>Мат / мел 200-300 г, 4+4</td><td>до 100%</td><td>185 ₽</td></tr>
-                  <tr><td>A6</td><td>Мат / мел 100-190 г, 4+0</td><td>до 50%</td><td>45 ₽</td></tr>
-                  <tr><td>A6</td><td>Мат / мел 100-190 г, 4+0</td><td>до 100%</td><td>55 ₽</td></tr>
-                  <tr><td>A6</td><td>Мат / мел 100-190 г, 4+4</td><td>до 50%</td><td>70 ₽</td></tr>
-                  <tr><td>A6</td><td>Мат / мел 100-190 г, 4+4</td><td>до 100%</td><td>85 ₽</td></tr>
-                  <tr><td>A6</td><td>Мат / мел 200-300 г, 4+0</td><td>до 50%</td><td>55 ₽</td></tr>
-                  <tr><td>A6</td><td>Мат / мел 200-300 г, 4+0</td><td>до 100%</td><td>75 ₽</td></tr>
-                  <tr><td>A6</td><td>Мат / мел 200-300 г, 4+4</td><td>до 50%</td><td>85 ₽</td></tr>
-                  <tr><td>A6</td><td>Мат / мел 200-300 г, 4+4</td><td>до 100%</td><td>110 ₽</td></tr>
+                  <tr><td>A3</td><td>Матовая / глянцевая 200 г</td><td>Односторонняя</td><td>400 ₽</td></tr>
+                  <tr><td>A4</td><td>Матовая / мелованная 100-190 г</td><td>Односторонняя / двухсторонняя</td><td>110 ₽ / 165 ₽</td></tr>
+                  <tr><td>A4</td><td>Матовая / мелованная 200-300 г</td><td>Односторонняя / двухсторонняя</td><td>140 ₽ / 210 ₽</td></tr>
+                  <tr><td>A5</td><td>Матовая / мелованная 100-190 г</td><td>Односторонняя / двухсторонняя</td><td>80 ₽ / 120 ₽</td></tr>
+                  <tr><td>A5</td><td>Матовая / мелованная 200-300 г</td><td>Односторонняя / двухсторонняя</td><td>95 ₽ / 140 ₽</td></tr>
+                  <tr><td>A6</td><td>Матовая / мелованная 100-190 г</td><td>Односторонняя / двухсторонняя</td><td>45 ₽ / 70 ₽</td></tr>
+                  <tr><td>A6</td><td>Матовая / мелованная 200-300 г</td><td>Односторонняя / двухсторонняя</td><td>55 ₽ / 85 ₽</td></tr>
                 </tbody>
               </table>
             </div>
-            <p>Обозначения: 4+0 - односторонняя печать, 4+4 - двухсторонняя печать.</p>
-          </article>
-
-          <article class="price-card price-table-card" data-category="paper">
-            <div class="price-card-top">
-              <span class="price-chip">от 100 ₽</span>
-              <span class="price-meta">плотная бумага, отдельные позиции</span>
-            </div>
-            <h3>Плотная бумага A3 и A4</h3>
-            <div class="price-table-wrap">
-              <table class="price-table">
-                <thead><tr><th>Услуга</th><th>Одност. / двухстор. печать</th><th>Залитость бумаги</th><th>Цена</th></tr></thead>
-                <tbody>
-                  <tr><td>A3, 200 г</td><td>1 сторона</td><td>до 50%</td><td>400 ₽</td></tr>
-                  <tr><td>A3, 200 г</td><td>1 сторона</td><td>до 100%</td><td>550 ₽</td></tr>
-                  <tr><td>A4, 120 г</td><td>1 сторона</td><td>до 50%</td><td>100 ₽</td></tr>
-                  <tr><td>A4, 120 г</td><td>1 сторона</td><td>до 100%</td><td>150 ₽</td></tr>
-                  <tr><td>A4, 120 г</td><td>2 стороны</td><td>до 50%</td><td>150 ₽</td></tr>
-                  <tr><td>A4, 120 г</td><td>2 стороны</td><td>до 100%</td><td>225 ₽</td></tr>
-                  <tr><td>A4, 160 г</td><td>1 сторона</td><td>до 50%</td><td>130 ₽</td></tr>
-                  <tr><td>A4, 160 г</td><td>1 сторона</td><td>до 100%</td><td>180 ₽</td></tr>
-                  <tr><td>A4, 160 г</td><td>2 стороны</td><td>до 50%</td><td>195 ₽</td></tr>
-                  <tr><td>A4, 160 г</td><td>2 стороны</td><td>до 100%</td><td>270 ₽</td></tr>
-                </tbody>
-              </table>
-            </div>
+            <p class="coverage-note">При заливке бумаги свыше 50% стоимость увеличивается на 50%.</p>
           </article>
 
           <article class="price-card price-table-card" data-category="sticker">
@@ -675,9 +653,10 @@
               </label>
             </div>
             <div class="service-picker" aria-label="Быстрый выбор услуги">
-              <button type="button" data-service-choice="Фотоуслуги">Фотоуслуги</button>
+              <button type="button" data-service-choice="Печать фото">Печать фото</button>
               <button type="button" data-service-choice="Фото на документы">Фото на документы</button>
-              <button type="button" data-service-choice="Оцифровка и сканирование">Оцифровка и сканирование</button>
+              <button type="button" data-service-choice="Оцифровка">Оцифровка</button>
+              <button type="button" data-service-choice="Сканирование">Сканирование</button>
               <button type="button" data-service-choice="Ксерокопии и распечатка">Ксерокопии и распечатка</button>
               <button type="button" data-service-choice="Брошюровка">Брошюровка</button>
               <button type="button" data-service-choice="Ламинирование">Ламинирование</button>
@@ -688,9 +667,10 @@
             <label>
               <span>Что нужно *</span>
               <select id="orderService" name="Услуга">
-                <option>Фотоуслуги</option>
+                <option>Печать фото</option>
                 <option>Фото на документы</option>
-                <option>Оцифровка и сканирование</option>
+                <option>Оцифровка</option>
+                <option>Сканирование</option>
                 <option>Ксерокопии и распечатка</option>
                 <option>Брошюровка</option>
                 <option>Ламинирование</option>

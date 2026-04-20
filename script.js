@@ -6,6 +6,7 @@ const actionMenus = document.querySelectorAll(".header-menu, .action-menu");
 const orderForm = document.querySelector("#orderForm");
 const mobileSticky = document.querySelector(".mobile-sticky");
 const contactSection = document.querySelector(".contact-section");
+const priceSection = document.querySelector(".price-section");
 const orderName = document.querySelector("#orderName");
 const orderPhone = document.querySelector("#orderPhone");
 const orderService = document.querySelector("#orderService");
@@ -22,9 +23,10 @@ let activeFilter = "all";
 
 const filterLabels = {
   all: "все разделы прайса",
-  photo: "раздел «Фотоуслуги»",
+  photo: "раздел «Печать фото»",
   docs: "раздел «Фото на документы»",
-  digital: "раздел «Оцифровка и сканирование»",
+  digital: "раздел «Оцифровка»",
+  scan: "раздел «Сканирование»",
   print: "раздел «Ксерокопии и распечатка»",
   binding: "раздел «Брошюровка»",
   lamination: "раздел «Ламинирование»",
@@ -41,7 +43,12 @@ function updateMobileStickyVisibility() {
   const reachedContacts =
     contactSection &&
     contactSection.getBoundingClientRect().top <= window.innerHeight - 120;
-  const shouldShow = window.innerWidth <= 760 && window.scrollY > 260 && !reachedContacts;
+  const priceRect = priceSection && priceSection.getBoundingClientRect();
+  const viewingPrices =
+    priceRect && priceRect.top < window.innerHeight - 80 && priceRect.bottom > 120;
+  document.body.classList.toggle("hide-mobile-sticky", Boolean(viewingPrices));
+  const shouldShow =
+    window.innerWidth <= 760 && window.scrollY > 260 && !reachedContacts && !viewingPrices;
   mobileSticky.classList.toggle("is-visible", shouldShow);
 }
 
