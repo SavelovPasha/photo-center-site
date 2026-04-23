@@ -1248,6 +1248,49 @@ h2 {
   white-space: nowrap;
 }
 
+.photo-price-table th:nth-child(4),
+.photo-price-table td:nth-child(4) {
+  display: none;
+}
+
+.photo-price-table th:last-child,
+.photo-price-table td:last-child {
+  width: 430px;
+  white-space: normal;
+}
+
+.photo-tier-list {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  column-gap: 18px;
+  row-gap: 0;
+  align-items: flex-start;
+}
+
+.photo-tier {
+  display: flex;
+  min-width: 0;
+  flex-direction: column-reverse;
+  align-items: flex-start;
+  gap: 2px;
+  flex: 0 0 auto;
+}
+
+.photo-tier-price {
+  color: var(--ink);
+  font-weight: var(--fw-title);
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.photo-tier-qty {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: var(--fw-body);
+  line-height: 1.35;
+  white-space: nowrap;
+}
+
 .price-note {
   margin: 24px 0 0;
   color: var(--muted);
@@ -2279,5 +2322,124 @@ h2 {
 
   .price-table td:nth-last-child(2) {
     padding-bottom: 0;
+  }
+
+  .photo-price-table tr {
+    grid-template-columns: minmax(0, 1fr) minmax(168px, max-content);
+  }
+
+  .photo-price-table td:nth-child(4) {
+    display: none;
+  }
+
+  .photo-price-table td:nth-child(5) {
+    grid-column: 2;
+    grid-row: 1 / span 4;
+    align-self: stretch;
+    justify-self: stretch;
+    display: block;
+    min-height: auto;
+    margin-left: 12px;
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .photo-tier-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: center;
+    column-gap: 0;
+    row-gap: 0;
+    border: 1px solid rgba(23, 21, 31, 0.12);
+    border-radius: 8px;
+    overflow: hidden;
+    background: rgba(247, 201, 72, 0.08);
+  }
+
+  .photo-tier-list::before,
+  .photo-tier-list::after {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 10px 6px;
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: var(--fw-accent);
+    line-height: 1.2;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(23, 21, 31, 0.12);
+    background: rgba(255, 255, 255, 0.18);
+  }
+
+  .photo-tier-list::before {
+    content: "Кол-во";
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .photo-tier-list::after {
+    content: "Цена";
+    grid-column: 2;
+    grid-row: 1;
+    border-left: 1px solid rgba(23, 21, 31, 0.12);
+  }
+
+  .photo-tier-list-single {
+    grid-template-columns: 1fr;
+  }
+
+  .photo-tier-list-single::before {
+    display: none;
+  }
+
+  .photo-tier-list-single::after {
+    grid-column: 1;
+    border-left: 0;
+  }
+
+  .photo-tier {
+    display: contents;
+  }
+
+  .photo-tier-qty,
+  .photo-tier-price {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 10px;
+    color: var(--ink);
+    font-size: 12px;
+    line-height: 1.35;
+    border-bottom: 1px solid rgba(23, 21, 31, 0.12);
+    white-space: nowrap;
+  }
+
+  .photo-tier-qty {
+    grid-column: 1;
+  }
+
+  .photo-tier-price {
+    grid-column: 2;
+    font-weight: var(--fw-title);
+    border-left: 1px solid rgba(23, 21, 31, 0.12);
+  }
+
+  .photo-tier-list-single .photo-tier-price {
+    grid-column: 1;
+    border-left: 0;
+  }
+
+  .photo-tier:last-child .photo-tier-qty,
+  .photo-tier:last-child .photo-tier-price {
+    border-bottom: 0;
+  }
+
+  .photo-tier:not(:has(.photo-tier-qty)) .photo-tier-price {
+    grid-column: 1 / span 2;
+    border-left: 0;
+    text-align: left;
   }
 }
