@@ -2287,6 +2287,10 @@ h2 {
     box-shadow: 0 10px 24px rgba(23, 21, 31, 0.06);
   }
 
+  .price-table tr:not(:has(td:last-child .photo-tier-list, td:last-child .price-detail-list)) {
+    padding-right: 118px;
+  }
+
   .price-table td {
     grid-column: 1;
     width: auto;
@@ -2363,10 +2367,12 @@ h2 {
   }
 
   .price-table td:last-child:not(:has(.photo-tier-list, .price-detail-list)) {
-    grid-row: 1;
-    align-self: start;
-    width: 148px;
-    min-width: 148px;
+    position: absolute;
+    top: 0;
+    right: 12px;
+    width: 96px;
+    min-width: 96px;
+    margin: 0;
     padding-bottom: 10px;
   }
 
