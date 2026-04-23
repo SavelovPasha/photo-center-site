@@ -1248,18 +1248,25 @@ h2 {
   white-space: nowrap;
 }
 
-.photo-price-table th:nth-child(4),
-.photo-price-table td:nth-child(4) {
-  display: none;
-}
-
 .photo-price-table th:last-child,
 .photo-price-table td:last-child {
   width: 430px;
   white-space: normal;
 }
 
-.photo-tier-list {
+.detail-price-table th:last-child,
+.detail-price-table td:last-child {
+  width: 520px;
+  white-space: normal;
+}
+
+.photo-price-table th:nth-child(4),
+.photo-price-table td:nth-child(4) {
+  display: none;
+}
+
+.photo-tier-list,
+.price-detail-list {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
   column-gap: 18px;
@@ -1267,23 +1274,41 @@ h2 {
   align-items: flex-start;
 }
 
-.photo-tier {
+.photo-tier-list-single,
+.price-detail-list-single {
+  grid-template-columns: 1fr;
+}
+
+.price-detail-list {
+  grid-template-columns: repeat(5, minmax(72px, max-content));
+  column-gap: 14px;
+  justify-content: start;
+}
+
+.price-detail-list--side {
+  grid-template-columns: repeat(2, minmax(92px, max-content));
+}
+
+.photo-tier,
+.price-detail-item {
   display: flex;
-  min-width: 0;
+  min-width: max-content;
   flex-direction: column-reverse;
   align-items: flex-start;
   gap: 2px;
   flex: 0 0 auto;
 }
 
-.photo-tier-price {
+.photo-tier-price,
+.price-detail-value {
   color: var(--ink);
   font-weight: var(--fw-title);
   line-height: 1.2;
   white-space: nowrap;
 }
 
-.photo-tier-qty {
+.photo-tier-qty,
+.price-detail-label {
   color: var(--muted);
   font-size: 12px;
   font-weight: var(--fw-body);
@@ -2299,33 +2324,69 @@ h2 {
     position: static;
     grid-column: 2;
     grid-row: 1 / span 4;
-    align-self: start;
+    align-self: stretch;
     justify-self: end;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: auto;
-    max-width: 100%;
-    margin: 0;
-    border: 0;
+    width: 148px;
+    max-width: 148px;
+    margin: 0 0 0 12px;
+    border: 1px solid rgba(23, 21, 31, 0.12);
     box-sizing: border-box;
     border-radius: 8px;
-    padding: 9px 12px;
-    background: var(--yellow);
-    box-shadow: inset 0 0 0 2px var(--ink);
+    padding: 0 10px 8px;
+    background: rgba(247, 201, 72, 0.08);
+    box-shadow: none;
     color: var(--ink);
     font-size: 12px;
-    line-height: 1.15;
+    line-height: 1.35;
     text-align: center;
-    white-space: nowrap;
+    white-space: normal;
   }
 
   .price-table td:nth-last-child(2) {
     padding-bottom: 0;
   }
 
-  .photo-price-table tr {
-    grid-template-columns: minmax(0, 1fr) minmax(168px, max-content);
+  .price-table td:last-child:not(:has(.photo-tier-list, .price-detail-list))::before {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 -10px 8px;
+    padding: 8px 10px 6px;
+    border-bottom: 1px solid rgba(23, 21, 31, 0.12);
+    background: var(--yellow);
+    color: var(--ink);
+    font-size: 10px;
+    font-weight: var(--fw-accent);
+    line-height: 1.2;
+    text-transform: uppercase;
+    content: "Цена";
+  }
+
+  .price-table td:last-child:not(:has(.photo-tier-list, .price-detail-list)) {
+    grid-row: 1;
+    align-self: start;
+    width: 148px;
+    min-width: 148px;
+    padding-bottom: 10px;
+  }
+
+  .price-table tbody tr:last-child td:last-child:not(:has(.photo-tier-list, .price-detail-list)) {
+    border-bottom: 1px solid rgba(23, 21, 31, 0.12);
+  }
+
+  .price-table td:last-child:has(.photo-tier-list, .price-detail-list) {
+    display: block;
+    min-height: auto;
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .photo-price-table tr,
+  .detail-price-table tr {
+    grid-template-columns: minmax(0, 1fr) max-content;
   }
 
   .photo-price-table td:nth-child(4) {
@@ -2347,7 +2408,8 @@ h2 {
     box-shadow: none;
   }
 
-  .photo-tier-list {
+  .photo-tier-list,
+  .price-detail-list {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     align-items: center;
@@ -2360,7 +2422,9 @@ h2 {
   }
 
   .photo-tier-list::before,
-  .photo-tier-list::after {
+  .photo-tier-list::after,
+  .price-detail-list::before,
+  .price-detail-list::after {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2371,7 +2435,7 @@ h2 {
     line-height: 1.2;
     text-transform: uppercase;
     border-bottom: 1px solid rgba(23, 21, 31, 0.12);
-    background: rgba(255, 255, 255, 0.18);
+    background: var(--yellow);
   }
 
   .photo-tier-list::before {
@@ -2387,25 +2451,56 @@ h2 {
     border-left: 1px solid rgba(23, 21, 31, 0.12);
   }
 
-  .photo-tier-list-single {
+  .photo-tier-list-single,
+  .price-detail-list-single {
     grid-template-columns: 1fr;
   }
 
-  .photo-tier-list-single::before {
+  .price-detail-list::before {
+    content: "Вариант";
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .photo-tier-list::before {
+    content: "Кол-во";
+  }
+
+  .price-detail-list--set::before {
+    content: "Комплект";
+  }
+
+  .price-detail-list--side::before {
+    content: "Стороны";
+  }
+
+  .price-detail-list::after {
+    content: "Цена";
+    grid-column: 2;
+    grid-row: 1;
+    border-left: 1px solid rgba(23, 21, 31, 0.12);
+  }
+
+  .photo-tier-list-single::before,
+  .price-detail-list-single::before {
     display: none;
   }
 
-  .photo-tier-list-single::after {
+  .photo-tier-list-single::after,
+  .price-detail-list-single::after {
     grid-column: 1;
     border-left: 0;
   }
 
-  .photo-tier {
+  .photo-tier,
+  .price-detail-item {
     display: contents;
   }
 
   .photo-tier-qty,
-  .photo-tier-price {
+  .photo-tier-price,
+  .price-detail-label,
+  .price-detail-value {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2417,27 +2512,33 @@ h2 {
     white-space: nowrap;
   }
 
-  .photo-tier-qty {
+  .photo-tier-qty,
+  .price-detail-label {
     grid-column: 1;
   }
 
-  .photo-tier-price {
+  .photo-tier-price,
+  .price-detail-value {
     grid-column: 2;
     font-weight: var(--fw-title);
     border-left: 1px solid rgba(23, 21, 31, 0.12);
   }
 
-  .photo-tier-list-single .photo-tier-price {
+  .photo-tier-list-single .photo-tier-price,
+  .price-detail-list-single .price-detail-value {
     grid-column: 1;
     border-left: 0;
   }
 
   .photo-tier:last-child .photo-tier-qty,
-  .photo-tier:last-child .photo-tier-price {
+  .photo-tier:last-child .photo-tier-price,
+  .price-detail-item:last-child .price-detail-label,
+  .price-detail-item:last-child .price-detail-value {
     border-bottom: 0;
   }
 
-  .photo-tier:not(:has(.photo-tier-qty)) .photo-tier-price {
+  .photo-tier:not(:has(.photo-tier-qty)) .photo-tier-price,
+  .price-detail-item:not(:has(.price-detail-label)) .price-detail-value {
     grid-column: 1 / span 2;
     border-left: 0;
     text-align: left;
