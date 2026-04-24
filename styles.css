@@ -1289,6 +1289,55 @@ h2 {
   grid-template-columns: repeat(2, minmax(92px, max-content));
 }
 
+.price-detail-list--scan-doc {
+  grid-template-columns: repeat(3, minmax(78px, max-content));
+}
+
+.price-detail-list--scan-photo {
+  grid-template-columns: repeat(4, minmax(78px, max-content));
+}
+
+.price-detail-list--print-a4 {
+  grid-template-columns: repeat(4, minmax(78px, max-content));
+}
+
+.price-detail-list--print-a3 {
+  grid-template-columns: repeat(3, minmax(78px, max-content));
+}
+
+.price-group-stack {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+.price-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  min-width: max-content;
+}
+
+.price-group-title {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: var(--fw-accent);
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.price-group-title + .price-detail-list,
+.price-group-title + .price-detail-list-single {
+  margin-top: 0;
+}
+
+.price-group-title--color {
+  color: #cf7a00;
+}
+
 .photo-tier,
 .price-detail-item {
   display: flex;
@@ -2427,6 +2476,34 @@ h2 {
     background: rgba(247, 201, 72, 0.08);
   }
 
+  .price-group-stack {
+    width: 100%;
+    max-width: 148px;
+    justify-self: end;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .price-group-stack:has(.price-detail-list-single):not(:has(.price-detail-list:not(.price-detail-list-single))) {
+    flex-direction: row;
+  }
+
+  .price-group {
+    width: 100%;
+    gap: 4px;
+  }
+
+  .price-group-stack:has(.price-detail-list-single):not(:has(.price-detail-list:not(.price-detail-list-single))) .price-group {
+    flex: 1 1 0;
+  }
+
+  .price-group-title {
+    padding-left: 0;
+    font-size: 10px;
+    text-align: center;
+  }
+
   .photo-tier-list::before,
   .photo-tier-list::after,
   .price-detail-list::before,
@@ -2478,6 +2555,13 @@ h2 {
 
   .price-detail-list--side::before {
     content: "Стороны";
+  }
+
+  .price-detail-list--scan-doc::before,
+  .price-detail-list--scan-photo::before,
+  .price-detail-list--print-a4::before,
+  .price-detail-list--print-a3::before {
+    content: "Кол-во";
   }
 
   .price-detail-list::after {
