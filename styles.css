@@ -1305,6 +1305,10 @@ h2 {
   grid-template-columns: repeat(3, minmax(78px, max-content));
 }
 
+.price-detail-list--lamination {
+  grid-template-columns: repeat(3, minmax(78px, max-content));
+}
+
 .price-group-stack {
   display: flex;
   flex-direction: row;
@@ -2560,7 +2564,8 @@ h2 {
   .price-detail-list--scan-doc::before,
   .price-detail-list--scan-photo::before,
   .price-detail-list--print-a4::before,
-  .price-detail-list--print-a3::before {
+  .price-detail-list--print-a3::before,
+  .price-detail-list--lamination::before {
     content: "Кол-во";
   }
 
