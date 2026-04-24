@@ -1309,6 +1309,12 @@ h2 {
   grid-template-columns: repeat(3, minmax(78px, max-content));
 }
 
+.price-detail-list--digitize-video,
+.price-detail-list--digitize-roll,
+.price-detail-list--digitize-frame {
+  grid-template-columns: repeat(3, minmax(92px, max-content));
+}
+
 .price-group-stack {
   display: flex;
   flex-direction: row;
@@ -2565,7 +2571,10 @@ h2 {
   .price-detail-list--scan-photo::before,
   .price-detail-list--print-a4::before,
   .price-detail-list--print-a3::before,
-  .price-detail-list--lamination::before {
+  .price-detail-list--lamination::before,
+  .price-detail-list--digitize-video::before,
+  .price-detail-list--digitize-roll::before,
+  .price-detail-list--digitize-frame::before {
     content: "Кол-во";
   }
 
