@@ -2,7 +2,7 @@
 const cards = document.querySelectorAll(".price-card");
 const serviceCards = document.querySelectorAll(".service-card[data-target-filter]");
 const searchInput = document.querySelector("#priceSearch");
-const actionMenus = document.querySelectorAll(".header-menu, .action-menu");
+const actionMenus = document.querySelectorAll(".header-menu, .action-menu, .header-nav-menu");
 const orderForm = document.querySelector("#orderForm");
 const mobileSticky = document.querySelector(".mobile-sticky");
 const contactSection = document.querySelector(".contact-section");
@@ -2465,15 +2465,15 @@ function updateScrollTopButtonVisibility() {
 
 function closeActionMenu(menu) {
   menu.classList.remove("open");
-  const toggle = menu.querySelector(".header-menu-toggle, .action-menu-toggle");
+  const toggle = menu.querySelector(".header-menu-toggle, .action-menu-toggle, .header-nav-toggle");
   if (toggle) {
     toggle.setAttribute("aria-expanded", "false");
   }
 }
 
 actionMenus.forEach((menu) => {
-  const toggle = menu.querySelector(".header-menu-toggle, .action-menu-toggle");
-  const links = menu.querySelectorAll(".header-menu-dropdown a, .action-menu-dropdown a");
+  const toggle = menu.querySelector(".header-menu-toggle, .action-menu-toggle, .header-nav-toggle");
+  const links = menu.querySelectorAll(".header-menu-dropdown a, .action-menu-dropdown a, .nav a");
 
   if (!toggle) {
     return;
