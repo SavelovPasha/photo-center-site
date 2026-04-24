@@ -21,6 +21,7 @@
       </a>
       <nav class="nav" aria-label="Основная навигация">
         <a href="#services">Услуги</a>
+        <a href="#calculator">Калькулятор</a>
         <a href="#prices">Прайс</a>
         <a href="#promos">Акции</a>
         <a href="#order">Заказ</a>
@@ -66,6 +67,7 @@
               </div>
             </div>
             <a class="btn btn-secondary" href="#prices">Посмотреть цены</a>
+            <a class="btn btn-secondary" href="#calculator">Калькулятор</a>
             <a class="btn btn-ghost btn-route" href="https://yandex.ru/maps/-/CPvjaN9n" target="_blank" rel="noreferrer">
               <span class="btn-route-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" focusable="false">
@@ -127,15 +129,7 @@
             <span class="ticker-separator">/</span>
             <span>Сувениры от 3 шт -10%</span>
             <span class="ticker-separator">/</span>
-            <span>После оцифровки печать фото -10%</span>
-            <span class="ticker-separator">/</span>
-            <span>Фото + рамка -15%</span>
-            <span class="ticker-separator">/</span>
-            <span>Комплект из 2 товаров -10%</span>
-            <span class="ticker-separator">/</span>
-            <span>Печать 10×15 до -30%</span>
-            <span class="ticker-separator">/</span>
-            <span>После оцифровки печать фото -10%</span>
+            <span>После оцифровки фото с обработкой печать фото -10%</span>
           </div>
           <div class="ticker-content" aria-hidden="true">
             <span>Отзыв на Яндекс Картах -15%</span>
@@ -152,15 +146,7 @@
             <span class="ticker-separator">/</span>
             <span>Сувениры от 3 шт -10%</span>
             <span class="ticker-separator">/</span>
-            <span>После оцифровки печать фото -10%</span>
-            <span class="ticker-separator">/</span>
-            <span>Фото + рамка -15%</span>
-            <span class="ticker-separator">/</span>
-            <span>Комплект из 2 товаров -10%</span>
-            <span class="ticker-separator">/</span>
-            <span>Печать 10×15 до -30%</span>
-            <span class="ticker-separator">/</span>
-            <span>После оцифровки печать фото -10%</span>
+            <span>После оцифровки фото с обработкой печать фото -10%</span>
           </div>
         </div>
       </section>
@@ -259,12 +245,85 @@
         </div>
       </section>
 
+      <section class="section calculator-section" id="calculator">
+        <div class="calculator-panel" aria-labelledby="photoCalculatorTitle">
+          <div class="calculator-copy">
+            <p class="eyebrow">калькулятор</p>
+            <h2 id="photoCalculatorTitle">Собери заказ и посчитай сумму заранее</h2>
+            <p>
+              Калькулятор собирает заказ по нескольким категориям, считает тиражные цены,
+              комплектные скидки и помогает сразу перенести готовый расчёт в заявку.
+            </p>
+            <div class="calculator-note-list" aria-label="Что умеет калькулятор">
+              <span>Несколько услуг в одной корзине</span>
+              <span>Точные цены и связки по акциям</span>
+              <span>Готовый расчёт для заявки</span>
+            </div>
+          </div>
+          <div class="calculator-form" aria-label="Параметры калькулятора заказа">
+            <div class="calculator-grid calculator-grid-basket">
+              <label>
+                <span>Категория</span>
+                <select id="calcCategory"></select>
+              </label>
+              <div class="calculator-dynamic-fields" id="calcFields"></div>
+            </div>
+
+            <div class="calculator-builder-actions">
+              <p class="calculator-builder-note" id="calcBuilderNote">
+                Выберите категорию, услугу и количество, затем добавьте позицию в общий расчёт.
+              </p>
+              <button class="btn btn-primary" id="calcAddItem" type="button">
+                Добавить в расчёт
+              </button>
+            </div>
+
+            <fieldset class="calculator-promos">
+              <legend>Ручные акции</legend>
+              <label class="calculator-check">
+                <input id="calcReviewPromo" type="checkbox" />
+                <span>Отзыв на Яндекс Картах -15%</span>
+              </label>
+              <p class="calculator-promo-note">
+                Если отзыв включён, скидка считается от полной суммы заказа, а общий дисконт по
+                калькулятору ограничивается 20%.
+              </p>
+            </fieldset>
+
+            <div class="calculator-result" id="calcCartResult" aria-live="polite">
+              <div class="calculator-result-top">
+                <span class="calculator-badge" id="calcCartBadge">Пустой расчёт</span>
+                <strong id="calcCartTotal">0 ₽</strong>
+              </div>
+              <p class="calculator-summary" id="calcCartSummary">
+                Добавьте услуги и товары, чтобы собрать заказ по шагам.
+              </p>
+              <div class="calculator-cart-list" id="calcCartList"></div>
+              <p class="calculator-empty" id="calcCartEmpty">
+                Корзина пока пустая. Добавьте хотя бы одну позицию.
+              </p>
+              <div class="calculator-breakdown">
+                <span id="calcCartSubtotal">Сумма по позициям: 0 ₽</span>
+                <span id="calcCartDiscounts">Скидки пока не применялись</span>
+                <span id="calcCartMeta">Скидки считаются по связкам внутри корзины и по выгоде для клиента.</span>
+              </div>
+              <p class="calculator-result-note" id="calcCartNote">
+                Здесь собирается общий расчёт заказа из нескольких позиций.
+              </p>
+              <button class="btn btn-primary calculator-transfer" id="calcCartTransfer" type="button">
+                Перенести в заявку
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class="section price-section" id="prices">
         <div class="section-head split-head">
           <div>
             <p class="eyebrow">прайс</p>
             <h2>Цены по категориям</h2>
-            <p class="price-intro">Не знаешь формат? Напиши нам — подскажем размер, материал и сразу сориентируем по стоимости.</p>
+            <p class="price-intro">Поиск ниже помогает быстро найти нужную услугу, а калькулятор выше — собрать весь заказ заранее.</p>
           </div>
           <label class="search-box">
             <span>Найти услугу</span>
@@ -308,7 +367,7 @@
                   <tr><td>13×18</td><td>13×18 см</td><td>Стандартная фотопечать</td><td>1-9<br />10-14<br />15-29<br />30+</td><td><div class="photo-tier-list"><span class="photo-tier"><span class="photo-tier-qty">1-9</span><span class="photo-tier-price">100 ₽</span></span><span class="photo-tier"><span class="photo-tier-qty">10-14</span><span class="photo-tier-price">90 ₽</span></span><span class="photo-tier"><span class="photo-tier-qty">15-29</span><span class="photo-tier-price">85 ₽</span></span><span class="photo-tier"><span class="photo-tier-qty">30+</span><span class="photo-tier-price">80 ₽</span></span></div></td></tr>
                   <tr><td>A5</td><td>15×20 см</td><td>Стандартная фотопечать</td><td>1-9<br />10-14<br />15-29<br />30+</td><td><div class="photo-tier-list"><span class="photo-tier"><span class="photo-tier-qty">1-9</span><span class="photo-tier-price">150 ₽</span></span><span class="photo-tier"><span class="photo-tier-qty">10-14</span><span class="photo-tier-price">135 ₽</span></span><span class="photo-tier"><span class="photo-tier-qty">15-29</span><span class="photo-tier-price">128 ₽</span></span><span class="photo-tier"><span class="photo-tier-qty">30+</span><span class="photo-tier-price">120 ₽</span></span></div></td></tr>
                   <tr><td>A4</td><td>21×29,7 см</td><td>Стандартная фотопечать</td><td>1-4<br />5-9<br />10-29<br />30+</td><td><div class="photo-tier-list"><span class="photo-tier"><span class="photo-tier-qty">1-4</span><span class="photo-tier-price">250 ₽</span></span><span class="photo-tier"><span class="photo-tier-qty">5-9</span><span class="photo-tier-price">225 ₽</span></span><span class="photo-tier"><span class="photo-tier-qty">10-29</span><span class="photo-tier-price">213 ₽</span></span><span class="photo-tier"><span class="photo-tier-qty">30+</span><span class="photo-tier-price">200 ₽</span></span></div></td></tr>
-                  <tr><td>A3</td><td>29,7×42 см</td><td>Матовая / глосси</td><td>1-2<br />3<br />5<br />6-9<br />10+</td><td><div class="photo-tier-list"><span class="photo-tier"><span class="photo-tier-qty">1-2</span><span class="photo-tier-price">600 ₽</span></span><span class="photo-tier"><span class="photo-tier-qty">3</span><span class="photo-tier-price">570 ₽</span></span><span class="photo-tier"><span class="photo-tier-qty">5</span><span class="photo-tier-price">540 ₽</span></span><span class="photo-tier"><span class="photo-tier-qty">6-9</span><span class="photo-tier-price">510 ₽</span></span><span class="photo-tier"><span class="photo-tier-qty">10+</span><span class="photo-tier-price">480 ₽</span></span></div></td></tr>
+                  <tr><td>A3</td><td>29,7×42 см</td><td>Матовая / глосси</td><td>1-2<br />3-4<br />5<br />6-9<br />10+</td><td><div class="photo-tier-list"><span class="photo-tier"><span class="photo-tier-qty">1-2</span><span class="photo-tier-price">600 ₽</span></span><span class="photo-tier"><span class="photo-tier-qty">3-4</span><span class="photo-tier-price">570 ₽</span></span><span class="photo-tier"><span class="photo-tier-qty">5</span><span class="photo-tier-price">540 ₽</span></span><span class="photo-tier"><span class="photo-tier-qty">6-9</span><span class="photo-tier-price">510 ₽</span></span><span class="photo-tier"><span class="photo-tier-qty">10+</span><span class="photo-tier-price">480 ₽</span></span></div></td></tr>
                   <tr><td>A3</td><td>29,7×42 см</td><td>Сатин / супер глосси</td><td></td><td><div class="photo-tier-list photo-tier-list-single"><span class="photo-tier"><span class="photo-tier-price">850 ₽</span></span></div></td></tr>
                   <tr><td>Нестандартный</td><td>По макету</td><td>Кадрирование</td><td></td><td><div class="photo-tier-list photo-tier-list-single"><span class="photo-tier"><span class="photo-tier-price">+15 ₽</span></span></div></td></tr>
                 </tbody>
@@ -372,7 +431,7 @@
                 </tbody>
               </table>
             </div>
-            <p class="coverage-note">После оцифровки печать фото 10×15 — со скидкой 10%.</p>
+            <p class="coverage-note">После оцифровки фото с обработкой печать фото идёт со скидкой 10%.</p>
           </article>
 
           <article class="price-card price-table-card" data-category="scan">
@@ -553,10 +612,10 @@
                 </tbody>
               </table>
             </div>
-            <p class="coverage-note">При заказе сувенирной печати от 3 шт. — скидка 10%, от 5 шт. — скидка 15%.</p>
+            <p class="coverage-note">В сувенирной печати применяется либо тиражная скидка, либо более выгодная комплектная акция.</p>
           </article>
         </div>
-        <p class="price-note">Цены перенесены из полного прайса. Для нестандартных заказов и тиражей лучше уточнить стоимость в сообщениях. Скидка за отзыв 15% суммируется со скидками 5% и 10%.</p>
+        <p class="price-note">Для нестандартных заказов и спорных макетов лучше уточнить стоимость в сообщениях. Калькулятор выше помогает собрать общий расчёт и увидеть применимые акции.</p>
       </section>
 
       <section class="section promo-section" id="promos">
@@ -571,22 +630,22 @@
           <article class="promo-card">
             <span class="promo-badge">-15%</span>
             <h3>Фото + рамка</h3>
-            <p>Комбо-скидка на печать фото вместе с рамкой одного размера.</p>
+            <p>Скидка считается на комплект фото и рамки одного размера, если они идут в одном заказе.</p>
           </article>
           <article class="promo-card">
             <span class="promo-badge">-10%</span>
             <h3>Фото + ламинация</h3>
-            <p>Подходит для готовых фотографий, которые сразу нужно защитить плёнкой.</p>
+            <p>Скидка действует на комплект фото и ламинации одного размера, если они добавлены вместе.</p>
           </article>
           <article class="promo-card">
             <span class="promo-badge">-10%</span>
             <h3>Комплект из 2 товаров</h3>
-            <p>Скидка действует на подарочный комплект из двух позиций.</p>
+            <p>Любые 2 товара из сувенирной печати можно собрать в комплект и получить скидку 10%.</p>
           </article>
           <article class="promo-card">
             <span class="promo-badge">-10%</span>
             <h3>Парные кружки или футболки</h3>
-            <p>Для парных товаров со схожей идеей или единым комплектом.</p>
+            <p>Скидка для пары кружек или пары футболок. Если подходят две акции, берётся более выгодная для клиента.</p>
           </article>
           <article class="promo-card">
             <span class="promo-badge">до -30%</span>
@@ -601,13 +660,13 @@
           <article class="promo-card">
             <span class="promo-badge">-10%</span>
             <h3>После оцифровки</h3>
-            <p>После оцифровки фото можно сразу напечатать со скидкой 10%.</p>
+            <p>Если в заказе есть оцифровка фото с обработкой, печать фото любого размера идёт со скидкой 10%.</p>
           </article>
           <article class="promo-card promo-card-review">
             <span class="promo-badge">-15%</span>
             <h3>Отзыв на Яндекс Картах</h3>
-            <p>Оставь отзыв о ФотоЦентре и получи скидку на любую услугу.</p>
-            <span class="promo-note">Скидка действует на следующий заказ и суммируется со скидками 5% и 10%.</span>
+            <p>Отзыв можно добавить к заказу как отдельную скидку, но общий дисконт по нему ограничивается 20%.</p>
+            <span class="promo-note">Если других скидок нет, отзыв даёт 15% от всей суммы. Если скидки уже есть, общий предел по заказу — 20%.</span>
             <a
               class="promo-action"
               href="https://yandex.ru/maps/org/foto_tsentr/166665523226/reviews/?add-review=true&display-text=%D0%A4%D0%BE%D1%82%D0%BE%D1%83%D1%81%D0%BB%D1%83%D0%B3%D0%B8&indoorLevel=1&ll=37.713968%2C55.542687&mode=search&sctx=ZAAAAAgBEAAaKAoSCW3KFd7l2kJAEfJetTLhxUtAEhIJKLhYUYNpxj8RiBBXzt4ZrT8iBgABAgMEBSgKOABA31NIAWoCcnWdAc3MzD2gAQCoAQC9AT1NToTCAXuaoKjw7ASYnvOfBr2f8c3lBon71cCPBMzw8YDdBLGQwMS%2BrK6u5gHLmd6u4QLHhvjjrgKY65qPhATf9oWJFvr4tOsGirOq6WaVw7bb4wW519DUvAWcgsiiBMDUgoz8BqiHvb%2BUA4PMivGaAv%2BY2ecanoCogga7gK%2BK%2FQWCAhsoKGNhdGVnb3J5X2lkOigxODQxMDgyNjEpKSmKAgkxODQxMDgyNjGSAgCaAgxkZXNrdG9wLW1hcHOqAi40NTQzMjQwMzQxLDgwMDU3MDM5OTI5LDkxMTA3NTQ0NTU2LDE2NzI3MjQ1NjQ52gIoChIJYI4ev7fbQkARU93M157FS0ASEgkArAj%2Bt5KtPxEAuBFPdjOTP%2BACAQ%3D%3D&sll=37.711250%2C55.542687&sspn=0.028880%2C0.009376&tab=reviews&text=%7B%22text%22%3A%22%D0%A4%D0%BE%D1%82%D0%BE%D1%83%D1%81%D0%BB%D1%83%D0%B3%D0%B8%22%2C%22what%22%3A%5B%7B%22attr_name%22%3A%22category_id%22%2C%22attr_values%22%3A%5B%22184108261%22%5D%7D%5D%7D&utm_source=share&z=16"
@@ -692,7 +751,6 @@
           </form>
         </div>
       </section>
-
 
       <section class="section contact-section" id="contacts">
         <div class="contact-card">
@@ -783,6 +841,12 @@
       <a href="https://yandex.ru/maps/-/CPvjaN9n" target="_blank" rel="noreferrer">Карта</a>
     </div>
 
+    <button class="scroll-top-button" id="scrollTopButton" type="button" aria-label="Вернуться наверх">
+      <span aria-hidden="true">↑</span>
+      <span>Наверх</span>
+    </button>
+
+    <script src="calculator-data.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
