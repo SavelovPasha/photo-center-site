@@ -1720,6 +1720,16 @@ h2 {
   white-space: normal;
 }
 
+.paper-price-table th:last-child,
+.paper-price-table td:last-child {
+  width: 640px;
+  white-space: normal;
+}
+
+.paper-price-table {
+  min-width: 0;
+}
+
 .photo-price-table th:nth-child(4),
 .photo-price-table td:nth-child(4) {
   display: none;
@@ -1806,6 +1816,28 @@ h2 {
 
 .price-group-title--color {
   color: #cf7a00;
+}
+
+.paper-price-table .price-group-stack {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 12px;
+}
+
+.paper-price-table .price-group {
+  width: 100%;
+}
+
+.paper-price-table .price-detail-list--side {
+  justify-content: stretch;
+}
+
+.paper-price-table .price-detail-list--paper-4 {
+  grid-template-columns: repeat(4, minmax(72px, 1fr));
+}
+
+.paper-price-table .price-detail-list--paper-6 {
+  grid-template-columns: repeat(6, minmax(58px, 1fr));
 }
 
 .photo-tier,
@@ -3247,5 +3279,13 @@ h2 {
     grid-column: 1 / span 2;
     border-left: 0;
     text-align: left;
+  }
+
+  .paper-price-table .price-group-stack {
+    max-width: none;
+  }
+
+  .paper-price-table .price-detail-list--side {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
