@@ -1700,6 +1700,17 @@ h2 {
   border-bottom: 0;
 }
 
+.price-subcategory-row td {
+  border-bottom: 1px solid rgba(23, 21, 31, 0.12);
+  padding: 14px;
+  background: rgba(247, 201, 72, 0.2);
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: var(--fw-accent);
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
 .price-table td:last-child,
 .price-table th:last-child {
   width: 170px;
@@ -2990,8 +3001,41 @@ h2 {
     box-shadow: 0 10px 24px rgba(23, 21, 31, 0.06);
   }
 
+  .price-table .price-subcategory-row {
+    display: block;
+    border: 0;
+    border-radius: 8px;
+    padding: 0;
+    padding-right: 0;
+    background: transparent;
+    box-shadow: none;
+    overflow: visible;
+  }
+
+  .price-table .price-subcategory-row td {
+    display: block;
+    position: static;
+    grid-column: 1 / -1;
+    grid-row: auto;
+    justify-self: stretch;
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    min-height: 0;
+    margin: 0;
+    border: 1px solid rgba(23, 21, 31, 0.12);
+    border-radius: 8px;
+    padding: 10px 12px;
+    background: rgba(247, 201, 72, 0.2);
+    text-align: left;
+  }
+
   .price-table tr:not(:has(td:last-child .photo-tier-list, td:last-child .price-detail-list)) {
     padding-right: 118px;
+  }
+
+  .price-table tr.price-subcategory-row {
+    padding-right: 0 !important;
   }
 
   .price-table td {
@@ -3077,6 +3121,21 @@ h2 {
     min-width: 96px;
     margin: 0;
     padding-bottom: 10px;
+  }
+
+  .price-table .price-subcategory-row td:last-child {
+    position: static;
+    grid-column: 1 / -1;
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    margin: 0;
+    padding: 10px 12px;
+    background: rgba(247, 201, 72, 0.2);
+  }
+
+  .price-table .price-subcategory-row td:last-child::before {
+    display: none;
   }
 
   .price-table tbody tr:last-child td:last-child:not(:has(.photo-tier-list, .price-detail-list)) {
