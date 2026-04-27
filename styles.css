@@ -1720,6 +1720,12 @@ h2 {
   white-space: normal;
 }
 
+.sticker-price-table th:last-child,
+.sticker-price-table td:last-child {
+  width: 330px;
+  white-space: normal;
+}
+
 .paper-price-table th:last-child,
 .paper-price-table td:last-child {
   width: 640px;
@@ -1779,10 +1785,19 @@ h2 {
   grid-template-columns: repeat(3, minmax(78px, max-content));
 }
 
+.price-detail-list--sticker {
+  grid-template-columns: repeat(3, minmax(78px, max-content));
+}
+
 .price-detail-list--digitize-video,
 .price-detail-list--digitize-roll,
 .price-detail-list--digitize-frame {
   grid-template-columns: repeat(3, minmax(92px, max-content));
+}
+
+.price-detail-list--digitize-storage {
+  grid-template-columns: repeat(4, minmax(92px, max-content));
+  column-gap: 14px;
 }
 
 .price-group-stack {
@@ -1936,10 +1951,6 @@ h2 {
 
 .promo-card-review .promo-badge {
   align-self: flex-start;
-}
-
-.promo-card-review p {
-  max-width: 28ch;
 }
 
 .promo-note {
@@ -3205,9 +3216,11 @@ h2 {
   .price-detail-list--print-a4::before,
   .price-detail-list--print-a3::before,
   .price-detail-list--lamination::before,
+  .price-detail-list--sticker::before,
   .price-detail-list--digitize-video::before,
   .price-detail-list--digitize-roll::before,
-  .price-detail-list--digitize-frame::before {
+  .price-detail-list--digitize-frame::before,
+  .price-detail-list--digitize-storage::before {
     content: "Кол-во";
   }
 
