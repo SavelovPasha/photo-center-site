@@ -873,6 +873,15 @@
               <span>Когда удобно забрать <em>(необязательно)</em></span>
               <input id="orderTime" name="Удобное время" type="text" placeholder="Сегодня вечером, завтра утром, к выходным" />
             </label>
+            <label class="order-consent">
+              <input type="checkbox" name="Согласие на обработку персональных данных" required />
+              <span>
+                Я соглашаюсь на обработку персональных данных и принимаю
+                <a href="./privacy-policy.html" target="_blank" rel="noreferrer">политику обработки персональных данных</a>
+                и
+                <a href="./terms.html" target="_blank" rel="noreferrer">условия заказа</a>.
+              </span>
+            </label>
             <div class="order-actions">
               <button class="btn btn-primary" type="submit">Оставить заявку</button>
               <span class="order-submit-note">Заявка придёт нам на почту. Обычно отвечаем в рабочее время.</span>
@@ -961,9 +970,35 @@
     </main>
 
     <footer class="site-footer">
-      <span>ФотоЦентр · Видное</span>
-      <span>Фото, печать, подарки и оцифровка рядом с домом</span>
+      <div class="site-footer-copy">
+        <span>ФотоЦентр · Видное</span>
+        <span>Фото, печать, подарки и оцифровка рядом с домом</span>
+      </div>
+      <div class="site-footer-legal">
+        <span>ИП Савелова Мария Владимировна</span>
+        <span>ИНН 163205834300 · ОГРНИП 323508100339821</span>
+      </div>
+      <nav class="site-footer-links" aria-label="Правовая информация">
+        <a href="./privacy-policy.html" target="_blank" rel="noreferrer">Политика ПД</a>
+        <a href="./terms.html" target="_blank" rel="noreferrer">Условия заказа</a>
+        <a href="./legal-info.html" target="_blank" rel="noreferrer">Сведения об исполнителе</a>
+      </nav>
     </footer>
+
+    <div class="cookie-banner" id="cookieBanner" hidden>
+      <div class="cookie-banner-copy">
+        <strong>Мы используем cookies</strong>
+        <span>
+          Cookies помогают сайту работать стабильнее. В дальнейшем на сайте
+          могут использоваться сервисы аналитики, например Яндекс Метрика.
+          Подробнее —
+          <a href="./privacy-policy.html" target="_blank" rel="noreferrer">в политике обработки персональных данных</a>.
+        </span>
+      </div>
+      <button class="btn btn-primary cookie-banner-button" id="cookieBannerAccept" type="button">
+        Понятно
+      </button>
+    </div>
 
     <div class="mobile-sticky" aria-label="Быстрые контакты">
       <a href="tel:+79175054415">Позвонить</a>

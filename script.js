@@ -47,6 +47,8 @@ const calcCartNote = document.querySelector("#calcCartNote");
 const calcCartTransfer = document.querySelector("#calcCartTransfer");
 const calcCartClear = document.querySelector("#calcCartClear");
 const calcToast = document.querySelector("#calcToast");
+const cookieBanner = document.querySelector("#cookieBanner");
+const cookieBannerAccept = document.querySelector("#cookieBannerAccept");
 
 let activeFilter = "all";
 let calculatorToastTimer = null;
@@ -3579,6 +3581,16 @@ document.addEventListener("keydown", (event) => {
     actionMenus.forEach((menu) => closeActionMenu(menu));
   }
 });
+
+if (cookieBanner && cookieBannerAccept) {
+  const cookieAccepted = localStorage.getItem("fotochkaCookieConsent") === "accepted";
+  cookieBanner.hidden = cookieAccepted;
+
+  cookieBannerAccept.addEventListener("click", () => {
+    localStorage.setItem("fotochkaCookieConsent", "accepted");
+    cookieBanner.hidden = true;
+  });
+}
 
 updateMobileStickyVisibility();
 updateScrollTopButtonVisibility();
