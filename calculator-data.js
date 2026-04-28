@@ -117,7 +117,7 @@ window.photoCenterCalculatorData = {
               title: "A8",
               parameters: {
                 size: "5x7.5 см",
-                paperType: "Стандартная фотопечать",
+                paperType: "Матовая / Глянцевая",
               },
               pricingMode: "tiered",
               tiers: [
@@ -132,7 +132,7 @@ window.photoCenterCalculatorData = {
               title: "A7",
               parameters: {
                 size: "7.5x10 см",
-                paperType: "Стандартная фотопечать",
+                paperType: "Матовая / Глянцевая",
               },
               pricingMode: "tiered",
               tiers: [
@@ -147,7 +147,7 @@ window.photoCenterCalculatorData = {
               title: "A6",
               parameters: {
                 size: "10x15 см",
-                paperType: "Стандартная фотопечать",
+                paperType: "Матовая / Глянцевая",
               },
               pricingMode: "tiered",
               tiers: [
@@ -164,7 +164,7 @@ window.photoCenterCalculatorData = {
               title: "13x18",
               parameters: {
                 size: "13x18 см",
-                paperType: "Стандартная фотопечать",
+                paperType: "Матовая / Глянцевая",
               },
               pricingMode: "tiered",
               tiers: [
@@ -179,7 +179,7 @@ window.photoCenterCalculatorData = {
               title: "A5",
               parameters: {
                 size: "15x20 см",
-                paperType: "Стандартная фотопечать",
+                paperType: "Матовая / Глянцевая",
               },
               pricingMode: "tiered",
               tiers: [
@@ -194,7 +194,7 @@ window.photoCenterCalculatorData = {
               title: "A4",
               parameters: {
                 size: "21x29.7 см",
-                paperType: "Стандартная фотопечать",
+                paperType: "Матовая / Глянцевая",
               },
               pricingMode: "tiered",
               tiers: [
@@ -209,7 +209,7 @@ window.photoCenterCalculatorData = {
               title: "A3",
               parameters: {
                 size: "29.7x42 см",
-                paperType: "Стандартная фотопечать",
+                paperType: "Матовая / Глянцевая",
               },
               pricingMode: "tiered",
               tiers: [

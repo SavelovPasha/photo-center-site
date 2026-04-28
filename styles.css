@@ -399,6 +399,7 @@ h1 {
 .contact-actions {
   gap: 12px;
   margin-top: 30px;
+  align-items: stretch;
 }
 
 .hero-actions {
@@ -2243,10 +2244,66 @@ h2 {
 .promo-card-review {
   display: flex;
   flex-direction: column;
+  border-color: rgba(247, 201, 72, 0.45);
+  background:
+    linear-gradient(180deg, rgba(255, 248, 221, 0.94) 0%, rgba(255, 255, 255, 1) 100%);
+  box-shadow:
+    0 18px 36px rgba(23, 21, 31, 0.08),
+    0 0 0 2px rgba(247, 201, 72, 0.12);
 }
 
 .promo-card-review .promo-badge {
   align-self: flex-start;
+}
+
+.promo-review-callout {
+  display: grid;
+  gap: 6px;
+  margin-top: 18px;
+  border: 1px solid rgba(23, 21, 31, 0.12);
+  border-radius: 10px;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.86);
+}
+
+.promo-review-callout strong {
+  color: var(--ink);
+  font-size: 16px;
+  font-weight: var(--fw-title);
+}
+
+.promo-review-callout span {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.promo-review-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.promo-review-stats span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  border: 1px solid rgba(23, 21, 31, 0.12);
+  border-radius: 999px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.82);
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: var(--fw-title);
+}
+
+.promo-review-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 18px;
 }
 
 .promo-note {
@@ -2263,7 +2320,6 @@ h2 {
   align-items: center;
   justify-content: center;
   min-height: 46px;
-  margin-top: 18px;
   align-self: flex-start;
   border: 2px solid var(--ink);
   border-radius: 8px;
@@ -2277,6 +2333,11 @@ h2 {
 
 .promo-action:hover {
   transform: translate(-2px, -2px);
+}
+
+.promo-action-secondary {
+  background: #fff;
+  color: var(--ink);
 }
 
 .order-section {
@@ -2554,6 +2615,10 @@ h2 {
   font-weight: var(--fw-title);
 }
 
+.contact-actions > .btn {
+  min-width: 190px;
+}
+
 .contact-hint {
   max-width: 740px;
   margin-top: 16px;
@@ -2561,6 +2626,43 @@ h2 {
   font-size: var(--fs-body-sm);
   font-weight: var(--fw-strong);
   line-height: 1.52;
+}
+
+.contact-review-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  margin-top: 22px;
+  padding: 18px;
+  border: 1px solid rgba(23, 21, 31, 0.12);
+  border-radius: 10px;
+  background: linear-gradient(180deg, #fff8dd 0%, #fff4c8 100%);
+  box-shadow: 0 14px 30px rgba(23, 21, 31, 0.08);
+}
+
+.contact-review-copy {
+  display: grid;
+  gap: 6px;
+}
+
+.contact-review-copy strong {
+  color: var(--ink);
+  font-size: 18px;
+  font-weight: var(--fw-title);
+}
+
+.contact-review-copy span {
+  color: rgba(23, 21, 31, 0.72);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.contact-review-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
 }
 
 .thanks-page {
@@ -3227,6 +3329,11 @@ h2 {
     text-align: left;
   }
 
+  .site-footer-legal {
+    justify-items: start;
+    text-align: left;
+  }
+
   .cookie-banner {
     left: 12px;
     right: 12px;
@@ -3294,6 +3401,15 @@ h2 {
   .contact-card,
   .contact-info {
     padding: 22px;
+  }
+
+  .contact-review-panel {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .contact-review-actions {
+    justify-content: stretch;
   }
 
   .order-benefits,

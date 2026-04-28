@@ -610,12 +610,12 @@ function renderCalculatorFields() {
         <select id="calcPhotoFormat">${formatOptions}</select>
       </label>
       <label>
-        <span>Бумага или тип</span>
+        <span>Бумага</span>
         <select id="calcPhotoPaper"></select>
       </label>
       <label>
         <span>Количество</span>
-        <input id="calcQuantity" type="number" min="1" step="1" value="10" inputmode="numeric" />
+        <input id="calcQuantity" type="number" min="1" step="1" value="1" inputmode="numeric" />
       </label>
       <label class="calculator-toggle">
         <input id="calcPhotoCustom" type="checkbox" />
@@ -1253,17 +1253,20 @@ function populatePhotoPaperField() {
     return;
   }
 
-  const group = getPhotoFormatGroups().find((item) => item.format === formatSelect.value);
-  const options = group?.options || [];
+  const currentValue = paperSelect.value || "matte";
+  const finishOptions = [
+    { id: "matte", title: "Матовая" },
+    { id: "glossy", title: "Глянцевая" },
+  ];
 
-  paperSelect.innerHTML = options
+  paperSelect.innerHTML = finishOptions
     .map(
       (option) =>
-        `<option value="${option.id}">${option.parameters?.paperType || option.title}</option>`
+        `<option value="${option.id}"${currentValue === option.id ? " selected" : ""}>${option.title}</option>`
     )
     .join("");
 
-  paperSelect.disabled = options.length <= 1;
+  paperSelect.disabled = false;
 }
 
 function getActiveQuantityValue() {
@@ -1278,8 +1281,8 @@ function buildPhotoCartItem(assignId = false) {
   const customInput = calcFields?.querySelector("#calcPhotoCustom");
   const quantity = getActiveQuantityValue();
   const group = getPhotoFormatGroups().find((item) => item.format === formatSelect?.value);
-  const option =
-    group?.options.find((item) => item.id === paperSelect?.value) || group?.options?.[0] || null;
+  const option = group?.options?.[0] || null;
+  const paperFinish = paperSelect?.value === "glossy" ? "Глянцевая" : "Матовая";
 
   if (!option) {
     return { error: "Для такого сочетания фото нет тарифа." };
@@ -1304,7 +1307,7 @@ function buildPhotoCartItem(assignId = false) {
     subtotal: unitPrice * quantity,
     tierLabel: priceData.tierLabel,
     title: `Печать фото ${option.title}`,
-    description: `${option.parameters?.size || ""}, ${option.parameters?.paperType || option.title}`.replace(
+    description: `${option.parameters?.size || ""}, ${paperFinish}`.replace(
       /^,\s*/,
       ""
     ),
@@ -1312,7 +1315,7 @@ function buildPhotoCartItem(assignId = false) {
     baseUnitPrice,
     originalSubtotal: baseUnitPrice * quantity,
     nextTierHint: buildNextTierHint(priceData, quantity),
-    mergeConfig: { kind: "photo_print", optionId: option.id, customSurcharge },
+    mergeConfig: { kind: "photo_print", optionId: option.id, customSurcharge, paperFinish },
   };
 }
 
@@ -2131,6 +2134,7 @@ function rebuildMergedCartItem(existingItem, totalQuantity) {
     const priceData = calculateTieredUnitPrice(option, totalQuantity);
     if (!option || !priceData) return existingItem;
     const customSurcharge = config.customSurcharge || 0;
+    const paperFinish = config.paperFinish || "Матовая";
     const unitPrice = priceData.unitPrice + customSurcharge;
     const baseUnitPrice = (getBaseTierPrice(option) ?? priceData.unitPrice) + customSurcharge;
     return {
@@ -2139,6 +2143,7 @@ function rebuildMergedCartItem(existingItem, totalQuantity) {
       unitPrice,
       subtotal: unitPrice * totalQuantity,
       tierLabel: priceData.tierLabel,
+      description: `${option.parameters?.size || ""}, ${paperFinish}`.replace(/^,\s*/, ""),
       displayQuantity: undefined,
       displayUnit: undefined,
       displayLineTotal: undefined,
