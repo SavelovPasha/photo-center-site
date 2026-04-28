@@ -1,5 +1,6 @@
 ﻿const tabs = document.querySelectorAll(".tab");
 const cards = document.querySelectorAll(".price-card");
+const priceTableCards = document.querySelectorAll(".price-table-card");
 const serviceCards = document.querySelectorAll(".service-card[data-target-filter]");
 const searchInput = document.querySelector("#priceSearch");
 const actionMenus = document.querySelectorAll(".header-menu, .action-menu, .header-nav-menu");
@@ -36,6 +37,145 @@ const calcCartNote = document.querySelector("#calcCartNote");
 const calcCartTransfer = document.querySelector("#calcCartTransfer");
 
 let activeFilter = "all";
+
+function setPriceCardOpen(card, isOpen) {
+  if (!card) {
+    return;
+  }
+
+  const toggle = card.querySelector(".price-card-toggle");
+  const body = card.querySelector(".price-card-body");
+  if (!toggle || !body) {
+    return;
+  }
+
+  card.classList.toggle("is-open", isOpen);
+  toggle.setAttribute("aria-expanded", String(isOpen));
+  body.hidden = !isOpen;
+}
+
+function closePriceCards() {
+  priceTableCards.forEach((card) => setPriceCardOpen(card, false));
+}
+
+function openVisiblePriceCards() {
+  priceTableCards.forEach((card) => {
+    setPriceCardOpen(card, !card.classList.contains("hidden"));
+  });
+}
+
+function setPriceSubcategoryOpen(row, isOpen) {
+  if (!row) {
+    return;
+  }
+
+  const button = row.querySelector(".price-subcategory-toggle");
+  const rows = row._subcategoryRows || [];
+  row.classList.toggle("is-open", isOpen);
+  if (button) {
+    button.setAttribute("aria-expanded", String(isOpen));
+  }
+  rows.forEach((item) => {
+    item.hidden = !isOpen;
+  });
+}
+
+function setPriceSubcategoriesOpen(card, isOpen) {
+  if (!card) {
+    return;
+  }
+
+  card.querySelectorAll(".price-subcategory-row").forEach((row) => {
+    setPriceSubcategoryOpen(row, isOpen);
+  });
+}
+
+function closeSiblingPriceCards(activeCard) {
+  priceTableCards.forEach((card) => {
+    if (card !== activeCard) {
+      setPriceCardOpen(card, false);
+    }
+  });
+}
+
+function closeSiblingSubcategories(activeRow) {
+  const tbody = activeRow?.parentElement;
+  if (!tbody) {
+    return;
+  }
+
+  tbody.querySelectorAll(".price-subcategory-row").forEach((row) => {
+    if (row !== activeRow) {
+      setPriceSubcategoryOpen(row, false);
+    }
+  });
+}
+
+function keepPriceItemInView(element) {
+  if (!element) {
+    return;
+  }
+
+  window.requestAnimationFrame(() => {
+    const rect = element.getBoundingClientRect();
+    const topLimit = 88;
+    const bottomLimit = window.innerHeight - 80;
+    if (rect.top < topLimit || rect.top > bottomLimit) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  });
+}
+
+function setupPriceSubcategories() {
+  document.querySelectorAll(".price-table").forEach((table, tableIndex) => {
+    const rows = Array.from(table.querySelectorAll("tbody tr"));
+    rows.forEach((row, rowIndex) => {
+      if (!row.classList.contains("price-subcategory-row")) {
+        return;
+      }
+
+      const cell = row.querySelector("td");
+      if (!cell) {
+        return;
+      }
+
+      const title = cell.textContent.trim();
+      let button = cell.querySelector(".price-subcategory-toggle");
+      if (!button) {
+        button = document.createElement("button");
+        button.className = "price-subcategory-toggle";
+        button.type = "button";
+        button.textContent = title;
+        button.setAttribute("aria-expanded", "false");
+        button.setAttribute("aria-controls", `price-subcategory-${tableIndex}-${rowIndex}`);
+        cell.textContent = "";
+        cell.append(button);
+      }
+
+      const items = [];
+      let sibling = row.nextElementSibling;
+      while (sibling && !sibling.classList.contains("price-subcategory-row")) {
+        sibling.classList.add("price-subcategory-item");
+        sibling.dataset.subcategoryOwner = button.getAttribute("aria-controls");
+        items.push(sibling);
+        sibling = sibling.nextElementSibling;
+      }
+
+      row._subcategoryRows = items;
+      button.addEventListener("click", () => {
+        const nextOpen = !row.classList.contains("is-open");
+        if (nextOpen) {
+          closeSiblingSubcategories(row);
+        }
+        setPriceSubcategoryOpen(row, nextOpen);
+        if (nextOpen) {
+          keepPriceItemInView(row);
+        }
+      });
+      setPriceSubcategoryOpen(row, false);
+    });
+  });
+}
 
 function syncPriceTableLabels() {
   document.querySelectorAll(".price-table").forEach((table) => {
@@ -2574,6 +2714,11 @@ function setPriceFilter(filter) {
         : `Показаны цены по выбранной услуге: ${filterLabels[activeFilter] || "выбранный раздел"}.`;
   }
   applyFilters();
+  if (activeFilter === "all" && !normalize(searchInput.value)) {
+    closePriceCards();
+  } else {
+    openVisiblePriceCards();
+  }
 }
 
 function selectOrderService(serviceName) {
@@ -2616,10 +2761,39 @@ function applyFilters() {
     }
   });
 
+  if (query) {
+    openVisiblePriceCards();
+    priceTableCards.forEach((card) => {
+      if (!card.classList.contains("hidden")) {
+        setPriceSubcategoriesOpen(card, true);
+      }
+    });
+  }
+
   if (priceEmptyMessage) {
     priceEmptyMessage.classList.toggle("is-visible", visibleCount === 0);
   }
 }
+
+priceTableCards.forEach((card) => {
+  const toggle = card.querySelector(".price-card-toggle");
+  if (!toggle) {
+    return;
+  }
+
+  toggle.addEventListener("click", () => {
+    const nextOpen = !card.classList.contains("is-open");
+    if (nextOpen) {
+      closeSiblingPriceCards(card);
+    }
+    setPriceCardOpen(card, nextOpen);
+    if (nextOpen) {
+      keepPriceItemInView(card);
+    }
+  });
+});
+
+setupPriceSubcategories();
 
 tabs.forEach((tab) => {
   tab.addEventListener("click", () => {

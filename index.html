@@ -361,12 +361,15 @@
 
         <div class="price-grid price-table-grid" id="priceGrid">
           <article class="price-card price-table-card price-card-hot" data-category="photo">
+            <button class="price-card-toggle" type="button" aria-expanded="false">
             <div class="price-card-top">
               <span class="price-hot-tag">хит</span>
               <span class="price-chip">от 20 ₽</span>
               <span class="price-meta">форматы от A8 до A3</span>
             </div>
             <h3>Печать фото</h3>
+            </button>
+            <div class="price-card-body" hidden>
             <div class="price-table-wrap">
               <table class="price-table photo-price-table detail-price-table">
                 <thead><tr><th>Формат</th><th>Размер</th><th>Бумага или тип</th><th>Кол-во</th><th>Цена</th></tr></thead>
@@ -383,19 +386,24 @@
               </table>
             </div>
             <p class="coverage-note">Печать нестандартного размера рассчитывается по ближайшему формату из таблицы +15 ₽ за 1 фото.</p>
+            </div>
           </article>
 
           <article class="price-card price-table-card accent-card price-card-hot" data-category="docs">
+            <button class="price-card-toggle" type="button" aria-expanded="false">
             <div class="price-card-top">
               <span class="price-hot-tag">хит</span>
               <span class="price-chip">от 80 ₽</span>
               <span class="price-meta">комплекты, электронное фото, ретушь</span>
             </div>
             <h3>Фото на документы</h3>
+            </button>
+            <div class="price-card-body" hidden>
             <div class="price-table-wrap">
               <table class="price-table">
                 <thead><tr><th>Услуга</th><th>Формат</th><th>Комплект или описание</th><th>Цена</th></tr></thead>
                 <tbody>
+                  <tr class="price-subcategory-row"><td colspan="4">Фото на документы</td></tr>
                   <tr><td>Фото на документы</td><td>3×4 / 2×3</td><td>Комплект 4 шт.; пропуск, студенческий, мед.книжка, военный билет и др.</td><td>500 ₽</td></tr>
                   <tr><td>Фото на документы</td><td>3,5×4,5</td><td>Комплект 4 шт.</td><td>600 ₽</td></tr>
                   <tr><td>Фото на документы</td><td>5×5</td><td>С печатью, 4 шт.</td><td>800 ₽</td></tr>
@@ -404,8 +412,10 @@
                   <tr><td>Фото на документы</td><td>9×12</td><td>Пакет услуг, 1 шт.</td><td>700 ₽</td></tr>
                   <tr><td>Фото на документы</td><td>9×12</td><td>Готовое фото, 1 шт.</td><td>300 ₽</td></tr>
                   <tr><td>Подстановка костюма</td><td>Для фото</td><td>Служебные формы со званиями, классическая мужская и женская одежда</td><td>150 ₽</td></tr>
+                  <tr class="price-subcategory-row"><td colspan="4">Готовые комплекты</td></tr>
                   <tr><td>Готовый комплект</td><td>2 / 4 / 6 / 8 / 10 шт.</td><td>Печать готовых фото на документы</td><td><div class="price-detail-list price-detail-list--set"><span class="price-detail-item"><span class="price-detail-label">2 шт.</span><span class="price-detail-value">250 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">4 шт.</span><span class="price-detail-value">350 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">6 шт.</span><span class="price-detail-value">500 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">8 шт.</span><span class="price-detail-value">550 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">10 шт.</span><span class="price-detail-value">600 ₽</span></span></div></td></tr>
                   <tr><td>Дополнительный комплект</td><td>2 / 4 / 6 / 8 / 10 шт.</td><td>Дополнительная печать к комплекту</td><td><div class="price-detail-list price-detail-list--set"><span class="price-detail-item"><span class="price-detail-label">2 шт.</span><span class="price-detail-value">150 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">4 шт.</span><span class="price-detail-value">200 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">6 шт.</span><span class="price-detail-value">350 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">8 шт.</span><span class="price-detail-value">450 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">10 шт.</span><span class="price-detail-value">500 ₽</span></span></div></td></tr>
+                  <tr class="price-subcategory-row"><td colspan="4">Файлы и обработка</td></tr>
                   <tr><td>Электронное фото</td><td>Файл</td><td>Сфотографировать и обработать фото</td><td>450 ₽</td></tr>
                   <tr><td>Фото по пояс, обработка</td><td>1 фото</td><td>Сфотографировать по пояс, обработать. Бонус: печать фото 10×15</td><td>600 ₽</td></tr>
                   <tr><td>Ретушь фото</td><td>1 элемент</td><td>Цветокоррекция, покраснение</td><td>80 ₽</td></tr>
@@ -415,19 +425,25 @@
                 </tbody>
               </table>
             </div>
+            </div>
           </article>
 
           <article class="price-card price-table-card" data-category="digital">
+            <button class="price-card-toggle" type="button" aria-expanded="false">
             <div class="price-card-top">
               <span class="price-chip">от 20 ₽</span>
               <span class="price-meta">VHS, фотоплёнка, скан, отправка</span>
             </div>
             <h3>Оцифровка</h3>
+            </button>
+            <div class="price-card-body" hidden>
             <div class="price-table-wrap">
               <table class="price-table detail-price-table">
                 <thead><tr><th>Услуга</th><th>Носитель или режим</th><th>Описание</th><th>Цена</th></tr></thead>
                 <tbody>
+                  <tr class="price-subcategory-row"><td colspan="4">Видеокассеты</td></tr>
                   <tr><td>Оцифровка видеокассет</td><td>VHS / S-VHS / mini DV</td><td>Цена за минуту записи. Минимальная стоимость кассеты — 900 ₽.</td><td><div class="price-detail-list price-detail-list--digitize-video"><span class="price-detail-item"><span class="price-detail-label">1-99 мин</span><span class="price-detail-value">20 ₽ / мин</span></span><span class="price-detail-item"><span class="price-detail-label">100-299 мин</span><span class="price-detail-value">19 ₽ / мин</span></span><span class="price-detail-item"><span class="price-detail-label">300+ мин</span><span class="price-detail-value">18 ₽ / мин</span></span></div></td></tr>
+                  <tr class="price-subcategory-row"><td colspan="4">Фотоплёнка</td></tr>
                   <tr><td>Оцифровка фотоплёнки</td><td>10×15 / 1000×1500 pix</td><td>Бюджетный режим</td><td><div class="price-detail-list price-detail-list--digitize-roll"><span class="price-detail-item"><span class="price-detail-label">1-2 шт.</span><span class="price-detail-value">850 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">3-9 шт.</span><span class="price-detail-value">808 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">10+ шт.</span><span class="price-detail-value">765 ₽</span></span></div></td></tr>
                   <tr><td>Оцифровка фотоплёнки</td><td>21×30 / 2048×3089 pix</td><td>Стандартный режим</td><td><div class="price-detail-list price-detail-list--digitize-roll"><span class="price-detail-item"><span class="price-detail-label">1-2 шт.</span><span class="price-detail-value">950 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">3-9 шт.</span><span class="price-detail-value">903 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">10+ шт.</span><span class="price-detail-value">855 ₽</span></span></div></td></tr>
                   <tr><td>Оцифровка фотоплёнки</td><td>A2 / 4492×6774 pix</td><td>Максимальный режим</td><td><div class="price-detail-list price-detail-list--digitize-roll"><span class="price-detail-item"><span class="price-detail-label">1-2 шт.</span><span class="price-detail-value">1200 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">3-9 шт.</span><span class="price-detail-value">1140 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">10+ шт.</span><span class="price-detail-value">1080 ₽</span></span></div></td></tr>
@@ -435,62 +451,79 @@
                   <tr><td>Сканирование фотоплёнки</td><td>1 катушка</td><td>Сканирование плёнки</td><td><div class="price-detail-list price-detail-list--digitize-roll"><span class="price-detail-item"><span class="price-detail-label">1-2 шт.</span><span class="price-detail-value">700 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">3-9 шт.</span><span class="price-detail-value">665 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">10+ шт.</span><span class="price-detail-value">630 ₽</span></span></div></td></tr>
                   <tr><td>Порезанный кадр</td><td>1 кадр</td><td>Стандартный режим</td><td><div class="price-detail-list price-detail-list--digitize-frame"><span class="price-detail-item"><span class="price-detail-label">1-9 шт.</span><span class="price-detail-value">80 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">10-29 шт.</span><span class="price-detail-value">76 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">30+ шт.</span><span class="price-detail-value">72 ₽</span></span></div></td></tr>
                   <tr><td>Вытащить фотоплёнку</td><td>1 плёнка</td><td>В тёмном боксе</td><td>250 ₽</td></tr>
+                  <tr class="price-subcategory-row"><td colspan="4">Диски и флэш-накопители</td></tr>
                   <tr><td>Оцифровка с накопителя</td><td>1 ГБ</td><td>Перенос файлов из флешки или диска, кроме Blue ray</td><td><div class="price-detail-list price-detail-list--digitize-storage"><span class="price-detail-item"><span class="price-detail-label">1-4 ГБ</span><span class="price-detail-value">150 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">5-19 ГБ</span><span class="price-detail-value">143 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">20-49 ГБ</span><span class="price-detail-value">135 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">50+ ГБ</span><span class="price-detail-value">128 ₽</span></span></div></td></tr>
                   <tr><td>Диск CD / DVD</td><td>1 шт.</td><td>Товар</td><td>100 ₽</td></tr>
                 </tbody>
               </table>
             </div>
             <p class="coverage-note">После оцифровки фотоплёнки печать фото с этой плёнки идёт со скидкой 10%.</p>
+            </div>
           </article>
 
           <article class="price-card price-table-card" data-category="scan">
+            <button class="price-card-toggle" type="button" aria-expanded="false">
             <div class="price-card-top">
               <span class="price-chip">от 10 ₽</span>
               <span class="price-meta">документы, фото, отправка файлов</span>
             </div>
             <h3>Сканирование</h3>
+            </button>
+            <div class="price-card-body" hidden>
             <div class="price-table-wrap">
               <table class="price-table detail-price-table">
                 <thead><tr><th>Услуга</th><th>Формат или dpi</th><th>Описание</th><th>Цена</th></tr></thead>
                 <tbody>
+                  <tr class="price-subcategory-row"><td colspan="4">Документы</td></tr>
                   <tr><td>Сканирование документа</td><td>1 прокат</td><td>Документ</td><td><div class="price-detail-list price-detail-list--scan-doc"><span class="price-detail-item"><span class="price-detail-label">1-19 шт.</span><span class="price-detail-value">20 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">20-49 шт.</span><span class="price-detail-value">19 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">50+ шт.</span><span class="price-detail-value">18 ₽</span></span></div></td></tr>
                   <tr><td>Отправка файла</td><td>1 файл</td><td>Отправка готового файла</td><td>10 ₽</td></tr>
+                  <tr class="price-subcategory-row"><td colspan="4">Фото</td></tr>
                   <tr><td>Сканирование фото</td><td>A4, 600 dpi</td><td>Стандартное сканирование фото листом</td><td><div class="price-detail-list price-detail-list--scan-photo"><span class="price-detail-item"><span class="price-detail-label">1-9 шт.</span><span class="price-detail-value">50 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">10-19 шт.</span><span class="price-detail-value">48 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">20-49 шт.</span><span class="price-detail-value">45 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">50+ шт.</span><span class="price-detail-value">43 ₽</span></span></div></td></tr>
                   <tr><td>Оцифровка фото с обработкой</td><td>1200 dpi</td><td>Сканирование, кадрирование, цветокоррекция</td><td>170 ₽</td></tr>
                   <tr><td>Оцифровка фото с обработкой</td><td>2400 dpi</td><td>Сканирование, кадрирование, цветокоррекция</td><td>220 ₽</td></tr>
                 </tbody>
               </table>
             </div>
+            </div>
           </article>
 
           <article class="price-card price-table-card price-card-hot" data-category="print">
+            <button class="price-card-toggle" type="button" aria-expanded="false">
             <div class="price-card-top">
               <span class="price-hot-tag">хит</span>
               <span class="price-chip">от 12 ₽</span>
               <span class="price-meta">A4, A3, ч/б и цвет</span>
             </div>
             <h3>Ксерокопии и распечатка</h3>
+            </button>
+            <div class="price-card-body" hidden>
             <div class="price-table-wrap">
               <table class="price-table">
                 <thead><tr><th>Услуга</th><th>Формат</th><th>Тип печати</th><th>Цена</th></tr></thead>
                 <tbody>
+                  <tr class="price-subcategory-row"><td colspan="4">A4</td></tr>
                   <tr><td>Ксерокопия</td><td>A4</td><td>Черно-белое / Цвет</td><td><div class="price-group-stack"><div class="price-group"><span class="price-group-title">Ч/б</span><div class="price-detail-list price-detail-list--print-a4"><span class="price-detail-item"><span class="price-detail-label">1-29 шт.</span><span class="price-detail-value">25 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">30-99 шт.</span><span class="price-detail-value">24 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">100-299 шт.</span><span class="price-detail-value">23 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">300+ шт.</span><span class="price-detail-value">22 ₽</span></span></div></div><div class="price-group"><span class="price-group-title price-group-title--color">Цвет</span><div class="price-detail-list price-detail-list--print-a4"><span class="price-detail-item"><span class="price-detail-label">1-29 шт.</span><span class="price-detail-value">45 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">30-99 шт.</span><span class="price-detail-value">43 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">100-299 шт.</span><span class="price-detail-value">41 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">300+ шт.</span><span class="price-detail-value">39 ₽</span></span></div></div></div></td></tr>
                   <tr><td>Доп. прокат</td><td>A4</td><td>Черно-белое / Цвет</td><td><div class="price-group-stack"><div class="price-group"><span class="price-group-title">Ч/б</span><div class="price-detail-list price-detail-list-single"><span class="price-detail-item"><span class="price-detail-value">12 ₽</span></span></div></div><div class="price-group"><span class="price-group-title price-group-title--color">Цвет</span><div class="price-detail-list price-detail-list-single"><span class="price-detail-item"><span class="price-detail-value">20 ₽</span></span></div></div></div></td></tr>
                   <tr><td>Распечатка</td><td>A4</td><td>Черно-белое / Цвет</td><td><div class="price-group-stack"><div class="price-group"><span class="price-group-title">Ч/б</span><div class="price-detail-list price-detail-list--print-a4"><span class="price-detail-item"><span class="price-detail-label">1-29 шт.</span><span class="price-detail-value">20 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">30-99 шт.</span><span class="price-detail-value">19 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">100-299 шт.</span><span class="price-detail-value">18 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">300+ шт.</span><span class="price-detail-value">17 ₽</span></span></div></div><div class="price-group"><span class="price-group-title price-group-title--color">Цвет</span><div class="price-detail-list price-detail-list--print-a4"><span class="price-detail-item"><span class="price-detail-label">1-29 шт.</span><span class="price-detail-value">40 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">30-99 шт.</span><span class="price-detail-value">38 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">100-299 шт.</span><span class="price-detail-value">36 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">300+ шт.</span><span class="price-detail-value">34 ₽</span></span></div></div></div></td></tr>
+                  <tr class="price-subcategory-row"><td colspan="4">A3</td></tr>
                   <tr><td>Распечатка</td><td>A3</td><td>Черно-белое / Цвет</td><td><div class="price-group-stack"><div class="price-group"><span class="price-group-title">Ч/б</span><div class="price-detail-list price-detail-list--print-a3"><span class="price-detail-item"><span class="price-detail-label">1-19 шт.</span><span class="price-detail-value">50 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">20-49 шт.</span><span class="price-detail-value">48 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">50+ шт.</span><span class="price-detail-value">45 ₽</span></span></div></div><div class="price-group"><span class="price-group-title price-group-title--color">Цвет</span><div class="price-detail-list price-detail-list--print-a3"><span class="price-detail-item"><span class="price-detail-label">1-19 шт.</span><span class="price-detail-value">85 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">20-49 шт.</span><span class="price-detail-value">81 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">50+ шт.</span><span class="price-detail-value">77 ₽</span></span></div></div></div></td></tr>
                   <tr><td>Доп. прокат</td><td>A3</td><td>Черно-белое / Цвет</td><td><div class="price-group-stack"><div class="price-group"><span class="price-group-title">Ч/б</span><div class="price-detail-list price-detail-list-single"><span class="price-detail-item"><span class="price-detail-value">25 ₽</span></span></div></div><div class="price-group"><span class="price-group-title price-group-title--color">Цвет</span><div class="price-detail-list price-detail-list-single"><span class="price-detail-item"><span class="price-detail-value">45 ₽</span></span></div></div></div></td></tr>
                 </tbody>
               </table>
             </div>
             <p class="coverage-note">При заливке бумаги свыше 50% стоимость увеличивается на 50%.</p>
+            </div>
           </article>
 
           <article class="price-card price-table-card" data-category="binding">
+            <button class="price-card-toggle" type="button" aria-expanded="false">
             <div class="price-card-top">
               <span class="price-chip">от 10 ₽</span>
               <span class="price-meta">пластиковая и металлическая пружина</span>
             </div>
             <h3>Брошюровка</h3>
+            </button>
+            <div class="price-card-body" hidden>
             <div class="price-table-wrap">
               <table class="price-table">
                 <thead><tr><th>Услуга</th><th>Объём</th><th>Материал или описание</th><th>Цена</th></tr></thead>
@@ -506,14 +539,18 @@
                 </tbody>
               </table>
             </div>
+            </div>
           </article>
 
           <article class="price-card price-table-card" data-category="lamination">
+            <button class="price-card-toggle" type="button" aria-expanded="false">
             <div class="price-card-top">
               <span class="price-chip">от 50 ₽</span>
               <span class="price-meta">глянец, мат, 100-150 мкм</span>
             </div>
             <h3>Ламинирование</h3>
+            </button>
+            <div class="price-card-body" hidden>
             <div class="price-table-wrap">
               <table class="price-table">
                 <thead><tr><th>Услуга</th><th>Формат</th><th>Тип плёнки</th><th>Цена</th></tr></thead>
@@ -526,46 +563,60 @@
                 </tbody>
               </table>
             </div>
+            </div>
           </article>
 
           <article class="price-card price-table-card" data-category="paper">
+            <button class="price-card-toggle" type="button" aria-expanded="false">
             <div class="price-card-top">
               <span class="price-chip">от 45 ₽</span>
               <span class="price-meta">матовая / мелованная бумага</span>
             </div>
             <h3>Плотная бумага</h3>
+            </button>
+            <div class="price-card-body" hidden>
             <div class="price-table-wrap">
               <table class="price-table paper-price-table">
                 <thead><tr><th>Формат</th><th>Бумага</th><th>Стороны</th><th>Цена</th></tr></thead>
                 <tbody>
+                  <tr class="price-subcategory-row"><td colspan="4">A3</td></tr>
                   <tr><td>A3</td><td>Матовая / мелованная 200 г</td><td>Односторонняя</td><td><div class="price-group-stack"><div class="price-group"><span class="price-group-title">1 сторона</span><div class="price-detail-list price-detail-list--side price-detail-list--paper-4"><span class="price-detail-item"><span class="price-detail-label">1-2 шт.</span><span class="price-detail-value">110 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">3-5 шт.</span><span class="price-detail-value">99 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">6-10 шт.</span><span class="price-detail-value">94 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">11+ шт.</span><span class="price-detail-value">88 ₽</span></span></div></div></div></td></tr>
+                  <tr class="price-subcategory-row"><td colspan="4">A4</td></tr>
                   <tr><td>A4</td><td>Матовая / мелованная 100-190 г</td><td>Односторонняя / двухсторонняя</td><td><div class="price-group-stack"><div class="price-group"><span class="price-group-title">1 сторона</span><div class="price-detail-list price-detail-list--side price-detail-list--paper-4"><span class="price-detail-item"><span class="price-detail-label">1-4 шт.</span><span class="price-detail-value">110 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">5-9 шт.</span><span class="price-detail-value">99 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">10-29 шт.</span><span class="price-detail-value">94 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">30+ шт.</span><span class="price-detail-value">88 ₽</span></span></div></div><div class="price-group"><span class="price-group-title">2 стороны</span><div class="price-detail-list price-detail-list--side price-detail-list--paper-4"><span class="price-detail-item"><span class="price-detail-label">1-4 шт.</span><span class="price-detail-value">165 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">5-9 шт.</span><span class="price-detail-value">149 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">10-29 шт.</span><span class="price-detail-value">140 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">30+ шт.</span><span class="price-detail-value">132 ₽</span></span></div></div></div></td></tr>
                   <tr><td>A4</td><td>Матовая / мелованная 200-300 г</td><td>Односторонняя / двухсторонняя</td><td><div class="price-group-stack"><div class="price-group"><span class="price-group-title">1 сторона</span><div class="price-detail-list price-detail-list--side price-detail-list--paper-4"><span class="price-detail-item"><span class="price-detail-label">1-4 шт.</span><span class="price-detail-value">140 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">5-9 шт.</span><span class="price-detail-value">126 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">10-29 шт.</span><span class="price-detail-value">119 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">30+ шт.</span><span class="price-detail-value">112 ₽</span></span></div></div><div class="price-group"><span class="price-group-title">2 стороны</span><div class="price-detail-list price-detail-list--side price-detail-list--paper-4"><span class="price-detail-item"><span class="price-detail-label">1-4 шт.</span><span class="price-detail-value">210 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">5-9 шт.</span><span class="price-detail-value">189 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">10-29 шт.</span><span class="price-detail-value">179 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">30+ шт.</span><span class="price-detail-value">168 ₽</span></span></div></div></div></td></tr>
+                  <tr class="price-subcategory-row"><td colspan="4">A5</td></tr>
                   <tr><td>A5</td><td>Матовая / мелованная 100-190 г</td><td>Односторонняя / двухсторонняя</td><td><div class="price-group-stack"><div class="price-group"><span class="price-group-title">1 сторона</span><div class="price-detail-list price-detail-list--side price-detail-list--paper-4"><span class="price-detail-item"><span class="price-detail-label">1-9 шт.</span><span class="price-detail-value">80 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">10-14 шт.</span><span class="price-detail-value">72 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">15-29 шт.</span><span class="price-detail-value">68 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">30+ шт.</span><span class="price-detail-value">64 ₽</span></span></div></div><div class="price-group"><span class="price-group-title">2 стороны</span><div class="price-detail-list price-detail-list--side price-detail-list--paper-4"><span class="price-detail-item"><span class="price-detail-label">1-9 шт.</span><span class="price-detail-value">120 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">10-14 шт.</span><span class="price-detail-value">108 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">15-29 шт.</span><span class="price-detail-value">102 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">30+ шт.</span><span class="price-detail-value">96 ₽</span></span></div></div></div></td></tr>
                   <tr><td>A5</td><td>Матовая / мелованная 200-300 г</td><td>Односторонняя / двухсторонняя</td><td><div class="price-group-stack"><div class="price-group"><span class="price-group-title">1 сторона</span><div class="price-detail-list price-detail-list--side price-detail-list--paper-4"><span class="price-detail-item"><span class="price-detail-label">1-9 шт.</span><span class="price-detail-value">95 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">10-14 шт.</span><span class="price-detail-value">86 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">15-29 шт.</span><span class="price-detail-value">81 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">30+ шт.</span><span class="price-detail-value">76 ₽</span></span></div></div><div class="price-group"><span class="price-group-title">2 стороны</span><div class="price-detail-list price-detail-list--side price-detail-list--paper-4"><span class="price-detail-item"><span class="price-detail-label">1-9 шт.</span><span class="price-detail-value">140 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">10-14 шт.</span><span class="price-detail-value">126 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">15-29 шт.</span><span class="price-detail-value">119 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">30+ шт.</span><span class="price-detail-value">112 ₽</span></span></div></div></div></td></tr>
+                  <tr class="price-subcategory-row"><td colspan="4">A6</td></tr>
                   <tr><td>A6</td><td>Матовая / мелованная 100-190 г</td><td>Односторонняя / двухсторонняя</td><td><div class="price-group-stack"><div class="price-group"><span class="price-group-title">1 сторона</span><div class="price-detail-list price-detail-list--side price-detail-list--paper-6"><span class="price-detail-item"><span class="price-detail-label">1-9 шт.</span><span class="price-detail-value">45 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">10-29 шт.</span><span class="price-detail-value">41 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">30-49 шт.</span><span class="price-detail-value">38 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">50-99 шт.</span><span class="price-detail-value">36 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">100-199 шт.</span><span class="price-detail-value">34 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">200+ шт.</span><span class="price-detail-value">32 ₽</span></span></div></div><div class="price-group"><span class="price-group-title">2 стороны</span><div class="price-detail-list price-detail-list--side price-detail-list--paper-6"><span class="price-detail-item"><span class="price-detail-label">1-9 шт.</span><span class="price-detail-value">70 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">10-29 шт.</span><span class="price-detail-value">63 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">30-49 шт.</span><span class="price-detail-value">60 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">50-99 шт.</span><span class="price-detail-value">56 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">100-199 шт.</span><span class="price-detail-value">53 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">200+ шт.</span><span class="price-detail-value">49 ₽</span></span></div></div></div></td></tr>
                   <tr><td>A6</td><td>Матовая / мелованная 200-300 г</td><td>Односторонняя / двухсторонняя</td><td><div class="price-group-stack"><div class="price-group"><span class="price-group-title">1 сторона</span><div class="price-detail-list price-detail-list--side price-detail-list--paper-6"><span class="price-detail-item"><span class="price-detail-label">1-9 шт.</span><span class="price-detail-value">55 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">10-29 шт.</span><span class="price-detail-value">50 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">30-49 шт.</span><span class="price-detail-value">47 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">50-99 шт.</span><span class="price-detail-value">44 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">100-199 шт.</span><span class="price-detail-value">41 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">200+ шт.</span><span class="price-detail-value">39 ₽</span></span></div></div><div class="price-group"><span class="price-group-title">2 стороны</span><div class="price-detail-list price-detail-list--side price-detail-list--paper-6"><span class="price-detail-item"><span class="price-detail-label">1-9 шт.</span><span class="price-detail-value">85 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">10-29 шт.</span><span class="price-detail-value">77 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">30-49 шт.</span><span class="price-detail-value">72 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">50-99 шт.</span><span class="price-detail-value">68 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">100-199 шт.</span><span class="price-detail-value">64 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">200+ шт.</span><span class="price-detail-value">60 ₽</span></span></div></div></div></td></tr>
                 </tbody>
               </table>
             </div>
             <p class="coverage-note">При заливке бумаги свыше 50% стоимость увеличивается на 50%.</p>
+            </div>
           </article>
 
           <article class="price-card price-table-card" data-category="sticker">
+            <button class="price-card-toggle" type="button" aria-expanded="false">
             <div class="price-card-top">
               <span class="price-chip">от 70 ₽</span>
               <span class="price-meta">бумага и фотобумага A3-A7</span>
             </div>
             <h3>Самоклеющаяся бумага</h3>
+            </button>
+            <div class="price-card-body" hidden>
             <div class="price-table-wrap">
               <table class="price-table sticker-price-table">
                 <thead><tr><th>Материал</th><th>Формат</th><th>Описание</th><th>Цена</th></tr></thead>
                 <tbody>
+                  <tr class="price-subcategory-row"><td colspan="4">Самоклеящаяся бумага</td></tr>
                   <tr><td>Самоклеющаяся бумага</td><td>A3</td><td>Обычная бумага</td><td><div class="price-detail-list price-detail-list--sticker"><span class="price-detail-item"><span class="price-detail-label">1-2 шт.</span><span class="price-detail-value">150 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">3-9 шт.</span><span class="price-detail-value">143 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">10+ шт.</span><span class="price-detail-value">135 ₽</span></span></div></td></tr>
                   <tr><td>Самоклеющаяся бумага</td><td>A4</td><td>Обычная бумага</td><td><div class="price-detail-list price-detail-list--sticker"><span class="price-detail-item"><span class="price-detail-label">1-2 шт.</span><span class="price-detail-value">100 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">3-9 шт.</span><span class="price-detail-value">95 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">10+ шт.</span><span class="price-detail-value">90 ₽</span></span></div></td></tr>
                   <tr><td>Самоклеющаяся бумага</td><td>A5</td><td>Обычная бумага</td><td><div class="price-detail-list price-detail-list--sticker"><span class="price-detail-item"><span class="price-detail-label">1-2 шт.</span><span class="price-detail-value">90 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">3-9 шт.</span><span class="price-detail-value">86 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">10+ шт.</span><span class="price-detail-value">81 ₽</span></span></div></td></tr>
                   <tr><td>Самоклеющаяся бумага</td><td>A6</td><td>Обычная бумага</td><td><div class="price-detail-list price-detail-list--sticker"><span class="price-detail-item"><span class="price-detail-label">1-2 шт.</span><span class="price-detail-value">80 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">3-9 шт.</span><span class="price-detail-value">76 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">10+ шт.</span><span class="price-detail-value">72 ₽</span></span></div></td></tr>
                   <tr><td>Самоклеющаяся бумага</td><td>A7</td><td>Обычная бумага</td><td><div class="price-detail-list price-detail-list--sticker"><span class="price-detail-item"><span class="price-detail-label">1-2 шт.</span><span class="price-detail-value">70 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">3-9 шт.</span><span class="price-detail-value">67 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">10+ шт.</span><span class="price-detail-value">63 ₽</span></span></div></td></tr>
+                  <tr class="price-subcategory-row"><td colspan="4">Самоклеящаяся фотобумага</td></tr>
                   <tr><td>Самоклеющаяся фотобумага</td><td>A3</td><td>Фотобумага</td><td><div class="price-detail-list price-detail-list--sticker"><span class="price-detail-item"><span class="price-detail-label">1-2 шт.</span><span class="price-detail-value">350 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">3-9 шт.</span><span class="price-detail-value">333 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">10+ шт.</span><span class="price-detail-value">315 ₽</span></span></div></td></tr>
                   <tr><td>Самоклеющаяся фотобумага</td><td>A4</td><td>Фотобумага</td><td><div class="price-detail-list price-detail-list--sticker"><span class="price-detail-item"><span class="price-detail-label">1-2 шт.</span><span class="price-detail-value">250 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">3-9 шт.</span><span class="price-detail-value">238 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">10+ шт.</span><span class="price-detail-value">225 ₽</span></span></div></td></tr>
                   <tr><td>Самоклеющаяся фотобумага</td><td>A5</td><td>Фотобумага</td><td><div class="price-detail-list price-detail-list--sticker"><span class="price-detail-item"><span class="price-detail-label">1-2 шт.</span><span class="price-detail-value">100 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">3-9 шт.</span><span class="price-detail-value">95 ₽</span></span><span class="price-detail-item"><span class="price-detail-label">10+ шт.</span><span class="price-detail-value">90 ₽</span></span></div></td></tr>
@@ -574,15 +625,19 @@
                 </tbody>
               </table>
             </div>
+            </div>
           </article>
 
           <article class="price-card price-table-card accent-card price-card-hot" data-category="gifts">
+            <button class="price-card-toggle" type="button" aria-expanded="false">
             <div class="price-card-top">
               <span class="price-hot-tag">хит</span>
               <span class="price-chip">от 100 ₽</span>
               <span class="price-meta">кружки, футболки, брелоки, магниты</span>
             </div>
             <h3>Сувенирная печать</h3>
+            </button>
+            <div class="price-card-body" hidden>
             <div class="price-table-wrap">
               <table class="price-table">
                 <thead><tr><th>Изделие</th><th>Формат или размер</th><th>Описание</th><th>Цена</th></tr></thead>
@@ -629,6 +684,7 @@
               </table>
             </div>
             <p class="coverage-note">В сувенирной печати скидка 10% действует при заказе любых изделий от 2 шт.</p>
+            </div>
           </article>
         </div>
         <p class="price-note">Для нестандартных заказов, спорных макетов и сочетаний скидок лучше уточнить итоговую стоимость в сообщениях.</p>

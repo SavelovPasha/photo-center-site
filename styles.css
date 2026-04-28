@@ -1660,6 +1660,63 @@ h2 {
 
 .price-table-card {
   gap: 18px;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.price-card-toggle {
+  display: grid;
+  width: 100%;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 16px;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.price-card-toggle::after {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border: 2px solid var(--ink);
+  border-radius: 8px;
+  background: var(--yellow);
+  color: var(--ink);
+  content: "+";
+  font-size: 22px;
+  font-weight: var(--fw-accent);
+  line-height: 1;
+  box-shadow: 3px 3px 0 rgba(23, 21, 31, 0.18);
+}
+
+.price-table-card.is-open .price-card-toggle::after {
+  content: "−";
+}
+
+.price-card-toggle .price-card-top,
+.price-card-toggle h3 {
+  grid-column: 1;
+}
+
+.price-card-toggle:focus-visible {
+  outline: 3px solid rgba(0, 166, 118, 0.42);
+  outline-offset: 6px;
+  border-radius: 8px;
+}
+
+.price-card-body {
+  display: grid;
+  gap: 12px;
+}
+
+.price-card-body[hidden] {
+  display: none;
 }
 
 .price-table-wrap {
@@ -1702,13 +1759,50 @@ h2 {
 
 .price-subcategory-row td {
   border-bottom: 1px solid rgba(23, 21, 31, 0.12);
-  padding: 14px;
+  padding: 0;
   background: rgba(247, 201, 72, 0.2);
   color: var(--ink);
   font-size: 13px;
   font-weight: var(--fw-accent);
   letter-spacing: 0;
   text-transform: uppercase;
+}
+
+.price-subcategory-toggle {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border: 0;
+  padding: 14px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: left;
+  text-transform: inherit;
+  cursor: pointer;
+}
+
+.price-subcategory-toggle::after {
+  content: "+";
+  font-size: 18px;
+  font-weight: var(--fw-accent);
+  line-height: 1;
+}
+
+.price-subcategory-row.is-open .price-subcategory-toggle::after {
+  content: "−";
+}
+
+.price-subcategory-toggle:focus-visible {
+  outline: 3px solid rgba(0, 166, 118, 0.42);
+  outline-offset: -3px;
+}
+
+.price-subcategory-item[hidden] {
+  display: none;
 }
 
 .price-table td:last-child,
@@ -3025,7 +3119,7 @@ h2 {
     margin: 0;
     border: 1px solid rgba(23, 21, 31, 0.12);
     border-radius: 8px;
-    padding: 10px 12px;
+    padding: 0;
     background: rgba(247, 201, 72, 0.2);
     text-align: left;
   }
@@ -3130,7 +3224,7 @@ h2 {
     min-width: 0;
     max-width: none;
     margin: 0;
-    padding: 10px 12px;
+    padding: 0;
     background: rgba(247, 201, 72, 0.2);
   }
 
