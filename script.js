@@ -58,12 +58,6 @@ function closePriceCards() {
   priceTableCards.forEach((card) => setPriceCardOpen(card, false));
 }
 
-function openVisiblePriceCards() {
-  priceTableCards.forEach((card) => {
-    setPriceCardOpen(card, !card.classList.contains("hidden"));
-  });
-}
-
 function setPriceSubcategoryOpen(row, isOpen) {
   if (!row) {
     return;
@@ -88,6 +82,11 @@ function setPriceSubcategoriesOpen(card, isOpen) {
   card.querySelectorAll(".price-subcategory-row").forEach((row) => {
     setPriceSubcategoryOpen(row, isOpen);
   });
+}
+
+function resetPriceExpansion() {
+  closePriceCards();
+  priceTableCards.forEach((card) => setPriceSubcategoriesOpen(card, false));
 }
 
 function closeSiblingPriceCards(activeCard) {
@@ -2714,11 +2713,6 @@ function setPriceFilter(filter) {
         : `Показаны цены по выбранной услуге: ${filterLabels[activeFilter] || "выбранный раздел"}.`;
   }
   applyFilters();
-  if (activeFilter === "all" && !normalize(searchInput.value)) {
-    closePriceCards();
-  } else {
-    openVisiblePriceCards();
-  }
 }
 
 function selectOrderService(serviceName) {
@@ -2761,14 +2755,7 @@ function applyFilters() {
     }
   });
 
-  if (query) {
-    openVisiblePriceCards();
-    priceTableCards.forEach((card) => {
-      if (!card.classList.contains("hidden")) {
-        setPriceSubcategoriesOpen(card, true);
-      }
-    });
-  }
+  resetPriceExpansion();
 
   if (priceEmptyMessage) {
     priceEmptyMessage.classList.toggle("is-visible", visibleCount === 0);
