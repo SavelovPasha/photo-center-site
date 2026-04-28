@@ -257,50 +257,72 @@
       </section>
 
       <section class="section calculator-section" id="calculator">
+        <div class="section-head">
+          <p class="eyebrow">калькулятор</p>
+          <h2 id="photoCalculatorTitle">Собери заказ и посчитай сумму заранее</h2>
+          <p class="section-lead">
+            Выберите услугу, сразу увидьте цену по тиражу, подсказки по акциям и соберите весь заказ в одном расчёте.
+          </p>
+        </div>
         <div class="calculator-panel" aria-labelledby="photoCalculatorTitle">
-          <div class="calculator-copy">
-            <p class="eyebrow">калькулятор</p>
-            <h2 id="photoCalculatorTitle">Собери заказ и посчитай сумму заранее</h2>
-            <p>
-              Калькулятор собирает заказ по нескольким категориям, считает тиражные цены,
-              комплектные скидки и помогает сразу перенести готовый расчёт в заявку.
-            </p>
-            <div class="calculator-note-list" aria-label="Что умеет калькулятор">
-              <span>Несколько услуг в одной корзине</span>
-              <span>Точные цены и связки по акциям</span>
-              <span>Готовый расчёт для заявки</span>
-            </div>
-          </div>
-          <div class="calculator-form" aria-label="Параметры калькулятора заказа">
-            <div class="calculator-grid calculator-grid-basket">
-              <label>
-                <span>Категория</span>
-                <select id="calcCategory"></select>
-              </label>
-              <div class="calculator-dynamic-fields" id="calcFields"></div>
-            </div>
+          <div class="calculator-workspace" aria-label="Параметры калькулятора заказа">
+            <div class="calculator-card calculator-builder">
+              <div class="calculator-card-head">
+                <h3>Расчёт позиции</h3>
+                <p>Выберите услугу, а калькулятор сразу покажет цену, тираж и ближайшую выгоду.</p>
+              </div>
 
-            <div class="calculator-builder-actions">
-              <p class="calculator-builder-note" id="calcBuilderNote">
-                Выберите категорию, услугу и количество, затем добавьте позицию в общий расчёт.
-              </p>
-              <button class="btn btn-primary" id="calcAddItem" type="button">
-                Добавить в расчёт
-              </button>
-            </div>
+              <div class="calculator-grid calculator-grid-basket">
+                <label>
+                  <span>Категория</span>
+                  <select id="calcCategory"></select>
+                </label>
+                <div class="calculator-dynamic-fields" id="calcFields"></div>
+              </div>
 
-            <fieldset class="calculator-promos">
-              <legend>Ручные акции</legend>
-              <label class="calculator-check">
-                <input id="calcReviewPromo" type="checkbox" />
-                <span>Отзыв на Яндекс Картах -15%</span>
+              <label class="calculator-review-field">
+                <span>Акции</span>
+                <select id="calcReviewPromo">
+                  <option value="no">Без отзыва</option>
+                  <option value="yes">Отзыв на Яндекс Картах -15%</option>
+                </select>
               </label>
               <p class="calculator-promo-note">
-                Если отзыв включён, скидка считается от полной суммы заказа.
+                Скидка за отзыв считается после остальных акций и занимает только оставшийся лимит до 20% от суммы заказа.
               </p>
-            </fieldset>
 
-            <div class="calculator-result" id="calcCartResult" aria-live="polite">
+              <div class="calculator-preview" id="calcPreview" aria-live="polite">
+                <div class="calculator-preview-top">
+                  <div>
+                    <div class="calculator-preview-meta" id="calcPreviewMeta">Выберите услугу</div>
+                    <h3 class="calculator-preview-title" id="calcPreviewTitle">—</h3>
+                    <p class="calculator-preview-description" id="calcPreviewDescription">
+                      Здесь появится краткое описание выбранной позиции.
+                    </p>
+                  </div>
+                  <div class="calculator-preview-price" id="calcPreviewTotal">0 ₽</div>
+                </div>
+                <div class="calculator-badges" id="calcPreviewBadges"></div>
+                <p class="calculator-builder-note" id="calcBuilderNote">
+                  Выберите категорию, услугу и количество, затем добавьте позицию в общий расчёт.
+                </p>
+                <div class="calculator-builder-actions">
+                  <button class="btn btn-primary" id="calcAddItem" type="button">
+                    Добавить в расчёт
+                  </button>
+                  <button class="btn btn-secondary" id="calcReplaceItem" type="button">
+                    Рассчитать только это
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <aside class="calculator-card calculator-result" id="calcCartResult" aria-live="polite">
+              <div class="calculator-card-head">
+                <h3>Ваш расчёт</h3>
+                <p>Здесь видно итог, сработавшие скидки и что можно добавить для большей выгоды.</p>
+              </div>
+
               <div class="calculator-result-top">
                 <span class="calculator-badge" id="calcCartBadge">Пустой расчёт</span>
                 <strong id="calcCartTotal">0 ₽</strong>
@@ -310,22 +332,54 @@
               </p>
               <div class="calculator-cart-list" id="calcCartList"></div>
               <p class="calculator-empty" id="calcCartEmpty">
-                Корзина пока пустая. Добавьте хотя бы одну позицию.
+                Добавьте позицию из калькулятора, чтобы увидеть итог и скидки.
               </p>
+
+              <div class="calculator-totals">
+                <div class="calculator-total-row">
+                  <span>Сумма без акций</span>
+                  <b id="calcCartSubtotal">0 ₽</b>
+                </div>
+                <div class="calculator-total-row">
+                  <span>Выгода</span>
+                  <b id="calcCartDiscounts">0 ₽</b>
+                </div>
+                <div class="calculator-total-row calculator-total-row-final">
+                  <span>Итого</span>
+                  <b id="calcCartGrandTotal">0 ₽</b>
+                </div>
+              </div>
+
               <div class="calculator-breakdown">
-                <span id="calcCartSubtotal">Сумма по позициям: 0 ₽</span>
-                <span id="calcCartDiscounts">Скидки пока не применялись</span>
                 <span id="calcCartMeta">Скидки считаются по связкам внутри корзины и по выгоде для клиента.</span>
               </div>
+
+              <div class="calculator-insights" id="calcCartInsights" hidden>
+                <section class="calculator-insight">
+                  <h3>Сработали скидки</h3>
+                  <div class="calculator-lines" id="calcCartAppliedDiscounts"></div>
+                </section>
+                <section class="calculator-insight">
+                  <h3>Как сэкономить ещё</h3>
+                  <div class="calculator-lines" id="calcCartSavingsTips"></div>
+                </section>
+              </div>
+
               <p class="calculator-result-note" id="calcCartNote">
                 Здесь собирается общий расчёт заказа из нескольких позиций.
               </p>
-              <button class="btn btn-primary calculator-transfer" id="calcCartTransfer" type="button">
-                Перенести в заявку
-              </button>
-            </div>
+              <div class="calculator-actions">
+                <button class="btn btn-primary calculator-transfer" id="calcCartTransfer" type="button">
+                  Перенести в заявку
+                </button>
+                <button class="btn btn-ghost calculator-clear" id="calcCartClear" type="button">
+                  Очистить корзину
+                </button>
+              </div>
+            </aside>
           </div>
         </div>
+        <div class="calculator-toast" id="calcToast" aria-live="polite" aria-atomic="true"></div>
       </section>
 
       <section class="section price-section" id="prices">

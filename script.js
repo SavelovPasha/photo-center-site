@@ -23,8 +23,14 @@ const scrollTopButton = document.querySelector("#scrollTopButton");
 const calcCategory = document.querySelector("#calcCategory");
 const calcFields = document.querySelector("#calcFields");
 const calcAddItem = document.querySelector("#calcAddItem");
+const calcReplaceItem = document.querySelector("#calcReplaceItem");
 const calcBuilderNote = document.querySelector("#calcBuilderNote");
 const calcReviewPromo = document.querySelector("#calcReviewPromo");
+const calcPreviewMeta = document.querySelector("#calcPreviewMeta");
+const calcPreviewTitle = document.querySelector("#calcPreviewTitle");
+const calcPreviewDescription = document.querySelector("#calcPreviewDescription");
+const calcPreviewTotal = document.querySelector("#calcPreviewTotal");
+const calcPreviewBadges = document.querySelector("#calcPreviewBadges");
 const calcCartBadge = document.querySelector("#calcCartBadge");
 const calcCartTotal = document.querySelector("#calcCartTotal");
 const calcCartSummary = document.querySelector("#calcCartSummary");
@@ -32,11 +38,18 @@ const calcCartList = document.querySelector("#calcCartList");
 const calcCartEmpty = document.querySelector("#calcCartEmpty");
 const calcCartSubtotal = document.querySelector("#calcCartSubtotal");
 const calcCartDiscounts = document.querySelector("#calcCartDiscounts");
+const calcCartGrandTotal = document.querySelector("#calcCartGrandTotal");
 const calcCartMeta = document.querySelector("#calcCartMeta");
+const calcCartInsights = document.querySelector("#calcCartInsights");
+const calcCartAppliedDiscounts = document.querySelector("#calcCartAppliedDiscounts");
+const calcCartSavingsTips = document.querySelector("#calcCartSavingsTips");
 const calcCartNote = document.querySelector("#calcCartNote");
 const calcCartTransfer = document.querySelector("#calcCartTransfer");
+const calcCartClear = document.querySelector("#calcCartClear");
+const calcToast = document.querySelector("#calcToast");
 
 let activeFilter = "all";
+let calculatorToastTimer = null;
 
 function setPriceCardOpen(card, isOpen) {
   if (!card) {
@@ -302,6 +315,36 @@ function formatRubles(value) {
   return `${Math.round(value)} ₽`;
 }
 
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function isReviewPromoEnabled() {
+  return calcReviewPromo?.value === "yes";
+}
+
+function showCalculatorToast(message) {
+  if (!calcToast) {
+    return;
+  }
+
+  calcToast.textContent = message;
+  calcToast.classList.add("is-visible");
+
+  if (calculatorToastTimer) {
+    window.clearTimeout(calculatorToastTimer);
+  }
+
+  calculatorToastTimer = window.setTimeout(() => {
+    calcToast.classList.remove("is-visible");
+  }, 2400);
+}
+
 function hasExactPrice(value) {
   return Number.isFinite(value);
 }
@@ -338,6 +381,10 @@ function findPriceTier(tiers, quantity) {
   });
 }
 
+function findNextPriceTier(tiers, quantity) {
+  return (tiers || []).find((tier) => tier.min != null && tier.min > quantity) || null;
+}
+
 function calculateTieredUnitPrice(option, quantity) {
   if (!option) {
     return null;
@@ -362,7 +409,43 @@ function calculateTieredUnitPrice(option, quantity) {
   return {
     unitPrice: matchedTier.price || 0,
     tierLabel: matchedTier.label || "Тиражный тариф",
+    matchedTier,
+    nextTier: findNextPriceTier(option.tiers, quantity),
   };
+}
+
+function buildNextTierHint(priceData, quantity, unitLabel = "шт.") {
+  if (!priceData?.nextTier || priceData.nextTier.min == null) {
+    return null;
+  }
+
+  return {
+    remaining: Math.max(0, priceData.nextTier.min - quantity),
+    threshold: priceData.nextTier.min,
+    label: priceData.nextTier.label || "",
+    unitPrice: priceData.nextTier.price || 0,
+    unitLabel,
+  };
+}
+
+function getBaseTierPrice(option) {
+  if (!option) {
+    return null;
+  }
+
+  if (option.pricingMode === "tiered") {
+    return option.tiers?.[0]?.price ?? null;
+  }
+
+  if (option.pricingMode === "fixed") {
+    return option.price ?? null;
+  }
+
+  return null;
+}
+
+function getServicesById() {
+  return window.photoCenterCalculatorFoundation?.lookups?.servicesById || {};
 }
 
 function getPhotoService() {
@@ -837,7 +920,7 @@ function renderPaperFields() {
       const format = option.parameters?.format || option.title;
       const paperType = option.parameters?.paperType || "";
       const sideSuffix =
-        option.pricingMode === "fixed"
+        option.pricingMode === "fixed" || option.pricingMode === "tiered"
           ? option.parameters?.sides
             ? ` · ${option.parameters.sides}`
             : ""
@@ -848,7 +931,9 @@ function renderPaperFields() {
     })
     .join("");
 
-  const showSides = selectedOption?.pricingMode === "variant_fixed" && selectedOption?.priceVariants?.length;
+  const showSides =
+    (selectedOption?.pricingMode === "variant_fixed" || selectedOption?.pricingMode === "variant_tiered") &&
+    selectedOption?.priceVariants?.length;
   const sideMarkup = showSides
     ? `
       <label>
@@ -896,13 +981,17 @@ function renderDigitalFields() {
   const currentQuantity = calcFields?.querySelector("#calcDigitalQuantity")?.value || "1";
   const currentFilmMode = calcFields?.querySelector("#calcDigitalFilmMode")?.value || "film_budget";
   const currentAddon = calcFields?.querySelector("#calcDigitalAddon")?.value || "extract_film";
-  const urgentChecked = Boolean(calcFields?.querySelector("#calcDigitalUrgent")?.checked);
   const digitalServices = getDigitalServices();
   const filmOptions = digitalServices.filmDigitization?.options || [];
   const addonOptions = digitalServices.addons?.options || [];
   const showFilmMode = currentMode === "film_digitization";
   const showAddonMode = currentMode === "addons";
-  const allowUrgent = currentMode !== "addons" || currentAddon !== "disk_cd_dvd";
+  const quantityLabel =
+    currentMode === "video"
+      ? "Минуты"
+      : showAddonMode && currentAddon === "storage_digitization"
+        ? "Объём (ГБ)"
+        : "Количество";
 
   calcFields.innerHTML = `
     <label>
@@ -951,21 +1040,9 @@ function renderDigitalFields() {
         : ""
     }
     <label>
-      <span>${currentMode === "video" ? "Минуты" : "Количество"}</span>
+      <span>${quantityLabel}</span>
       <input id="calcDigitalQuantity" type="number" min="1" step="1" value="${currentQuantity}" inputmode="numeric" />
     </label>
-    ${
-      allowUrgent
-        ? `
-      <label class="calculator-toggle">
-        <input id="calcDigitalUrgent" type="checkbox"${urgentChecked ? " checked" : ""} />
-        <span>Срочная оцифровка x2</span>
-      </label>
-    `
-        : `
-      <p class="calculator-builder-note">Для товара «Диск CD / DVD» срочная оцифровка не применяется.</p>
-    `
-    }
   `;
 }
 
@@ -1213,6 +1290,7 @@ function buildPhotoCartItem(assignId = false) {
 
   const customSurcharge = customInput?.checked ? 15 : 0;
   const unitPrice = priceData.unitPrice + customSurcharge;
+  const baseUnitPrice = (getBaseTierPrice(option) ?? priceData.unitPrice) + customSurcharge;
 
   return {
     id: assignId ? `calc-item-${++calculatorItemId}` : null,
@@ -1229,6 +1307,10 @@ function buildPhotoCartItem(assignId = false) {
       ""
     ),
     customSurcharge,
+    baseUnitPrice,
+    originalSubtotal: baseUnitPrice * quantity,
+    nextTierHint: buildNextTierHint(priceData, quantity),
+    mergeConfig: { kind: "photo_print", optionId: option.id, customSurcharge },
   };
 }
 
@@ -1247,6 +1329,7 @@ function buildLaminationCartItem(assignId = false) {
   }
 
   const format = option.parameters?.format || option.title;
+  const baseUnitPrice = getBaseTierPrice(option) ?? priceData.unitPrice;
 
   return {
     id: assignId ? `calc-item-${++calculatorItemId}` : null,
@@ -1259,6 +1342,10 @@ function buildLaminationCartItem(assignId = false) {
     tierLabel: priceData.tierLabel,
     title: `Ламинирование ${format}`,
     description: option.parameters?.filmType || "Глянец",
+    baseUnitPrice,
+    originalSubtotal: baseUnitPrice * quantity,
+    nextTierHint: buildNextTierHint(priceData, quantity),
+    mergeConfig: { kind: "lamination", optionId: option.id },
   };
 }
 
@@ -1304,6 +1391,8 @@ function buildPrintCartItem(assignId = false) {
 
   const fillMultiplier = fillMode === "high" ? printServices.fill?.adjustments?.[0]?.multiplier || 1.5 : 1;
   const unitPrice = fillMode === "unknown" ? null : Math.round(priceData.unitPrice * fillMultiplier);
+  const baseUnitPriceRaw = option.pricingMode === "fixed" ? option.price || 0 : getBaseTierPrice(option) ?? priceData.unitPrice;
+  const baseUnitPrice = fillMode === "unknown" ? null : Math.round(baseUnitPriceRaw * fillMultiplier);
   const printType = printVariant === "color" ? "Цвет" : "Ч/б";
   const fillNote =
     fillMode === "high"
@@ -1331,6 +1420,11 @@ function buildPrintCartItem(assignId = false) {
     requiresConfirmation: fillMode === "unknown",
     displayUnit: hasExactPrice(unitPrice) ? `${formatRubles(unitPrice)} за шт.` : "цену уточнить",
     displayLineTotal: hasExactPrice(subtotal) ? formatRubles(subtotal) : "Уточнить",
+    baseUnitPrice,
+    originalSubtotal: hasExactPrice(baseUnitPrice) ? baseUnitPrice * quantity : subtotal,
+    nextTierHint: buildNextTierHint(priceData, quantity),
+    sheetsCount: quantity,
+    mergeConfig: { kind: "print", serviceId: service.id, optionId: option.id, fillMode },
   };
 }
 
@@ -1342,11 +1436,6 @@ function buildDigitalCartItem(assignId = false) {
   );
   const quantity = Number.isFinite(quantityValue) && quantityValue > 0 ? quantityValue : 1;
   const digitalServices = getDigitalServices();
-  const urgentAdjustment = digitalServices.addons?.adjustments?.find(
-    (item) => item.id === "urgent_digitization"
-  );
-  const urgentChecked = Boolean(calcFields?.querySelector("#calcDigitalUrgent")?.checked);
-  const urgentMultiplier = urgentChecked ? urgentAdjustment?.multiplier || 2 : 1;
 
   if (digitalMode === "video") {
     const priceData = calculateTieredUnitPrice(digitalServices.video, quantity);
@@ -1354,8 +1443,8 @@ function buildDigitalCartItem(assignId = false) {
       return { error: "Для такого количества минут нужен точный выбор тарифа." };
     }
 
-    const baseUnitPrice = priceData.unitPrice;
-    const unitPrice = Math.round(baseUnitPrice * urgentMultiplier);
+    const unitPrice = priceData.unitPrice;
+    const baseUnitPrice = getBaseTierPrice(digitalServices.video) ?? priceData.unitPrice;
     const baseSubtotal = unitPrice * quantity;
     const subtotal = Math.max(baseSubtotal, 900);
     const minApplied = subtotal > baseSubtotal;
@@ -1370,11 +1459,14 @@ function buildDigitalCartItem(assignId = false) {
       subtotal,
       tierLabel: priceData.tierLabel,
       title: "Оцифровка видеокассет",
-      description: `${priceData.tierLabel}${urgentChecked ? " · срочная x2" : ""}${minApplied ? " · мин. стоимость кассеты 900 ₽" : ""}`,
+      description: `${priceData.tierLabel}${minApplied ? " · мин. стоимость кассеты 900 ₽" : ""}`,
       displayQuantity: `${quantity} мин.`,
       displayUnit: `${formatRubles(unitPrice)} за минуту`,
       displayLineTotal: formatRubles(subtotal),
-      hasUrgent: urgentChecked,
+      baseUnitPrice,
+      originalSubtotal: baseUnitPrice * quantity,
+      nextTierHint: buildNextTierHint(priceData, quantity, "мин."),
+      mergeConfig: { kind: "digital_video" },
     };
   }
 
@@ -1387,7 +1479,8 @@ function buildDigitalCartItem(assignId = false) {
       return { error: "Для такого количества катушек нужен точный выбор тарифа." };
     }
 
-    const unitPrice = Math.round(priceData.unitPrice * urgentMultiplier);
+    const unitPrice = priceData.unitPrice;
+    const baseUnitPrice = getBaseTierPrice(option) ?? priceData.unitPrice;
     const modeLabel = getFilmModeLabel(option.parameters?.mode || option.title);
 
     return {
@@ -1400,8 +1493,11 @@ function buildDigitalCartItem(assignId = false) {
       subtotal: unitPrice * quantity,
       tierLabel: priceData.tierLabel,
       title: `Оцифровка фотоплёнки ${modeLabel}`,
-      description: `${priceData.tierLabel}${urgentChecked ? " · срочная x2" : ""}`,
-      hasUrgent: urgentChecked,
+      description: priceData.tierLabel,
+      baseUnitPrice,
+      originalSubtotal: baseUnitPrice * quantity,
+      nextTierHint: buildNextTierHint(priceData, quantity),
+      mergeConfig: { kind: "digital_film", optionId: option.id },
     };
   }
 
@@ -1413,9 +1509,17 @@ function buildDigitalCartItem(assignId = false) {
       return { error: "Для допуслуги оцифровки не выбран вариант." };
     }
 
-    const allowUrgent = addonId !== "disk_cd_dvd";
-    const multiplier = urgentChecked && allowUrgent ? urgentMultiplier : 1;
-    const unitPrice = Math.round((option.price || 0) * multiplier);
+    const priceData =
+      option.pricingMode === "fixed"
+        ? { unitPrice: option.price || 0, tierLabel: "Фиксированная цена" }
+        : calculateTieredUnitPrice(option, quantity);
+
+    if (!priceData) {
+      return { error: "Для такого объёма нужен точный выбор тарифа." };
+    }
+
+    const subtotal = priceData.unitPrice * quantity;
+    const baseUnitPrice = option.pricingMode === "fixed" ? option.price || 0 : getBaseTierPrice(option) ?? priceData.unitPrice;
 
     return {
       id: assignId ? `calc-item-${++calculatorItemId}` : null,
@@ -1423,15 +1527,29 @@ function buildDigitalCartItem(assignId = false) {
       itemKind: "digital_addon",
       format: `digital-addon-${addonId}`,
       quantity,
-      unitPrice,
-      subtotal: unitPrice * quantity,
-      tierLabel: "Фиксированная цена",
+      unitPrice: priceData.unitPrice,
+      subtotal,
+      tierLabel: priceData.tierLabel,
       title: option.title,
-      description: `${option.parameters?.mode || ""}${urgentChecked && allowUrgent ? " · срочная x2" : ""}`.replace(
-        /^,\s*/,
-        ""
-      ),
-      hasUrgent: urgentChecked && allowUrgent,
+      description: [option.parameters?.mode || "", option.pricingMode === "fixed" ? "" : priceData.tierLabel]
+        .filter(Boolean)
+        .join(" · "),
+      displayQuantity:
+        option.id === "storage_digitization" ? `${quantity} ГБ` : `${quantity} шт.`,
+      displayUnit:
+        option.pricingMode === "fixed"
+          ? `${formatRubles(priceData.unitPrice)} за шт.`
+          : option.id === "storage_digitization"
+            ? `${formatRubles(priceData.unitPrice)} за ГБ`
+            : `${formatRubles(priceData.unitPrice)} за шт.`,
+      displayLineTotal: formatRubles(subtotal),
+      baseUnitPrice,
+      originalSubtotal: baseUnitPrice * quantity,
+      nextTierHint:
+        option.pricingMode === "fixed"
+          ? null
+          : buildNextTierHint(priceData, quantity, option.id === "storage_digitization" ? "ГБ" : "шт."),
+      mergeConfig: { kind: "digital_addon", optionId: option.id },
     };
   }
 
@@ -1447,7 +1565,8 @@ function buildDigitalCartItem(assignId = false) {
     return { error: "Для такого количества нужен точный выбор тарифа." };
   }
 
-  const unitPrice = Math.round(priceData.unitPrice * urgentMultiplier);
+  const unitPrice = priceData.unitPrice;
+  const baseUnitPrice = getBaseTierPrice(service) ?? priceData.unitPrice;
 
   return {
     id: assignId ? `calc-item-${++calculatorItemId}` : null,
@@ -1459,8 +1578,11 @@ function buildDigitalCartItem(assignId = false) {
     subtotal: unitPrice * quantity,
     tierLabel: priceData.tierLabel,
     title: service.title,
-    description: `${priceData.tierLabel}${urgentChecked ? " · срочная x2" : ""}`,
-    hasUrgent: urgentChecked,
+    description: priceData.tierLabel,
+    baseUnitPrice,
+    originalSubtotal: baseUnitPrice * quantity,
+    nextTierHint: buildNextTierHint(priceData, quantity),
+    mergeConfig: { kind: "digital_service", serviceId: service.id },
   };
 }
 
@@ -1480,7 +1602,11 @@ function buildBindingCartItem(assignId = false) {
       return { error: "Для доп. листов не найден тариф." };
     }
 
-    const unitPrice = service.price || 0;
+    const priceData = calculateTieredUnitPrice(service, quantity);
+
+    if (!priceData) {
+      return { error: "Для такого количества доп. листов нужен точный выбор тарифа." };
+    }
 
     return {
       id: assignId ? `calc-item-${++calculatorItemId}` : null,
@@ -1488,11 +1614,15 @@ function buildBindingCartItem(assignId = false) {
       itemKind: "binding_sheet",
       format: service.id,
       quantity,
-      unitPrice,
-      subtotal: unitPrice * quantity,
-      tierLabel: "Фиксированная цена",
+      unitPrice: priceData.unitPrice,
+      subtotal: priceData.unitPrice,
+      tierLabel: priceData.tierLabel,
       title: service.title,
-      description: "1 лист",
+      description: priceData.tierLabel,
+      displayQuantity: `${quantity} лист.`,
+      displayUnit: formatRubles(priceData.unitPrice),
+      displayLineTotal: formatRubles(priceData.unitPrice),
+      mergeConfig: { kind: "binding_sheet" },
     };
   }
 
@@ -1521,6 +1651,8 @@ function buildBindingCartItem(assignId = false) {
     description: `${sheets} лист. · ${priceData.tierLabel}`,
     displayQuantity: "1 брошюра",
     displayUnit: `${formatRubles(priceData.unitPrice)} за брошюру`,
+    sheetsCount: sheets,
+    mergeConfig: { kind: "binding_booklet", serviceId: service.id, sheetsCount: sheets },
   };
 }
 
@@ -1553,6 +1685,7 @@ function buildGiftCartItem(assignId = false) {
       tierLabel: "Фиксированная цена",
       title: option.title,
       description: option.parameters?.description || "1 шт.",
+      mergeConfig: { kind: "gift_fixed", optionId: option.id },
     };
   }
 
@@ -1581,6 +1714,7 @@ function buildGiftCartItem(assignId = false) {
         /^ · /,
         ""
       ),
+      mergeConfig: { kind: "gift_tshirt", baseOptionId: baseOption.id, variantId: variant.id },
     };
   }
 
@@ -1603,6 +1737,7 @@ function buildGiftCartItem(assignId = false) {
     tierLabel: "Фиксированная цена",
     title: giftServices.magnets?.title || "Фото-магнит виниловый",
     description: option.parameters?.format || option.title,
+    mergeConfig: { kind: "gift_magnet", optionId: option.id },
   };
 }
 
@@ -1623,10 +1758,23 @@ function buildPaperCartItem(assignId = false) {
   }
 
   let unitPrice = null;
+  let tierLabel = "Фиксированная цена";
   let sideLabel = option.parameters?.sides || "";
+  let nextTierHint = null;
 
-  if (option.pricingMode === "fixed") {
-    unitPrice = option.price || 0;
+  if (option.pricingMode === "fixed" || option.pricingMode === "tiered") {
+    const priceData =
+      option.pricingMode === "fixed"
+        ? { unitPrice: option.price || 0, tierLabel: "Фиксированная цена" }
+        : calculateTieredUnitPrice(option, quantity);
+
+    if (!priceData) {
+      return { error: "Для такого количества плотной бумаги нужен точный выбор тарифа." };
+    }
+
+    unitPrice = priceData.unitPrice;
+    tierLabel = priceData.tierLabel;
+    nextTierHint = buildNextTierHint(priceData, quantity);
   } else if (option.pricingMode === "variant_fixed") {
     const sideId =
       calcFields?.querySelector("#calcPaperSide")?.value || option.priceVariants?.[0]?.id || "";
@@ -1638,6 +1786,24 @@ function buildPaperCartItem(assignId = false) {
 
     unitPrice = sideVariant.price || 0;
     sideLabel = sideVariant.title || "";
+  } else if (option.pricingMode === "variant_tiered") {
+    const sideId =
+      calcFields?.querySelector("#calcPaperSide")?.value || option.priceVariants?.[0]?.id || "";
+    const sideVariant = option.priceVariants?.find((item) => item.id === sideId) || null;
+
+    if (!sideVariant) {
+      return { error: "Для плотной бумаги не выбраны стороны." };
+    }
+
+    const priceData = calculateTieredUnitPrice(sideVariant, quantity);
+    if (!priceData) {
+      return { error: "Для такого количества плотной бумаги нужен точный выбор тарифа." };
+    }
+
+    unitPrice = priceData.unitPrice;
+    tierLabel = priceData.tierLabel;
+    sideLabel = sideVariant.title || "";
+    nextTierHint = buildNextTierHint(priceData, quantity);
   } else {
     return { error: "Для выбранной бумаги пока нет точного автоматического расчёта." };
   }
@@ -1671,7 +1837,7 @@ function buildPaperCartItem(assignId = false) {
     quantity,
     unitPrice: adjustedUnitPrice,
     subtotal,
-    tierLabel: "Фиксированная цена",
+    tierLabel,
     title: `Плотная бумага ${format}`,
     description: descriptionParts.join(" · "),
     hasFill: fillMode !== "none",
@@ -1679,6 +1845,21 @@ function buildPaperCartItem(assignId = false) {
     requiresConfirmation: fillMode === "unknown",
     displayUnit: hasExactPrice(adjustedUnitPrice) ? `${formatRubles(adjustedUnitPrice)} за шт.` : "цену уточнить",
     displayLineTotal: hasExactPrice(subtotal) ? formatRubles(subtotal) : "Уточнить",
+    nextTierHint,
+    baseUnitPrice: hasExactPrice(adjustedUnitPrice)
+      ? (() => {
+          const rawBase = tierLabel === "Фиксированная цена" ? unitPrice : null;
+          return rawBase;
+        })()
+      : null,
+    originalSubtotal:
+      hasExactPrice(adjustedUnitPrice) && hasExactPrice(unitPrice) ? adjustedUnitPrice * quantity : subtotal,
+    mergeConfig: {
+      kind: "paper",
+      optionId: option.id,
+      sideId: calcFields?.querySelector("#calcPaperSide")?.value || "",
+      fillMode,
+    },
   };
 }
 
@@ -1698,7 +1879,16 @@ function buildStickerCartItem(assignId = false) {
     return { error: "Для самоклеющейся бумаги не найден выбранный тариф." };
   }
 
-  const unitPrice = option.price || 0;
+  const priceData =
+    option.pricingMode === "fixed"
+      ? { unitPrice: option.price || 0, tierLabel: "Фиксированная цена" }
+      : calculateTieredUnitPrice(option, quantity);
+
+  if (!priceData) {
+    return { error: "Для такого количества самоклеющейся бумаги нужен точный выбор тарифа." };
+  }
+
+  const unitPrice = priceData.unitPrice;
   const format = option.parameters?.format || option.title;
   const typeLabel = service.title || "Самоклеющаяся бумага";
 
@@ -1710,9 +1900,13 @@ function buildStickerCartItem(assignId = false) {
     quantity,
     unitPrice,
     subtotal: unitPrice * quantity,
-    tierLabel: "Фиксированная цена",
+    tierLabel: priceData.tierLabel,
     title: `${typeLabel} ${format}`,
-    description: format,
+    description: `${format}${priceData.tierLabel ? ` · ${priceData.tierLabel}` : ""}`,
+    nextTierHint: buildNextTierHint(priceData, quantity),
+    baseUnitPrice: getBaseTierPrice(option) ?? priceData.unitPrice,
+    originalSubtotal: (getBaseTierPrice(option) ?? priceData.unitPrice) * quantity,
+    mergeConfig: { kind: "sticker", serviceId: service.id, optionId: option.id },
   };
 }
 
@@ -1747,6 +1941,7 @@ function buildScanCartItem(assignId = false) {
       tierLabel: "Фиксированная цена",
       title: `Оцифровка фото с обработкой ${dpi}`,
       description: option.parameters?.description || dpi,
+      mergeConfig: { kind: "scan_processed", optionId: option.id },
     };
   }
 
@@ -1768,6 +1963,7 @@ function buildScanCartItem(assignId = false) {
       tierLabel: "Фиксированная цена",
       title: service.title,
       description: "1 отправка",
+      mergeConfig: { kind: "scan_file_send" },
     };
   }
 
@@ -1789,6 +1985,10 @@ function buildScanCartItem(assignId = false) {
     tierLabel: priceData.tierLabel,
     title: service.title,
     description: priceData.tierLabel,
+    nextTierHint: buildNextTierHint(priceData, quantity),
+    baseUnitPrice: getBaseTierPrice(service) ?? priceData.unitPrice,
+    originalSubtotal: (getBaseTierPrice(service) ?? priceData.unitPrice) * quantity,
+    mergeConfig: { kind: "scan_tiered", serviceId: service.id },
   };
 }
 
@@ -1822,6 +2022,7 @@ function buildDocsCartItem(assignId = false) {
       ),
       displayQuantity: `${quantity} наб.`,
       displayUnit: `${formatRubles(option.price || 0)} за набор`,
+      mergeConfig: { kind: "docs_main", optionId: option.id },
     };
   }
 
@@ -1852,6 +2053,7 @@ function buildDocsCartItem(assignId = false) {
         /^,\s*/,
         ""
       ),
+      mergeConfig: { kind: "docs_addon", optionId: option.id },
     };
   }
 
@@ -1879,6 +2081,12 @@ function buildDocsCartItem(assignId = false) {
     description: `${matchedTier.label || `${selectedQuantity} шт.`}`,
     displayQuantity: `${matchedTier.label || `${selectedQuantity} шт.`} в комплекте`,
     displayUnit: `${formatRubles(matchedTier.price || 0)} за комплект`,
+    mergeConfig: {
+      kind: "docs_pack",
+      serviceId: service.id,
+      selectedQuantity,
+      mode: docsMode === "extra" ? "extra" : "ready",
+    },
   };
 }
 
@@ -1903,7 +2111,246 @@ function buildFrameCartItem(assignId = false) {
     tierLabel: "Фиксированная цена",
     title: `Рамка ${format}`,
     description: "Временный тариф до раздела «Прочее»",
+    mergeConfig: { kind: "frame", format },
   };
+}
+
+function buildMergeKey(item) {
+  return JSON.stringify(item?.mergeConfig || { kind: item?.itemKind, format: item?.format });
+}
+
+function rebuildMergedCartItem(existingItem, totalQuantity) {
+  const config = existingItem.mergeConfig || {};
+  const servicesById = getServicesById();
+
+  if (config.kind === "photo_print") {
+    const service = getPhotoService();
+    const option = service?.options?.find((item) => item.id === config.optionId) || null;
+    const priceData = calculateTieredUnitPrice(option, totalQuantity);
+    if (!option || !priceData) return existingItem;
+    const customSurcharge = config.customSurcharge || 0;
+    const unitPrice = priceData.unitPrice + customSurcharge;
+    const baseUnitPrice = (getBaseTierPrice(option) ?? priceData.unitPrice) + customSurcharge;
+    return {
+      ...existingItem,
+      quantity: totalQuantity,
+      unitPrice,
+      subtotal: unitPrice * totalQuantity,
+      tierLabel: priceData.tierLabel,
+      displayQuantity: undefined,
+      displayUnit: undefined,
+      displayLineTotal: undefined,
+      baseUnitPrice,
+      originalSubtotal: baseUnitPrice * totalQuantity,
+      nextTierHint: buildNextTierHint(priceData, totalQuantity),
+    };
+  }
+
+  if (config.kind === "lamination") {
+    const option = getLaminationOptions().find((item) => item.id === config.optionId) || null;
+    const priceData = calculateTieredUnitPrice(option, totalQuantity);
+    if (!option || !priceData) return existingItem;
+    const baseUnitPrice = getBaseTierPrice(option) ?? priceData.unitPrice;
+    return {
+      ...existingItem,
+      quantity: totalQuantity,
+      unitPrice: priceData.unitPrice,
+      subtotal: priceData.unitPrice * totalQuantity,
+      tierLabel: priceData.tierLabel,
+      baseUnitPrice,
+      originalSubtotal: baseUnitPrice * totalQuantity,
+      nextTierHint: buildNextTierHint(priceData, totalQuantity),
+    };
+  }
+
+  if (config.kind === "print") {
+    const service = servicesById[config.serviceId] || null;
+    const option = service?.options?.find((item) => item.id === config.optionId) || null;
+    const priceData =
+      option?.pricingMode === "fixed"
+        ? { unitPrice: option.price || 0, tierLabel: "Фиксированная цена" }
+        : calculateTieredUnitPrice(option, totalQuantity);
+    if (!service || !option || !priceData) return existingItem;
+    const fillMultiplier = config.fillMode === "high" ? service.adjustments?.[0]?.multiplier || 1.5 : 1;
+    const unitPrice =
+      config.fillMode === "unknown" ? null : Math.round(priceData.unitPrice * fillMultiplier);
+    const baseUnitPriceRaw =
+      option.pricingMode === "fixed" ? option.price || 0 : getBaseTierPrice(option) ?? priceData.unitPrice;
+    const baseUnitPrice =
+      config.fillMode === "unknown" ? null : Math.round(baseUnitPriceRaw * fillMultiplier);
+    const subtotal = hasExactPrice(unitPrice) ? unitPrice * totalQuantity : null;
+    return {
+      ...existingItem,
+      quantity: totalQuantity,
+      unitPrice,
+      subtotal,
+      tierLabel: priceData.tierLabel,
+      displayQuantity: undefined,
+      displayUnit: hasExactPrice(unitPrice) ? `${formatRubles(unitPrice)} за шт.` : "цену уточнить",
+      displayLineTotal: hasExactPrice(subtotal) ? formatRubles(subtotal) : "Уточнить",
+      baseUnitPrice,
+      originalSubtotal: hasExactPrice(baseUnitPrice) ? baseUnitPrice * totalQuantity : subtotal,
+      nextTierHint: buildNextTierHint(priceData, totalQuantity),
+      sheetsCount: totalQuantity,
+    };
+  }
+
+  if (config.kind === "digital_video") {
+    const service = servicesById.video_digitization || null;
+    const priceData = calculateTieredUnitPrice(service, totalQuantity);
+    if (!service || !priceData) return existingItem;
+    const unitPrice = priceData.unitPrice;
+    const baseUnitPrice = getBaseTierPrice(service) ?? priceData.unitPrice;
+    const subtotal = Math.max(unitPrice * totalQuantity, 900);
+    return {
+      ...existingItem,
+      quantity: totalQuantity,
+      unitPrice,
+      subtotal,
+      tierLabel: priceData.tierLabel,
+      description: `${priceData.tierLabel}${subtotal > unitPrice * totalQuantity ? " · мин. стоимость кассеты 900 ₽" : ""}`,
+      displayQuantity: `${totalQuantity} мин.`,
+      displayUnit: `${formatRubles(unitPrice)} за минуту`,
+      displayLineTotal: formatRubles(subtotal),
+      baseUnitPrice,
+      originalSubtotal: baseUnitPrice * totalQuantity,
+      nextTierHint: buildNextTierHint(priceData, totalQuantity, "мин."),
+    };
+  }
+
+  if (config.kind === "digital_film" || config.kind === "digital_service" || config.kind === "digital_addon" || config.kind === "scan_tiered" || config.kind === "sticker") {
+    const sourceOption =
+      config.kind === "digital_film"
+        ? servicesById.film_digitization?.options?.find((item) => item.id === config.optionId)
+        : config.kind === "digital_addon"
+          ? servicesById.digitization_addons?.options?.find((item) => item.id === config.optionId)
+          : config.kind === "scan_tiered"
+            ? servicesById[config.serviceId]
+            : config.kind === "sticker"
+              ? servicesById[config.serviceId]?.options?.find((item) => item.id === config.optionId)
+              : servicesById[config.serviceId];
+    const priceData =
+      sourceOption?.pricingMode === "fixed"
+        ? { unitPrice: sourceOption.price || 0, tierLabel: "Фиксированная цена" }
+        : calculateTieredUnitPrice(sourceOption, totalQuantity);
+    if (!sourceOption || !priceData) return existingItem;
+    const baseUnitPrice =
+      sourceOption.pricingMode === "fixed"
+        ? sourceOption.price || 0
+        : getBaseTierPrice(sourceOption) ?? priceData.unitPrice;
+    const subtotal = priceData.unitPrice * totalQuantity;
+    return {
+      ...existingItem,
+      quantity: totalQuantity,
+      unitPrice: priceData.unitPrice,
+      subtotal,
+      tierLabel: priceData.tierLabel,
+      displayQuantity:
+        config.kind === "digital_addon" && config.optionId === "storage_digitization"
+          ? `${totalQuantity} ГБ`
+          : existingItem.displayQuantity,
+      displayUnit:
+        config.kind === "digital_addon" && config.optionId === "storage_digitization"
+          ? `${formatRubles(priceData.unitPrice)} за ГБ`
+          : existingItem.displayUnit,
+      displayLineTotal: formatRubles(subtotal),
+      baseUnitPrice,
+      originalSubtotal: baseUnitPrice * totalQuantity,
+      nextTierHint: sourceOption.pricingMode === "fixed" ? null : buildNextTierHint(priceData, totalQuantity, config.optionId === "storage_digitization" ? "ГБ" : "шт."),
+    };
+  }
+
+  if (config.kind === "binding_sheet") {
+    const service = servicesById.binding_sheet_replace || null;
+    const priceData = calculateTieredUnitPrice(service, totalQuantity);
+    if (!service || !priceData) return existingItem;
+    return {
+      ...existingItem,
+      quantity: totalQuantity,
+      unitPrice: priceData.unitPrice,
+      subtotal: priceData.unitPrice,
+      tierLabel: priceData.tierLabel,
+      description: priceData.tierLabel,
+      displayQuantity: `${totalQuantity} лист.`,
+      displayUnit: formatRubles(priceData.unitPrice),
+      displayLineTotal: formatRubles(priceData.unitPrice),
+    };
+  }
+
+  if (config.kind === "binding_booklet" || config.kind === "docs_pack" || config.kind === "docs_main" || config.kind === "docs_addon" || config.kind === "scan_processed" || config.kind === "scan_file_send" || config.kind === "frame" || config.kind === "gift_fixed" || config.kind === "gift_tshirt" || config.kind === "gift_magnet" || config.kind === "paper") {
+    return {
+      ...existingItem,
+      quantity: totalQuantity,
+      subtotal: (existingItem.unitPrice || 0) * totalQuantity,
+      displayQuantity:
+        config.kind === "binding_booklet"
+          ? `${totalQuantity} брош.`
+          : config.kind === "docs_main"
+            ? `${totalQuantity} наб.`
+            : totalQuantity > 1
+              ? `${totalQuantity} шт.`
+              : existingItem.displayQuantity,
+      displayLineTotal: formatRubles((existingItem.unitPrice || 0) * totalQuantity),
+    };
+  }
+
+  return {
+    ...existingItem,
+    quantity: totalQuantity,
+    subtotal: (existingItem.unitPrice || 0) * totalQuantity,
+    displayLineTotal: formatRubles((existingItem.unitPrice || 0) * totalQuantity),
+  };
+}
+
+function upsertCartItem(draft) {
+  const mergeKey = buildMergeKey(draft);
+  const existingIndex = calculatorCart.findIndex((item) => buildMergeKey(item) === mergeKey);
+
+  if (existingIndex === -1) {
+    calculatorCart.push(draft);
+    return { merged: false, quantity: draft.quantity, item: draft };
+  }
+
+  const existingItem = calculatorCart[existingIndex];
+  const mergedItem = rebuildMergedCartItem(existingItem, existingItem.quantity + draft.quantity);
+  mergedItem.id = existingItem.id;
+  calculatorCart.splice(existingIndex, 1, mergedItem);
+  return { merged: true, quantity: mergedItem.quantity, item: mergedItem };
+}
+
+function decrementCartItem(itemId) {
+  const index = calculatorCart.findIndex((item) => item.id === itemId);
+  if (index === -1) {
+    return;
+  }
+
+  const item = calculatorCart[index];
+  if (item.quantity <= 1) {
+    calculatorCart.splice(index, 1);
+  } else {
+    const updatedItem = rebuildMergedCartItem(item, item.quantity - 1);
+    updatedItem.id = item.id;
+    calculatorCart.splice(index, 1, updatedItem);
+  }
+
+  renderCartSummary();
+  updateCalculatorBuilderNote();
+  renderCalculatorPreview();
+}
+
+function incrementCartItem(itemId) {
+  const index = calculatorCart.findIndex((item) => item.id === itemId);
+  if (index === -1) {
+    return;
+  }
+
+  const item = calculatorCart[index];
+  const updatedItem = rebuildMergedCartItem(item, item.quantity + 1);
+  updatedItem.id = item.id;
+  calculatorCart.splice(index, 1, updatedItem);
+  renderCartSummary();
+  updateCalculatorBuilderNote();
+  renderCalculatorPreview();
 }
 
 function buildDraftCartItem(assignId = false) {
@@ -1963,7 +2410,130 @@ function updateCalculatorBuilderNote() {
     return;
   }
 
-  calcBuilderNote.textContent = `${draft.title} · ${draft.displayQuantity || `${draft.quantity} шт.`} · ${draft.displayUnit || `${formatRubles(draft.unitPrice)} за шт.`} · ${formatRubles(draft.subtotal)}`;
+  calcBuilderNote.textContent = `${draft.title} · ${
+    draft.displayQuantity || `${draft.quantity} шт.`
+  } · ${draft.displayUnit || (hasExactPrice(draft.unitPrice) ? `${formatRubles(draft.unitPrice)} за шт.` : "цену уточнить")} · ${
+    hasExactPrice(draft.subtotal) ? formatRubles(draft.subtotal) : "цену уточнить"
+  }`;
+}
+
+function getPreviewPromoHints(draft) {
+  if (!draft) {
+    return [];
+  }
+
+  const hints = [];
+
+  if (draft.category === "photo") {
+    hints.push("С этим фото можно добавить ламинацию -10% или рамку -15%");
+  }
+
+  if (draft.category === "lamination") {
+    hints.push("При печати фото этого же формата ламинация получает скидку -10%");
+  }
+
+  if (draft.category === "frames") {
+    hints.push("При печати фото этого же формата рамка получает скидку -15%");
+  }
+
+  if (draft.category === "sticker") {
+    hints.push("Самоклейка с ламинацией даёт скидку -5% на ламинацию");
+  }
+
+  if (draft.category === "binding" || draft.category === "print") {
+    hints.push("Распечатка вместе с брошюровкой может дать скидку от -5% до -10%");
+  }
+
+  if (draft.category === "gifts") {
+    hints.push("Сувениры считаются парами: каждые 2 шт. дают скидку -10%");
+  }
+
+  return hints;
+}
+
+function renderCalculatorPreview() {
+  if (
+    !calcPreviewMeta ||
+    !calcPreviewTitle ||
+    !calcPreviewDescription ||
+    !calcPreviewTotal ||
+    !calcPreviewBadges
+  ) {
+    return;
+  }
+
+  const draft = buildDraftCartItem();
+  const categoryLabel =
+    calculatorCategoryLabels[calcCategory?.value || "photo"] || calculatorCategoryLabels.photo;
+
+  if (draft.error) {
+    calcPreviewMeta.textContent = categoryLabel;
+    calcPreviewTitle.textContent = "Нужно уточнение";
+    calcPreviewDescription.textContent = draft.error;
+    calcPreviewTotal.textContent = "Уточнить";
+    calcPreviewBadges.innerHTML = '<span class="calculator-badge calculator-pill-warn">Проверьте параметры позиции</span>';
+    return;
+  }
+
+  calcPreviewMeta.textContent = categoryLabel;
+  calcPreviewTitle.textContent = draft.title;
+  calcPreviewDescription.textContent =
+    draft.description || "Краткое описание появится после выбора параметров.";
+  calcPreviewTotal.textContent = hasExactPrice(draft.subtotal)
+    ? formatRubles(draft.subtotal)
+    : "Уточнить";
+
+  const badges = [];
+
+  if (draft.tierLabel) {
+    badges.push(
+      `<span class="calculator-badge calculator-pill-good">${escapeHtml(
+        draft.tierLabel
+      )}${hasExactPrice(draft.unitPrice) ? ` · ${escapeHtml(draft.displayUnit || `${formatRubles(draft.unitPrice)} за шт.`)}` : ""}</span>`
+    );
+  }
+
+  if (
+    hasExactPrice(draft.originalSubtotal) &&
+    hasExactPrice(draft.subtotal) &&
+    draft.originalSubtotal > draft.subtotal
+  ) {
+    badges.push(
+      `<span class="calculator-badge calculator-pill-good">Тиражная скидка уже учтена: -${escapeHtml(
+        formatRubles(draft.originalSubtotal - draft.subtotal)
+      )}</span>`
+    );
+  }
+
+  if (draft.nextTierHint?.remaining > 0) {
+    badges.push(
+      `<span class="calculator-badge">До следующей цены: ещё ${escapeHtml(
+        String(draft.nextTierHint.remaining)
+      )} ${escapeHtml(draft.nextTierHint.unitLabel || "шт.")} · ${escapeHtml(
+        formatRubles(draft.nextTierHint.unitPrice)
+      )}</span>`
+    );
+  }
+
+  if (draft.customSurcharge) {
+    badges.push(
+      `<span class="calculator-badge calculator-pill-warn">Нестандартный размер: +${escapeHtml(
+        formatRubles(draft.customSurcharge)
+      )} за фото</span>`
+    );
+  }
+
+  if (draft.requiresConfirmation) {
+    badges.push(
+      '<span class="calculator-badge calculator-pill-warn">Есть часть с ручным уточнением цены</span>'
+    );
+  }
+
+  getPreviewPromoHints(draft).forEach((hint) => {
+    badges.push(`<span class="calculator-badge calculator-pill-muted">${escapeHtml(hint)}</span>`);
+  });
+
+  calcPreviewBadges.innerHTML = badges.join("");
 }
 
 function expandItemUnits(items, category, format) {
@@ -1983,6 +2553,8 @@ function expandUnitsByPredicate(items, predicate) {
     .flatMap((item) =>
       Array.from({ length: item.quantity }, (_, index) => ({
         unitPrice: item.unitPrice,
+        title: item.title,
+        description: item.description,
         category: item.category,
         itemKind: item.itemKind,
         format: item.format,
@@ -2093,11 +2665,43 @@ function createMinCostMaxFlow(nodeCount) {
   };
 }
 
+function aggregateDiscountDetails(records) {
+  const aggregated = new Map();
+
+  records.forEach((record, index) => {
+    const key = record.groupId || record.id || `discount-${index}`;
+    const existing = aggregated.get(key) || {
+      id: key,
+      label: record.label,
+      amount: 0,
+      count: 0,
+      details: [],
+      itemIds: [],
+      type: record.type || "promo",
+    };
+
+    existing.amount += record.amount || 0;
+    existing.count += record.count || 1;
+    if (record.detail) {
+      existing.details.push(record.detail);
+    }
+    if (record.itemIds?.length) {
+      existing.itemIds.push(...record.itemIds);
+    }
+    aggregated.set(key, existing);
+  });
+
+  return Array.from(aggregated.values()).map((discount) => ({
+    ...discount,
+    itemIds: Array.from(new Set(discount.itemIds)),
+  }));
+}
+
 function calculatePhotoBundleDiscounts(items) {
   const photoUnits = expandUnitsByPredicate(items, (item) => item.category === "photo");
   const frameUnits = expandUnitsByPredicate(items, (item) => item.category === "frames");
   const laminationUnits = expandUnitsByPredicate(items, (item) => item.category === "lamination");
-  const processedUnits = expandUnitsByPredicate(items, (item) => item.itemKind === "scan_processed");
+  const digitizedFilmUnits = expandUnitsByPredicate(items, (item) => item.itemKind === "digital_film");
 
   if (!photoUnits.length) {
     return [];
@@ -2106,7 +2710,7 @@ function calculatePhotoBundleDiscounts(items) {
   const partners = [
     ...frameUnits.map((unit) => ({ ...unit, discountType: "frame" })),
     ...laminationUnits.map((unit) => ({ ...unit, discountType: "lamination" })),
-    ...processedUnits.map((unit) => ({ ...unit, discountType: "digitization" })),
+    ...digitizedFilmUnits.map((unit) => ({ ...unit, discountType: "digitization" })),
   ];
 
   if (!partners.length) {
@@ -2131,16 +2735,24 @@ function calculatePhotoBundleDiscounts(items) {
     partners.forEach((partner, partnerIndex) => {
       let amount = null;
       let label = "";
+      let detail = "";
+      let groupId = "";
 
       if (partner.discountType === "frame" && photo.format === partner.format) {
-        amount = Math.round((photo.unitPrice + partner.unitPrice) * 0.15);
-        label = `Фото + рамка ${photo.format}`;
+        amount = Math.round(partner.unitPrice * 0.15);
+        label = "Фото + фоторамка";
+        detail = `Рамка ${partner.format} со скидкой 15%`;
+        groupId = `frame-${partner.format}`;
       } else if (partner.discountType === "lamination" && photo.format === partner.format) {
-        amount = Math.round((photo.unitPrice + partner.unitPrice) * 0.1);
-        label = `Фото + ламинация ${photo.format}`;
+        amount = Math.round(partner.unitPrice * 0.1);
+        label = "Фото + ламинация";
+        detail = `Ламинация ${partner.format} со скидкой 10%`;
+        groupId = `lamination-${partner.format}`;
       } else if (partner.discountType === "digitization") {
-        amount = Math.round((photo.unitPrice + partner.unitPrice) * 0.1);
-        label = "После оцифровки + печать фото";
+        amount = Math.round(photo.unitPrice * 0.1);
+        label = "После оцифровки фотоплёнки";
+        detail = `Печать фото ${photo.format} со скидкой 10%`;
+        groupId = `digitization-${photo.format}`;
       }
 
       if (!amount || amount <= 0) {
@@ -2150,133 +2762,321 @@ function calculatePhotoBundleDiscounts(items) {
       flow.addEdge(photoOffset + photoIndex, partnerOffset + partnerIndex, 1, -amount, {
         amount,
         label,
+        detail,
+        groupId,
         type: partner.discountType,
-        format: photo.format,
+        itemIds:
+          partner.discountType === "digitization"
+            ? [photo.sourceId]
+            : [partner.sourceId],
       });
     });
   });
 
   flow.maximizeNegativeCost(source, sink);
 
-  const aggregated = new Map();
-
+  const discounts = [];
   photoUnits.forEach((photo, photoIndex) => {
-    const edges = flow.graph[photoOffset + photoIndex];
-    edges.forEach((edge) => {
+    flow.graph[photoOffset + photoIndex].forEach((edge) => {
       if (!edge.meta || edge.flow <= 0) {
         return;
       }
-
-      const discountId =
-        edge.meta.type === "digitization"
-          ? "digitization-photo"
-          : `${edge.meta.type}-${edge.meta.format}`;
-      const existing = aggregated.get(discountId) || {
-        id: discountId,
-        label: edge.meta.label,
-        amount: 0,
-        count: 0,
-      };
-
-      existing.amount += edge.meta.amount;
-      existing.count += 1;
-      aggregated.set(discountId, existing);
-    });
-  });
-
-  return Array.from(aggregated.values()).map((discount) => ({
-    id: discount.id,
-    label: `${discount.label} (${discount.count} компл.)`,
-    amount: discount.amount,
-  }));
-}
-
-function pairGiftUnits(units) {
-  const sorted = [...units].sort((a, b) => b.unitPrice - a.unitPrice);
-  const usableCount = sorted.length - (sorted.length % 2);
-  const selected = sorted.slice(0, usableCount);
-
-  const mugs = selected.filter((unit) => unit.giftKind === "mug");
-  const tshirts = selected.filter((unit) => unit.giftKind === "tshirt");
-  const others = selected.filter((unit) => unit.giftKind !== "mug" && unit.giftKind !== "tshirt");
-  const discounts = [];
-  const leftovers = [];
-
-  function consumePairs(pool, label) {
-    const localPool = [...pool];
-    while (localPool.length >= 2) {
-      const first = localPool.shift();
-      const second = localPool.shift();
       discounts.push({
-        id: `${label}-${discounts.length}`,
-        label,
-        amount: Math.round((first.unitPrice + second.unitPrice) * 0.1),
+        id: `${edge.meta.groupId}-${photoIndex}`,
+        groupId: edge.meta.groupId,
+        label: edge.meta.label,
+        amount: edge.meta.amount,
+        detail: edge.meta.detail,
+        itemIds: edge.meta.itemIds,
+        type: edge.meta.type,
       });
-    }
-    leftovers.push(...localPool);
-  }
-
-  consumePairs(mugs, "Парные кружки / футболки");
-  consumePairs(tshirts, "Парные кружки / футболки");
-  leftovers.push(...others);
-  leftovers.sort((a, b) => b.unitPrice - a.unitPrice);
-
-  while (leftovers.length >= 2) {
-    const first = leftovers.shift();
-    const second = leftovers.shift();
-    discounts.push({
-      id: `gift-bundle-${discounts.length}`,
-      label: "Комплект из 2 товаров",
-      amount: Math.round((first.unitPrice + second.unitPrice) * 0.1),
     });
-  }
-
-  const aggregated = new Map();
-  discounts.forEach((discount) => {
-    const existing = aggregated.get(discount.label) || {
-      id: discount.label === "Парные кружки / футболки" ? "gift-pair" : "gift-bundle",
-      label: discount.label,
-      amount: 0,
-      count: 0,
-    };
-    existing.amount += discount.amount;
-    existing.count += 1;
-    aggregated.set(discount.label, existing);
   });
 
-  return {
-    totalAmount: discounts.reduce((sum, discount) => sum + discount.amount, 0),
-    discounts: Array.from(aggregated.values()).map((discount) => ({
-      id: discount.id,
-      label: `${discount.label} (${discount.count} компл.)`,
-      amount: discount.amount,
-    })),
-  };
+  return aggregateDiscountDetails(discounts);
 }
 
 function calculateGiftDiscounts(items) {
   const giftUnits = expandUnitsByPredicate(items, (item) => item.category === "gifts");
 
-  if (!giftUnits.length) {
+  if (giftUnits.length < 2) {
     return [];
   }
 
-  const quantity = giftUnits.length;
-  const subtotal = giftUnits.reduce((sum, unit) => sum + unit.unitPrice, 0);
-  const bulkPercent = quantity >= 5 ? 15 : quantity >= 3 ? 10 : 0;
-  const bulkDiscounts = bulkPercent
-    ? [
-        {
-          id: "gifts-bulk",
-          label: `Сувенирная печать (${quantity} шт.)`,
-          amount: Math.round(subtotal * (bulkPercent / 100)),
-        },
-      ]
-    : [];
-  const pairedResult = pairGiftUnits(giftUnits);
-  const bulkAmount = bulkDiscounts.reduce((sum, discount) => sum + discount.amount, 0);
+  const sorted = [...giftUnits].sort((a, b) => b.unitPrice - a.unitPrice);
+  const usable = sorted.slice(0, sorted.length - (sorted.length % 2));
+  const discounts = [];
 
-  return pairedResult.totalAmount > bulkAmount ? pairedResult.discounts : bulkDiscounts;
+  for (let index = 0; index < usable.length; index += 2) {
+    const first = usable[index];
+    const second = usable[index + 1];
+    const amount = Math.round((first.unitPrice + second.unitPrice) * 0.1);
+
+    discounts.push({
+      id: `gift-pair-${index / 2}`,
+      groupId: "gift-pairs",
+      label: "Сувенирная печать",
+      amount,
+      detail: `${first.title} + ${second.title} · скидка 10% на комплект`,
+      itemIds: [first.sourceId, second.sourceId],
+      type: "gift",
+    });
+  }
+
+  return aggregateDiscountDetails(discounts);
+}
+
+function calculatePrintBindingDiscounts(items) {
+  const printItems = items.filter(
+    (item) =>
+      item.category === "print" &&
+      !item.requiresConfirmation &&
+      hasExactPrice(item.subtotal) &&
+      /распечатка/i.test(item.title)
+  );
+  const bindingItems = items.filter(
+    (item) =>
+      item.category === "binding" &&
+      item.itemKind === "binding_booklet" &&
+      !item.requiresConfirmation &&
+      hasExactPrice(item.subtotal)
+  );
+
+  if (!printItems.length || !bindingItems.length) {
+    return [];
+  }
+
+  const printSheets = printItems.reduce((sum, item) => sum + (item.sheetsCount || item.quantity || 0), 0);
+  const bindingSheets = bindingItems.reduce((sum, item) => sum + (item.sheetsCount || 0), 0);
+  const percent = printSheets >= 100 && bindingSheets >= 100 ? 10 : printSheets >= 20 && bindingSheets >= 20 ? 5 : 0;
+
+  if (!percent) {
+    return [];
+  }
+
+  const eligibleSubtotal =
+    printItems.reduce((sum, item) => sum + item.subtotal, 0) +
+    bindingItems.reduce((sum, item) => sum + item.subtotal, 0);
+
+  return [
+    {
+      id: "print-binding",
+      label: "Распечатка + брошюровка",
+      amount: Math.round(eligibleSubtotal * (percent / 100)),
+      details: [
+        `Печать ${printSheets} лист. + брошюровка ${bindingSheets} лист. · скидка ${percent}%`,
+      ],
+      itemIds: [...printItems.map((item) => item.id), ...bindingItems.map((item) => item.id)],
+      type: "bundle",
+      count: 1,
+    },
+  ];
+}
+
+function calculateStickerLaminationDiscounts(items) {
+  const stickerUnits = expandUnitsByPredicate(items, (item) => item.category === "sticker");
+  const laminationUnits = expandUnitsByPredicate(items, (item) => item.category === "lamination");
+
+  if (!stickerUnits.length || !laminationUnits.length) {
+    return [];
+  }
+
+  const source = 0;
+  const stickerOffset = 1;
+  const laminationOffset = stickerOffset + stickerUnits.length;
+  const sink = laminationOffset + laminationUnits.length;
+  const flow = createMinCostMaxFlow(sink + 1);
+
+  stickerUnits.forEach((unit, index) => {
+    flow.addEdge(source, stickerOffset + index, 1, 0);
+  });
+
+  laminationUnits.forEach((unit, index) => {
+    flow.addEdge(laminationOffset + index, sink, 1, 0);
+  });
+
+  stickerUnits.forEach((sticker, stickerIndex) => {
+    const stickerFormat = sticker.title.split(" ").pop();
+    laminationUnits.forEach((lamination, laminationIndex) => {
+      if (stickerFormat !== lamination.format) {
+        return;
+      }
+
+      const amount = Math.round(lamination.unitPrice * 0.05);
+      if (amount <= 0) {
+        return;
+      }
+
+      flow.addEdge(stickerOffset + stickerIndex, laminationOffset + laminationIndex, 1, -amount, {
+        amount,
+        label: "Самоклейка + ламинация",
+        detail: `Ламинация ${lamination.format} со скидкой 5%`,
+        itemIds: [lamination.sourceId],
+        groupId: `sticker-lamination-${lamination.format}`,
+        type: "bundle",
+      });
+    });
+  });
+
+  flow.maximizeNegativeCost(source, sink);
+
+  const discounts = [];
+  stickerUnits.forEach((unit, stickerIndex) => {
+    flow.graph[stickerOffset + stickerIndex].forEach((edge) => {
+      if (!edge.meta || edge.flow <= 0) {
+        return;
+      }
+
+      discounts.push({
+        id: `${edge.meta.groupId}-${stickerIndex}`,
+        ...edge.meta,
+      });
+    });
+  });
+
+  return aggregateDiscountDetails(discounts);
+}
+
+function calculateAppliedDiscounts(items) {
+  return [
+    ...calculatePhotoBundleDiscounts(items),
+    ...calculateGiftDiscounts(items),
+    ...calculatePrintBindingDiscounts(items),
+    ...calculateStickerLaminationDiscounts(items),
+  ];
+}
+
+function calculateTierDiscounts(items) {
+  return items
+    .filter(
+      (item) =>
+        hasExactPrice(item.subtotal) &&
+        hasExactPrice(item.originalSubtotal) &&
+        item.originalSubtotal > item.subtotal
+    )
+    .map((item) => ({
+      id: `tier-${item.id}`,
+      label: "Тиражная скидка",
+      amount: item.originalSubtotal - item.subtotal,
+      details: [`${item.title} · ${item.tierLabel}`],
+      itemIds: [item.id],
+      type: "tier",
+      count: 1,
+    }));
+}
+
+function calculateSavingsTips(items, subtotal, appliedDiscountAmount) {
+  const tips = [];
+  const seen = new Set();
+
+  function addTip(id, text, priority = 0) {
+    if (!text || seen.has(id)) {
+      return;
+    }
+    seen.add(id);
+    tips.push({ id, text, priority });
+  }
+
+  items.forEach((item) => {
+    const hint = item.nextTierHint;
+    if (!hint || !hint.remaining) {
+      return;
+    }
+
+    const futureQuantity = hint.threshold;
+    const estimatedTotal = futureQuantity * hint.unitPrice;
+    const currentTotal = hasExactPrice(item.subtotal) ? item.subtotal : item.quantity * item.unitPrice;
+    const extraCost = Math.max(0, estimatedTotal - currentTotal);
+    addTip(
+      `tier-${item.id}`,
+      `Для «${item.title}» добавьте ещё ${hint.remaining} ${hint.unitLabel}, чтобы перейти в диапазон ${hint.label || hint.threshold} и платить по ${formatRubles(hint.unitPrice)} за единицу.`,
+      extraCost
+    );
+  });
+
+  const giftUnits = expandUnitsByPredicate(items, (item) => item.category === "gifts");
+  if (giftUnits.length % 2 === 1 && giftUnits.length > 0) {
+    addTip(
+      "gift-pair",
+      "Добавьте ещё 1 сувенир, и он соберётся в пару со скидкой 10% на комплект.",
+      50
+    );
+  }
+
+  const photoUnits = expandUnitsByPredicate(items, (item) => item.category === "photo");
+  const laminationUnits = expandUnitsByPredicate(items, (item) => item.category === "lamination");
+  const frameUnits = expandUnitsByPredicate(items, (item) => item.category === "frames");
+
+  const countByFormat = (units) =>
+    units.reduce((map, unit) => {
+      map.set(unit.format, (map.get(unit.format) || 0) + 1);
+      return map;
+    }, new Map());
+
+  const photoByFormat = countByFormat(photoUnits);
+  const laminationByFormat = countByFormat(laminationUnits);
+  const frameByFormat = countByFormat(frameUnits);
+
+  photoByFormat.forEach((count, format) => {
+    if ((laminationByFormat.get(format) || 0) < count) {
+      addTip(
+        `lamination-${format}`,
+        `Для фото ${format} можно добавить ламинацию: на ламинацию по этой связке действует скидка 10%.`,
+        30
+      );
+    }
+
+    if ((frameByFormat.get(format) || 0) < count) {
+      addTip(
+        `frame-${format}`,
+        `Для фото ${format} можно добавить фоторамку: на рамку по этой связке действует скидка 15%.`,
+        20
+      );
+    }
+  });
+
+  const printSheets = items
+    .filter((item) => item.category === "print" && /распечатка/i.test(item.title))
+    .reduce((sum, item) => sum + (item.sheetsCount || item.quantity || 0), 0);
+  const bindingSheets = items
+    .filter((item) => item.category === "binding" && item.itemKind === "binding_booklet")
+    .reduce((sum, item) => sum + (item.sheetsCount || 0), 0);
+
+  if (printSheets > 0 || bindingSheets > 0) {
+    if (printSheets < 20 || bindingSheets < 20) {
+      const missingPrint = Math.max(0, 20 - printSheets);
+      const missingBinding = Math.max(0, 20 - bindingSheets);
+      if (missingPrint || missingBinding) {
+        addTip(
+          "print-binding-20",
+          `Для скидки 5% на связку распечатки и брошюровки не хватает: печать ${missingPrint} лист., брошюровка ${missingBinding} лист.`,
+          40
+        );
+      }
+    } else if (printSheets < 100 || bindingSheets < 100) {
+      const missingPrint = Math.max(0, 100 - printSheets);
+      const missingBinding = Math.max(0, 100 - bindingSheets);
+      addTip(
+        "print-binding-100",
+        `До скидки 10% на связку распечатки и брошюровки не хватает: печать ${missingPrint} лист., брошюровка ${missingBinding} лист.`,
+        45
+      );
+    }
+  }
+
+  if (!isReviewPromoEnabled() && subtotal > 0) {
+    const reviewLimit = Math.max(0, Math.round(subtotal * 0.2) - appliedDiscountAmount);
+    const reviewDiscount = Math.min(Math.round(subtotal * 0.15), reviewLimit);
+    if (reviewDiscount > 0) {
+      addTip(
+        "review",
+        `Отзыв на Яндекс Картах даст ещё до ${formatRubles(reviewDiscount)} скидки по текущей корзине.`,
+        10
+      );
+    }
+  }
+
+  return tips.sort((a, b) => a.priority - b.priority).slice(0, 6);
 }
 
 function calculateCartTotals() {
@@ -2284,35 +3084,46 @@ function calculateCartTotals() {
     (sum, item) => sum + (hasExactPrice(item.subtotal) ? item.subtotal : 0),
     0
   );
+  const originalSubtotal = calculatorCart.reduce(
+    (sum, item) =>
+      sum +
+      (hasExactPrice(item.originalSubtotal)
+        ? item.originalSubtotal
+        : hasExactPrice(item.subtotal)
+          ? item.subtotal
+          : 0),
+    0
+  );
   const unresolvedItems = calculatorCart.filter((item) => item.requiresConfirmation);
-  const bundleDiscounts = [
-    ...calculatePhotoBundleDiscounts(calculatorCart),
-    ...calculateGiftDiscounts(calculatorCart),
-  ];
-
-  const bundleDiscountAmount = bundleDiscounts.reduce((sum, discount) => sum + discount.amount, 0);
-  const reviewDiscountAmount = calcReviewPromo?.checked ? Math.round(subtotal * 0.15) : 0;
-  const uncappedDiscountAmount = bundleDiscountAmount + reviewDiscountAmount;
-  const maxAllowedDiscount = calcReviewPromo?.checked ? Math.round(subtotal * 0.2) : uncappedDiscountAmount;
-  const discountAmount = calcReviewPromo?.checked
-    ? Math.min(uncappedDiscountAmount, maxAllowedDiscount)
-    : uncappedDiscountAmount;
-  const capReduction = calcReviewPromo?.checked
-    ? Math.max(0, uncappedDiscountAmount - discountAmount)
+  const tierDiscounts = calculateTierDiscounts(calculatorCart);
+  const promoDiscounts = calculateAppliedDiscounts(calculatorCart);
+  const appliedDiscounts = [...tierDiscounts, ...promoDiscounts];
+  const appliedDiscountAmount = appliedDiscounts.reduce((sum, discount) => sum + discount.amount, 0);
+  const reviewLimit = Math.max(0, Math.round(originalSubtotal * 0.2) - appliedDiscountAmount);
+  const reviewPotentialAmount = isReviewPromoEnabled() ? Math.round(originalSubtotal * 0.15) : 0;
+  const reviewDiscountAmount = isReviewPromoEnabled()
+    ? Math.min(reviewPotentialAmount, reviewLimit)
     : 0;
+  const reviewBlockedAmount = isReviewPromoEnabled()
+    ? Math.max(0, reviewPotentialAmount - reviewDiscountAmount)
+    : 0;
+  const discountAmount = appliedDiscountAmount + reviewDiscountAmount;
   const total = subtotal - discountAmount;
 
   return {
     subtotal,
+    originalSubtotal,
     unresolvedItems,
-    bundleDiscounts,
-    bundleDiscountAmount,
+    tierDiscounts,
+    promoDiscounts,
+    appliedDiscounts,
+    appliedDiscountAmount,
+    reviewPotentialAmount,
     reviewDiscountAmount,
-    uncappedDiscountAmount,
-    maxAllowedDiscount,
+    reviewBlockedAmount,
     discountAmount,
-    capReduction,
     total,
+    savingsTips: calculateSavingsTips(calculatorCart, subtotal, appliedDiscountAmount),
   };
 }
 
@@ -2325,9 +3136,14 @@ function renderCartSummary() {
     !calcCartEmpty ||
     !calcCartSubtotal ||
     !calcCartDiscounts ||
+    !calcCartGrandTotal ||
     !calcCartMeta ||
+    !calcCartInsights ||
+    !calcCartAppliedDiscounts ||
+    !calcCartSavingsTips ||
     !calcCartNote ||
-    !calcCartTransfer
+    !calcCartTransfer ||
+    !calcCartClear
   ) {
     return;
   }
@@ -2335,14 +3151,19 @@ function renderCartSummary() {
   if (!calculatorCart.length) {
     calcCartBadge.textContent = "Пустой расчёт";
     calcCartTotal.textContent = "0 ₽";
-    calcCartSummary.textContent = "Добавьте фото, ламинацию или рамки, чтобы собрать заказ по шагам.";
+    calcCartSummary.textContent = "Добавьте позицию из калькулятора, чтобы увидеть итог и скидки.";
     calcCartList.innerHTML = "";
     calcCartEmpty.hidden = false;
-    calcCartSubtotal.textContent = "Сумма по позициям: 0 ₽";
-    calcCartDiscounts.textContent = "Скидки пока не применялись";
+    calcCartSubtotal.textContent = "0 ₽";
+    calcCartDiscounts.textContent = "0 ₽";
+    calcCartGrandTotal.textContent = "0 ₽";
     calcCartMeta.textContent = "Комплекты считаются по совпадающим форматам.";
+    calcCartInsights.hidden = true;
+    calcCartAppliedDiscounts.innerHTML = "";
+    calcCartSavingsTips.innerHTML = "";
     calcCartNote.textContent = "Здесь собирается общий расчёт заказа из нескольких позиций.";
     calcCartTransfer.disabled = true;
+    calcCartClear.disabled = true;
     return;
   }
 
@@ -2360,7 +3181,7 @@ function renderCartSummary() {
     : formatRubles(totals.total);
   calcCartSummary.textContent = totals.unresolvedItems.length
     ? `В корзине ${calculatorCart.length} поз. · ${totals.unresolvedItems.length} поз. нужно уточнить`
-    : `В корзине ${calculatorCart.length} поз. · ${formatRubles(totals.subtotal)} до скидок`;
+    : `В корзине ${calculatorCart.length} поз. · видно итог и все сработавшие скидки`;
   calcCartEmpty.hidden = true;
   calcCartList.innerHTML = calculatorCart
     .map(
@@ -2370,10 +3191,16 @@ function renderCartSummary() {
             <strong>${item.title}</strong>
             <span>${item.description}</span>
             <span>${item.displayQuantity || `${item.quantity} шт.`} · ${item.displayUnit || `${formatRubles(item.unitPrice)} за шт.`}</span>
+            <div class="calculator-cart-actions">
+              <button class="calculator-remove" type="button" data-decrement-id="${item.id}">${
+                item.quantity > 1 ? "−1" : "Убрать"
+              }</button>
+              <button class="calculator-remove" type="button" data-increment-id="${item.id}">+1</button>
+              <button class="calculator-remove" type="button" data-remove-id="${item.id}">Удалить</button>
+            </div>
           </div>
           <div class="calculator-cart-side">
             <strong>${item.displayLineTotal || formatRubles(item.subtotal)}</strong>
-            <button class="calculator-remove" type="button" data-remove-id="${item.id}">Убрать</button>
           </div>
         </article>
       `
@@ -2381,31 +3208,84 @@ function renderCartSummary() {
     .join("");
 
   const discountParts = [];
-  totals.bundleDiscounts.forEach((discount) => {
+  totals.appliedDiscounts.forEach((discount) => {
     discountParts.push(`${discount.label}: -${formatRubles(discount.amount)}`);
   });
   if (totals.reviewDiscountAmount > 0) {
     discountParts.push(`Отзыв на Яндекс Картах: -${formatRubles(totals.reviewDiscountAmount)}`);
   }
-  if (totals.capReduction > 0) {
-    discountParts.push(`Ограничение скидки 20%: +${formatRubles(totals.capReduction)}`);
+  if (isReviewPromoEnabled() && totals.reviewBlockedAmount > 0) {
+    discountParts.push(`Лимит отзыва: недоступно ${formatRubles(totals.reviewBlockedAmount)}`);
   }
 
   calcCartSubtotal.textContent = totals.unresolvedItems.length
-    ? `Рассчитанная часть: ${formatRubles(totals.subtotal)}`
-    : `Сумма по позициям: ${formatRubles(totals.subtotal)}`;
-  calcCartDiscounts.textContent = discountParts.length
-    ? discountParts.join(" · ")
-    : "Скидки пока не применялись";
+    ? formatRubles(totals.subtotal)
+    : formatRubles(totals.originalSubtotal || totals.subtotal);
+  calcCartDiscounts.textContent = totals.discountAmount > 0 ? `−${formatRubles(totals.discountAmount)}` : "0 ₽";
+  calcCartGrandTotal.textContent = totals.unresolvedItems.length
+    ? `от ${formatRubles(totals.total)}`
+    : formatRubles(totals.total);
   calcCartMeta.textContent = totals.unresolvedItems.length
     ? "Позиции с пометкой «цену уточнить» не входят в точный итог и требуют уточнения у вас."
-    : "Скидки считаются по связкам внутри корзины: фото, оцифровка, рамки, ламинация и сувенирные комплекты.";
+    : "Тиражные цены уже учтены в позициях. Ниже показаны дополнительные акции по связкам и комплектам.";
   calcCartNote.textContent = totals.unresolvedItems.length
     ? "Если часть листов с заливкой, а часть без неё, добавляйте их отдельными строками."
     : totals.discountAmount > 0
       ? `Итоговая скидка: ${formatRubles(totals.discountAmount)}`
       : "Можно добавить ещё позиции из других категорий.";
+
+  const appliedLines = [
+    ...totals.appliedDiscounts.map(
+      (discount) => `
+        <div class="calculator-line">
+          <span>${discount.label}${discount.details?.length ? ` · ${discount.details.join("; ")}` : ""}</span>
+          <strong>-${formatRubles(discount.amount)}</strong>
+        </div>
+      `
+    ),
+    ...(totals.reviewDiscountAmount > 0
+      ? [
+          `
+        <div class="calculator-line">
+          <span>Отзыв на Яндекс Картах · скидка применяется после остальных акций</span>
+          <strong>-${formatRubles(totals.reviewDiscountAmount)}</strong>
+        </div>
+      `,
+        ]
+      : []),
+    ...(isReviewPromoEnabled() && totals.reviewBlockedAmount > 0
+      ? [
+          `
+        <div class="calculator-line">
+          <span>Отзыв на Яндекс Картах · часть скидки не поместилась в лимит 20%</span>
+          <strong>${formatRubles(totals.reviewBlockedAmount)} не применилось</strong>
+        </div>
+      `,
+        ]
+      : []),
+  ];
+  const savingsLines = totals.savingsTips.map(
+    (tip) => `
+      <div class="calculator-line">
+        <span>${tip.text}</span>
+      </div>
+    `
+  );
+
+  calcCartAppliedDiscounts.innerHTML = appliedLines.length
+    ? appliedLines.join("")
+    : `<div class="calculator-line"><span>Акции пока не применены</span><strong>0 ₽</strong></div>`;
+  calcCartSavingsTips.innerHTML = savingsLines.length ? savingsLines.join("") : "";
+  calcCartInsights.hidden = false;
+  const [discountSection, tipsSection] = calcCartInsights.querySelectorAll(".calculator-insight");
+  if (discountSection) {
+    discountSection.hidden = false;
+  }
+  if (tipsSection) {
+    tipsSection.hidden = savingsLines.length === 0;
+  }
   calcCartTransfer.disabled = false;
+  calcCartClear.disabled = false;
 }
 
 function handleCalculatorFieldChange(event) {
@@ -2446,6 +3326,7 @@ function handleCalculatorFieldChange(event) {
   }
 
   updateCalculatorBuilderNote();
+  renderCalculatorPreview();
 }
 
 function addDraftToCart() {
@@ -2458,15 +3339,48 @@ function addDraftToCart() {
     return;
   }
 
-  calculatorCart.push(draft);
+  const result = upsertCartItem(draft);
   renderCartSummary();
   updateCalculatorBuilderNote();
+  renderCalculatorPreview();
+  showCalculatorToast(
+    result?.merged
+      ? `Такая позиция уже была в расчёте — количество увеличено до ${result.quantity}.`
+      : "Позиция добавлена в расчёт."
+  );
+}
+
+function replaceCartWithDraft() {
+  const draft = buildDraftCartItem(true);
+
+  if (draft.error) {
+    if (calcBuilderNote) {
+      calcBuilderNote.textContent = draft.error;
+    }
+    return;
+  }
+
+  calculatorCart = [draft];
+  renderCartSummary();
+  updateCalculatorBuilderNote();
+  renderCalculatorPreview();
+  showCalculatorToast("Расчёт обновлён только этой позицией.");
 }
 
 function removeCartItem(itemId) {
   calculatorCart = calculatorCart.filter((item) => item.id !== itemId);
   renderCartSummary();
   updateCalculatorBuilderNote();
+  renderCalculatorPreview();
+  showCalculatorToast("Позиция убрана из расчёта.");
+}
+
+function clearCalculatorCart() {
+  calculatorCart = [];
+  renderCartSummary();
+  updateCalculatorBuilderNote();
+  renderCalculatorPreview();
+  showCalculatorToast("Корзина очищена.");
 }
 
 function buildCartTextForOrder() {
@@ -2482,7 +3396,7 @@ function buildCartTextForOrder() {
       )})`
   );
 
-  totals.bundleDiscounts.forEach((discount) => {
+  totals.appliedDiscounts.forEach((discount) => {
     lines.push(`${discount.label}: -${formatRubles(discount.amount)}`);
   });
 
@@ -2490,8 +3404,8 @@ function buildCartTextForOrder() {
     lines.push(`Отзыв на Яндекс Картах: -${formatRubles(totals.reviewDiscountAmount)}`);
   }
 
-  if (totals.capReduction > 0) {
-    lines.push(`Ограничение общей скидки 20%: +${formatRubles(totals.capReduction)}`);
+  if (totals.reviewBlockedAmount > 0) {
+    lines.push(`Отзыв ограничен лимитом 20%: не применилось ${formatRubles(totals.reviewBlockedAmount)}`);
   }
 
   if (totals.unresolvedItems.length) {
@@ -2549,18 +3463,33 @@ function initializeCalculatorCart() {
   populateCalculatorCategories();
   renderCalculatorFields();
   updateCalculatorBuilderNote();
+  renderCalculatorPreview();
   renderCartSummary();
 
   calcCategory.addEventListener("change", () => {
     renderCalculatorFields();
     updateCalculatorBuilderNote();
+    renderCalculatorPreview();
   });
 
   calcFields.addEventListener("input", handleCalculatorFieldChange);
   calcFields.addEventListener("change", handleCalculatorFieldChange);
   calcAddItem?.addEventListener("click", addDraftToCart);
+  calcReplaceItem?.addEventListener("click", replaceCartWithDraft);
   calcReviewPromo?.addEventListener("change", renderCartSummary);
   calcCartList?.addEventListener("click", (event) => {
+    const decrementButton = event.target.closest("[data-decrement-id]");
+    if (decrementButton) {
+      decrementCartItem(decrementButton.dataset.decrementId);
+      return;
+    }
+
+    const incrementButton = event.target.closest("[data-increment-id]");
+    if (incrementButton) {
+      incrementCartItem(incrementButton.dataset.incrementId);
+      return;
+    }
+
     const removeButton = event.target.closest("[data-remove-id]");
     if (!removeButton) {
       return;
@@ -2569,6 +3498,7 @@ function initializeCalculatorCart() {
     removeCartItem(removeButton.dataset.removeId);
   });
   calcCartTransfer?.addEventListener("click", transferCartToOrder);
+  calcCartClear?.addEventListener("click", clearCalculatorCart);
 }
 
 initializeCalculatorCart();
