@@ -670,22 +670,71 @@ h1 {
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.16);
 }
 
-.hero-stat strong,
-.hero-stat span {
+.hero-stat-pill {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+}
+
+.hero-stat-icon {
+  display: inline-flex;
+  width: 28px;
+  height: 28px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  flex: 0 0 auto;
+}
+
+.hero-stat-icon svg {
+  width: 14px;
+  height: 14px;
+}
+
+.hero-stat-icon-map {
+  background: rgba(255, 76, 76, 0.18);
+  color: #ff7a7a;
+}
+
+.hero-stat-icon-review {
+  background: rgba(247, 201, 72, 0.2);
+  color: #ffd56a;
+}
+
+.hero-stat-icon-price {
+  background: rgba(0, 166, 118, 0.18);
+  color: #67f0bf;
+}
+
+.hero-stat-icon-time {
+  background: rgba(118, 163, 255, 0.18);
+  color: #a9c7ff;
+}
+
+.hero-stat-copy {
+  display: grid;
+  gap: 4px;
+}
+
+.hero-stat-copy strong,
+.hero-stat-copy span {
   display: block;
 }
 
-.hero-stat strong {
+.hero-stat-copy strong {
   color: #fff;
-  font-size: clamp(24px, 2.5vw, 30px);
+  font-size: clamp(18px, 2vw, 24px);
   font-weight: var(--fw-accent);
   line-height: 1;
 }
 
-.hero-stat span {
-  margin-top: 8px;
+.hero-stat-copy span {
   color: rgba(255, 255, 255, 0.82);
-  font-size: var(--fs-body-sm);
+  font-size: 13px;
   font-weight: var(--fw-body);
   line-height: 1.42;
 }
@@ -2244,66 +2293,10 @@ h2 {
 .promo-card-review {
   display: flex;
   flex-direction: column;
-  border-color: rgba(247, 201, 72, 0.45);
-  background:
-    linear-gradient(180deg, rgba(255, 248, 221, 0.94) 0%, rgba(255, 255, 255, 1) 100%);
-  box-shadow:
-    0 18px 36px rgba(23, 21, 31, 0.08),
-    0 0 0 2px rgba(247, 201, 72, 0.12);
 }
 
 .promo-card-review .promo-badge {
   align-self: flex-start;
-}
-
-.promo-review-callout {
-  display: grid;
-  gap: 6px;
-  margin-top: 18px;
-  border: 1px solid rgba(23, 21, 31, 0.12);
-  border-radius: 10px;
-  padding: 14px 16px;
-  background: rgba(255, 255, 255, 0.86);
-}
-
-.promo-review-callout strong {
-  color: var(--ink);
-  font-size: 16px;
-  font-weight: var(--fw-title);
-}
-
-.promo-review-callout span {
-  color: var(--muted);
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-.promo-review-stats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 18px;
-}
-
-.promo-review-stats span {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 34px;
-  border: 1px solid rgba(23, 21, 31, 0.12);
-  border-radius: 999px;
-  padding: 8px 12px;
-  background: rgba(255, 255, 255, 0.82);
-  color: var(--ink);
-  font-size: 13px;
-  font-weight: var(--fw-title);
-}
-
-.promo-review-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 18px;
 }
 
 .promo-note {
@@ -2335,10 +2328,6 @@ h2 {
   transform: translate(-2px, -2px);
 }
 
-.promo-action-secondary {
-  background: #fff;
-  color: var(--ink);
-}
 
 .order-section {
   background:
@@ -2602,10 +2591,11 @@ h2 {
   margin-top: 22px;
 }
 
-.contact-trust span {
+.contact-trust-pill {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
   border: 1px solid rgba(23, 21, 31, 0.12);
   border-radius: 999px;
   padding: 10px 14px;
@@ -2613,6 +2603,45 @@ h2 {
   color: var(--ink);
   font-size: 13px;
   font-weight: var(--fw-title);
+}
+
+.contact-trust-text {
+  display: inline;
+}
+
+.contact-trust-icon {
+  display: inline-flex;
+  width: 22px;
+  height: 22px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  flex: 0 0 auto;
+}
+
+.contact-trust-icon svg {
+  width: 12px;
+  height: 12px;
+}
+
+.contact-trust-icon-map {
+  background: rgba(255, 76, 76, 0.14);
+  color: #ee4e4e;
+}
+
+.contact-trust-icon-review {
+  background: rgba(247, 201, 72, 0.18);
+  color: #cf9700;
+}
+
+.contact-trust-icon-star {
+  background: rgba(255, 194, 51, 0.16);
+  color: #c58a00;
+}
+
+.contact-trust-icon-time {
+  background: rgba(0, 166, 118, 0.14);
+  color: #008d64;
 }
 
 .contact-actions > .btn {
@@ -3418,7 +3447,7 @@ h2 {
   }
 
   .order-benefits span,
-  .contact-trust span {
+  .contact-trust-pill {
     font-size: 13px;
     padding: 9px 12px;
   }

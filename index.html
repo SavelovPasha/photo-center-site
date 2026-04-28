@@ -85,21 +85,49 @@
             </a>
           </div>
           <div class="hero-stats" aria-label="Быстрая информация">
-            <div class="hero-stat">
-              <strong>5.0</strong>
-              <span>на Яндекс Картах</span>
+            <div class="hero-stat hero-stat-pill">
+              <span class="hero-stat-icon hero-stat-icon-map" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12Zm0-9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5Z" fill="currentColor" />
+                </svg>
+              </span>
+              <div class="hero-stat-copy">
+                <strong>5.0</strong>
+                <span>на Яндекс Картах</span>
+              </div>
             </div>
-            <div class="hero-stat">
-              <strong>62</strong>
-              <span>живых отзывов</span>
+            <div class="hero-stat hero-stat-pill">
+              <span class="hero-stat-icon hero-stat-icon-review" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v7A2.5 2.5 0 0 1 17.5 15H10l-4.5 4v-4H6.5A2.5 2.5 0 0 1 4 12.5v-7Z" fill="currentColor" />
+                </svg>
+              </span>
+              <div class="hero-stat-copy">
+                <strong>62</strong>
+                <span>живых отзывов</span>
+              </div>
             </div>
-            <div class="hero-stat">
-              <strong>от 20 ₽</strong>
-              <span>фото за снимок</span>
+            <div class="hero-stat hero-stat-pill">
+              <span class="hero-stat-icon hero-stat-icon-price" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path d="M6 4h12v4H6V4Zm-1 6h14a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2Zm2 2v2h4v-2H7Z" fill="currentColor" />
+                </svg>
+              </span>
+              <div class="hero-stat-copy">
+                <strong>от 20 ₽</strong>
+                <span>фото за снимок</span>
+              </div>
             </div>
-            <div class="hero-stat">
-              <strong>каждый день</strong>
-              <span>печатаем в Видном</span>
+            <div class="hero-stat hero-stat-pill">
+              <span class="hero-stat-icon hero-stat-icon-time" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path d="M12 3a9 9 0 1 1 0 18 9 9 0 0 1 0-18Zm1 4h-2v6l4 2 1-1.7-3-1.5V7Z" fill="currentColor" />
+                </svg>
+              </span>
+              <div class="hero-stat-copy">
+                <strong>каждый день</strong>
+                <span>печатаем в Видном</span>
+              </div>
             </div>
           </div>
         </div>
@@ -796,34 +824,15 @@
           <article class="promo-card promo-card-review">
             <span class="promo-badge">-15%</span>
             <h3>Отзыв на Яндекс Картах</h3>
-            <p>У нас уже 62 отзыва и рейтинг 5.0 на Яндекс Картах. Оставьте свой отзыв и покажите его нам, чтобы получить скидку или промокод на следующий заказ.</p>
-            <div class="promo-review-callout">
-              <strong>62 живых отзывов</strong>
-              <span>Посмотрите, что пишут клиенты, или оставьте свой отзыв прямо в карточке на Яндекс Картах.</span>
-            </div>
-            <div class="promo-review-stats" aria-label="Статистика отзывов">
-              <span>5.0 рейтинг</span>
-              <span>62 отзыва</span>
-              <span>70 оценок</span>
-            </div>
-            <div class="promo-review-actions">
-              <a
-                class="promo-action"
-                href="https://yandex.ru/maps/org/foto_tsentr/166665523226/reviews/?add-review=true"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Оставить отзыв
-              </a>
-              <a
-                class="promo-action promo-action-secondary"
-                href="https://yandex.ru/maps/org/foto_tsentr/166665523226/reviews/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Смотреть все отзывы
-              </a>
-            </div>
+            <p>Оставьте отзыв на Яндекс Картах и покажите его нам, чтобы получить скидку. Для дистанционного заказа пришлём промокод на следующий раз.</p>
+            <a
+              class="promo-action"
+              href="https://yandex.ru/maps/org/foto_tsentr/166665523226/reviews/?add-review=true"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Оставить отзыв
+            </a>
           </article>
         </div>
       </section>
@@ -916,10 +925,38 @@
           <h2>Закинь файл в сообщения или приходи в точку</h2>
           <p>Можно заранее отправить фото, макет или вопрос по цене. Так быстрее подготовим заказ и подскажем лучший формат.</p>
           <div class="contact-trust" aria-label="Почему нам доверяют">
-            <span>5.0 на Яндекс Картах</span>
-            <span>62 отзыва</span>
-            <span>70 оценок</span>
-            <span>каждый день открыты</span>
+            <span class="contact-trust-pill">
+              <span class="contact-trust-icon contact-trust-icon-map" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12Zm0-9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5Z" fill="currentColor" />
+                </svg>
+              </span>
+              <span class="contact-trust-text">5.0 на Яндекс Картах</span>
+            </span>
+            <span class="contact-trust-pill">
+              <span class="contact-trust-icon contact-trust-icon-review" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v7A2.5 2.5 0 0 1 17.5 15H10l-4.5 4v-4H6.5A2.5 2.5 0 0 1 4 12.5v-7Z" fill="currentColor" />
+                </svg>
+              </span>
+              <span class="contact-trust-text">62 отзыва</span>
+            </span>
+            <span class="contact-trust-pill">
+              <span class="contact-trust-icon contact-trust-icon-star" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path d="m12 3.6 2.5 5.1 5.7.8-4.1 4 1 5.7-5.1-2.7-5.1 2.7 1-5.7-4.1-4 5.7-.8L12 3.6Z" fill="currentColor" />
+                </svg>
+              </span>
+              <span class="contact-trust-text">70 оценок</span>
+            </span>
+            <span class="contact-trust-pill">
+              <span class="contact-trust-icon contact-trust-icon-time" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path d="M12 3a9 9 0 1 1 0 18 9 9 0 0 1 0-18Zm1 4h-2v6l4 2 1-1.7-3-1.5V7Z" fill="currentColor" />
+                </svg>
+              </span>
+              <span class="contact-trust-text">каждый день открыты</span>
+            </span>
           </div>
           <p class="contact-hint">Можно отправить фото, макет или просто задать вопрос — подскажем, как сделать удобнее и выгоднее.</p>
           <div class="contact-review-panel">
