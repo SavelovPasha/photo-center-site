@@ -3815,21 +3815,6 @@ orderService.addEventListener("input", () => {
 
 syncServiceChoiceButtons();
 
-function saveLead() {
-  const leads = JSON.parse(localStorage.getItem("fotochkaLeads") || "[]");
-  const lead = {
-    name: orderName.value.trim(),
-    phone: orderPhone.value.trim(),
-    service: orderService.value,
-    details: orderDetails.value.trim(),
-    pickupTime: orderTime.value.trim(),
-    createdAt: new Date().toISOString(),
-  };
-
-  leads.unshift(lead);
-  localStorage.setItem("fotochkaLeads", JSON.stringify(leads.slice(0, 30)));
-}
-
 orderForm.addEventListener("submit", (event) => {
   event.preventDefault();
   copyStatus.classList.remove("error");
@@ -3840,7 +3825,6 @@ orderForm.addEventListener("submit", (event) => {
     return;
   }
 
-  saveLead();
   updateOrderMessage();
   HTMLFormElement.prototype.submit.call(orderForm);
 });

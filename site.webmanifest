@@ -1,0 +1,17 @@
+{
+  "name": "ФотоЦентр",
+  "short_name": "ФотоЦентр",
+  "lang": "ru",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f7f6f1",
+  "theme_color": "#f6c945",
+  "icons": [
+    {
+      "src": "./assets/header-logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

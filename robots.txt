@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Disallow: /fill-check/
+Disallow: /thanks.html
