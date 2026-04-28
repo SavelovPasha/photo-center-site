@@ -1875,6 +1875,14 @@ h2 {
   font-weight: var(--fw-title);
 }
 
+.coverage-note a,
+.calculator-tool-link {
+  color: var(--ink);
+  font-weight: var(--fw-title);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 .service-grid-full {
   grid-template-columns: repeat(3, 1fr);
   grid-auto-rows: 300px;

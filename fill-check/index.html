@@ -1,0 +1,1050 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Проверка залитости документа</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    :root {
+      --bg: #0b0b0f;
+      --card: #ffffff;
+      --text: #101114;
+      --muted: #666b76;
+      --border: #dfdfe3;
+      --danger-bg: #ffe1e1;
+      --danger: #c01616;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(80, 92, 255, .25), transparent 360px),
+        radial-gradient(circle at 100% 0%, rgba(255, 60, 190, .18), transparent 380px),
+        var(--bg);
+      color: #fff;
+    }
+
+    .wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 38px 18px 56px;
+    }
+
+    .topbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 18px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.08);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 800;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 28px;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.14);
+      color: rgba(255,255,255,.9);
+      font-size: 14px;
+    }
+
+    h1 {
+      margin: 20px 0 0;
+      max-width: 780px;
+      font-size: clamp(36px, 6vw, 66px);
+      line-height: .98;
+      letter-spacing: -0.055em;
+    }
+
+    .lead {
+      margin: 22px 0 0;
+      max-width: 680px;
+      color: #d6d6dd;
+      font-size: 18px;
+      line-height: 1.7;
+    }
+
+    .lead-note {
+      margin: 16px 0 0;
+      max-width: 700px;
+      color: #fff;
+      font-size: 15px;
+      line-height: 1.6;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.14);
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .feature {
+      padding: 18px;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.13);
+      background: rgba(255,255,255,.07);
+    }
+
+    .feature b { display: block; margin-bottom: 6px; }
+    .feature span { color: #b9bbc5; font-size: 13px; line-height: 1.45; }
+
+    .result {
+      padding: 28px;
+      border-radius: 34px;
+      border: 1px solid rgba(255,255,255,.13);
+      background: rgba(255,255,255,.1);
+      backdrop-filter: blur(15px);
+      box-shadow: 0 20px 70px rgba(0,0,0,.35);
+    }
+
+    .result-label {
+      margin: 0;
+      color: #d6d6dd;
+      font-size: 14px;
+    }
+
+    .score-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 18px;
+      margin-top: 10px;
+    }
+
+    #score {
+      font-size: clamp(44px, 7vw, 66px);
+      font-weight: 800;
+      letter-spacing: -.06em;
+    }
+
+    #badge {
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: #fff;
+      color: #111;
+      font-size: 14px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .bar {
+      height: 20px;
+      border-radius: 999px;
+      background: #050505;
+      overflow: hidden;
+      margin-top: 24px;
+    }
+
+    #barFill {
+      width: 0%;
+      height: 100%;
+      background: #fff;
+      border-radius: 999px;
+      transition: width .3s ease;
+    }
+
+    .risk {
+      margin-top: 24px;
+      padding: 20px;
+      border-radius: 24px;
+      background: rgba(0,0,0,.48);
+    }
+
+    .risk h2 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    .risk p {
+      margin: 9px 0 0;
+      line-height: 1.6;
+      color: #d6d6dd;
+    }
+
+    .metrics-top {
+      display: none;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .top-metric {
+      border-radius: 20px;
+      padding: 16px;
+      background: rgba(255,255,255,.1);
+    }
+
+    .top-metric span {
+      display: block;
+      color: #d6d6dd;
+      font-size: 13px;
+    }
+
+    .top-metric b {
+      display: block;
+      margin-top: 6px;
+      font-size: 24px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 28px;
+    }
+
+    .card {
+      color: var(--text);
+      background: var(--card);
+      border-radius: 34px;
+      padding: 28px;
+      box-shadow: 0 20px 70px rgba(0,0,0,.25);
+    }
+
+    .card h2 {
+      margin: 0;
+      font-size: 28px;
+      letter-spacing: -.03em;
+    }
+
+    .card p {
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .drop {
+      margin-top: 22px;
+      min-height: 210px;
+      border: 1.5px dashed #cfcfd6;
+      background: #fbfbfc;
+      border-radius: 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 26px;
+      cursor: pointer;
+      transition: background .15s ease, border-color .15s ease;
+    }
+
+    .drop:hover, .drop.drag {
+      background: #f1f5f9;
+      border-color: #111;
+    }
+
+    .upload-icon {
+      font-size: 44px;
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+
+    .drop b { display: block; }
+    .drop span {
+      margin-top: 10px;
+      color: #686b74;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    input[type=file] { display: none; }
+
+    .error {
+      display: none;
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 18px;
+      background: var(--danger-bg);
+      color: var(--danger);
+      font-size: 14px;
+      line-height: 1.55;
+      white-space: pre-wrap;
+    }
+
+    .status {
+      min-height: 20px;
+      margin-top: 12px;
+      color: #686b74;
+      font-size: 13px;
+    }
+
+    .settings {
+      margin-top: 24px;
+      padding: 20px;
+      border-radius: 26px;
+      background: #f7f7f8;
+    }
+
+    .settings-title {
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .mode-title {
+      margin-top: 18px;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .mode-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+      margin-top: 10px;
+    }
+
+    .mode-btn {
+      min-height: 46px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: #fff;
+      color: #111;
+      cursor: pointer;
+      font-weight: 800;
+    }
+
+    .mode-btn.active {
+      background: #111;
+      color: #fff;
+      border-color: #111;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    button {
+      font-family: inherit;
+      font-weight: 800;
+    }
+
+    #recalc {
+      flex: 1;
+      min-height: 54px;
+      border: 0;
+      border-radius: 18px;
+      background: #111;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    #recalc:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    #reset {
+      width: 62px;
+      min-height: 54px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: #fff;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    .preview-box {
+      margin-top: 22px;
+      min-height: 360px;
+      border: 1px solid #e5e5e8;
+      border-radius: 28px;
+      background: #f4f4f5;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #previewImage, #previewPdf {
+      display: none;
+      max-width: 100%;
+      max-height: 560px;
+      object-fit: contain;
+    }
+
+    #emptyPreview {
+      max-width: 460px;
+      padding: 40px;
+      text-align: center;
+      color: #686b74;
+    }
+
+    .details {
+      display: none;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .detail {
+      padding: 16px;
+      border: 1px solid #e5e5e8;
+      border-radius: 20px;
+    }
+
+    .detail span {
+      display: block;
+      color: #686b74;
+      font-size: 13px;
+    }
+
+    .detail b {
+      display: block;
+      margin-top: 6px;
+      font-size: 23px;
+    }
+
+    .pages {
+      display: none;
+      margin-top: 22px;
+      padding: 16px;
+      border: 1px solid #e5e5e8;
+      border-radius: 24px;
+    }
+
+    .pages-title {
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .page-row {
+      display: grid;
+      grid-template-columns: 82px 1fr 76px;
+      gap: 10px;
+      align-items: center;
+      margin: 9px 0;
+      font-size: 14px;
+    }
+
+    .mini {
+      height: 12px;
+      border-radius: 999px;
+      background: #eeeeef;
+      overflow: hidden;
+    }
+
+    .mini > div {
+      height: 100%;
+      width: 0%;
+      background: #111;
+      border-radius: 999px;
+    }
+
+    .formula {
+      margin-top: 22px;
+      padding: 18px;
+      border-radius: 24px;
+      background: #111;
+      color: #d6d6dd;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .formula b { color: #fff; }
+
+    #workCanvas { display: none; }
+
+    @media (max-width: 920px) {
+      .hero, .grid { grid-template-columns: 1fr; }
+      .features { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 560px) {
+      .wrap { padding: 22px 12px 36px; }
+      .card, .result { padding: 20px; border-radius: 26px; }
+      .score-row { flex-direction: column; align-items: flex-start; }
+      .metrics-top, .details, .mode-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="workCanvas"></canvas>
+
+  <main class="wrap">
+    <div class="topbar">
+      <div class="pill">ФотоЦентр · помощник по заливке</div>
+      <a class="back-link" href="../index.html#calculator">Вернуться к калькулятору</a>
+    </div>
+    <section class="hero">
+      <div>
+        <div class="pill">％ Анализ залитости PNG, JPG и PDF</div>
+        <h1>Проверьте, превышает ли заливка документа 50%</h1>
+        <p class="lead">Загрузите PNG, JPG/JPEG или PDF. Инструмент посчитает долю страницы, которая не похожа на белый фон, и покажет итоговый процент залитости.</p>
+        <p class="lead-note">Если результат выше 50%, для распечатки и плотной бумаги на сайте применяется надбавка к стоимости. Если часть листов с высокой заливкой, а часть без неё, считайте их отдельно.</p>
+
+        <div class="features">
+          <div class="feature"><b>PNG и JPG</b><span>Фото, сканы, макеты и подготовленные изображения</span></div>
+          <div class="feature"><b>PDF</b><span>Можно считать первую страницу или весь документ целиком</span></div>
+          <div class="feature"><b>Расчёт по площади</b><span>Показывает, сколько процентов страницы занято содержимым</span></div>
+        </div>
+      </div>
+
+      <aside class="result">
+        <p class="result-label">Результат анализа</p>
+        <div class="score-row">
+          <div id="score">0.00%</div>
+          <div id="badge">Минимально</div>
+        </div>
+        <div class="bar"><div id="barFill"></div></div>
+
+        <div class="risk">
+          <h2 id="riskTitle">Почти пустой файл</h2>
+          <p id="riskText">Большая часть файла похожа на белый или почти белый фон.</p>
+        </div>
+
+        <div class="metrics-top" id="metricsTop">
+          <div class="top-metric"><span>Пустой фон</span><b id="emptyPercent">100.00%</b></div>
+          <div class="top-metric"><span>Формат</span><b id="formatName">—</b></div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="grid">
+      <section class="card">
+        <h2>Загрузите файл</h2>
+        <p>Поддерживаются PNG, JPG/JPEG и PDF. Расчёт выполняется прямо в браузере, без отправки файла на сервер.</p>
+
+        <label class="drop" id="drop">
+          <div class="upload-icon">⇧</div>
+          <b>Нажмите, чтобы выбрать файл</b>
+          <span id="fileName">PNG, JPG/JPEG или PDF</span>
+          <input id="fileInput" type="file" accept="image/png,image/jpeg,.png,.jpg,.jpeg,application/pdf,.pdf" />
+        </label>
+
+        <div class="error" id="error"></div>
+        <div class="status" id="status"></div>
+
+        <div class="settings">
+          <div class="settings-title">PDF</div>
+          <p>Для PDF можно проверить только первую страницу или весь документ.</p>
+          <div class="mode-grid">
+            <button id="modeFirst" class="mode-btn" type="button">Только 1 страница</button>
+            <button id="modeAll" class="mode-btn active" type="button">Все страницы</button>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button id="recalc" type="button" disabled>Пересчитать</button>
+          <button id="reset" type="button">↻</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Предпросмотр и детализация</h2>
+        <p>Для PDF показывается первая страница, а процент может считаться по всем страницам.</p>
+
+        <div class="preview-box">
+          <div id="emptyPreview">Пока файл не загружен. После загрузки здесь появится изображение или первая страница PDF.</div>
+          <img id="previewImage" alt="Предпросмотр изображения" />
+          <canvas id="previewPdf"></canvas>
+        </div>
+
+        <div class="details" id="details">
+          <div class="detail"><span>Проанализировано пикселей</span><b id="totalPixels">0</b></div>
+          <div class="detail"><span>Залитых пикселей</span><b id="filledPixels">0</b></div>
+          <div class="detail"><span>Страниц PDF</span><b id="pdfPages">—</b></div>
+          <div class="detail"><span>Проанализировано страниц</span><b id="analyzedPages">0</b></div>
+        </div>
+
+        <div class="pages" id="pagesBlock">
+          <div class="pages-title">Залитость по страницам</div>
+          <div id="pagesList"></div>
+        </div>
+
+        <div class="formula">
+          <b>Как считать результат:</b> если процент получился до 50%, выбирайте обычный вариант без надбавки. Если выше 50%, для распечатки и плотной бумаги на сайте считается повышенная стоимость. Для спорных макетов лучше уточнить итог через заявку или сообщения.
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script type="module">
+    import * as pdfjsLib from './pdf.min.mjs';
+
+    pdfjsLib.GlobalWorkerOptions.workerSrc = './pdf.worker.min.mjs';
+
+    const WHITE_THRESHOLD = 245;
+
+    const state = {
+      file: null,
+      fileType: '',
+      pdfMode: 'all',
+      previewUrl: '',
+      busy: false,
+    };
+
+    const $ = (id) => document.getElementById(id);
+
+    const el = {
+      workCanvas: $('workCanvas'),
+      fileInput: $('fileInput'),
+      drop: $('drop'),
+      fileName: $('fileName'),
+      error: $('error'),
+      status: $('status'),
+      modeFirst: $('modeFirst'),
+      modeAll: $('modeAll'),
+      recalc: $('recalc'),
+      reset: $('reset'),
+      score: $('score'),
+      badge: $('badge'),
+      barFill: $('barFill'),
+      riskTitle: $('riskTitle'),
+      riskText: $('riskText'),
+      metricsTop: $('metricsTop'),
+      emptyPercent: $('emptyPercent'),
+      formatName: $('formatName'),
+      emptyPreview: $('emptyPreview'),
+      previewImage: $('previewImage'),
+      previewPdf: $('previewPdf'),
+      details: $('details'),
+      totalPixels: $('totalPixels'),
+      filledPixels: $('filledPixels'),
+      pdfPages: $('pdfPages'),
+      analyzedPages: $('analyzedPages'),
+      pagesBlock: $('pagesBlock'),
+      pagesList: $('pagesList'),
+    };
+
+    function runTests() {
+      const white = countFilledPixelsFromRgba(new Uint8ClampedArray([255,255,255,255]), true);
+      console.assert(white.total === 1 && white.filled === 0, 'white pixel should be empty');
+
+      const black = countFilledPixelsFromRgba(new Uint8ClampedArray([0,0,0,255]), true);
+      console.assert(black.total === 1 && black.filled === 1, 'black pixel should be filled');
+
+      const transparent = countFilledPixelsFromRgba(new Uint8ClampedArray([0,0,0,0]), true);
+      console.assert(transparent.total === 0 && transparent.transparent === 1, 'transparent pixel should be ignored');
+
+      const half = countFilledPixelsFromRgba(new Uint8ClampedArray([255,255,255,255,0,0,0,255]), true);
+      console.assert(half.total === 2 && half.filled === 1 && getFillPercent(half) === 50, 'two pixels should produce 50%');
+
+      const colored = countFilledPixelsFromRgba(new Uint8ClampedArray([255,220,220,255]), true);
+      console.assert(colored.filled === 1, 'bright colored pixel should be filled');
+    }
+
+    function setError(message) {
+      el.error.textContent = message || '';
+      el.error.style.display = message ? 'block' : 'none';
+    }
+
+    function setStatus(message) {
+      el.status.textContent = message || '';
+    }
+
+    function setBusy(value) {
+      state.busy = value;
+      el.recalc.disabled = value || !state.file;
+      el.recalc.textContent = value ? 'Идёт анализ...' : 'Пересчитать';
+    }
+
+    function formatPercent(value) {
+      return value.toFixed(2) + '%';
+    }
+
+    function clamp(value, min, max) {
+      return Math.max(min, Math.min(max, value));
+    }
+
+    function getFillPercent(totals) {
+      return totals.total ? (totals.filled / totals.total) * 100 : 0;
+    }
+
+    function getRisk(percent) {
+      if (percent >= 70) {
+        return {
+          badge: 'Плотно заполнено',
+          title: 'Очень высокая залитость',
+          text: 'Большая часть файла занята цветом, текстом, штриховкой или плотными элементами.',
+        };
+      }
+
+      if (percent >= 40) {
+        return {
+          badge: 'Средне',
+          title: 'Средняя залитость',
+          text: 'Файл заметно заполнен, но пустого фона всё ещё достаточно много.',
+        };
+      }
+
+      if (percent >= 15) {
+        return {
+          badge: 'Низко',
+          title: 'Низкая залитость',
+          text: 'На файле есть содержимое, но основная часть площади остаётся пустой или светлой.',
+        };
+      }
+
+      return {
+        badge: 'Минимально',
+        title: 'Почти пустой файл',
+        text: 'Большая часть файла похожа на белый или почти белый фон.',
+      };
+    }
+
+    function countFilledPixelsFromRgba(data, ignoreTransparent) {
+      let total = 0;
+      let filled = 0;
+      let transparent = 0;
+      let dark = 0;
+      let colored = 0;
+
+      for (let i = 0; i < data.length; i += 4) {
+        const r = data[i];
+        const g = data[i + 1];
+        const b = data[i + 2];
+        const a = data[i + 3];
+
+        if (ignoreTransparent && a < 20) {
+          transparent += 1;
+          continue;
+        }
+
+        total += 1;
+
+        const brightness = (r + g + b) / 3;
+        const colorSpread = Math.max(r, g, b) - Math.min(r, g, b);
+
+        const isDarkEnough = brightness < WHITE_THRESHOLD;
+        const isColoredEnough = colorSpread > 18 && brightness < 252;
+
+        if (brightness < 150) dark += 1;
+        if (isColoredEnough) colored += 1;
+        if (isDarkEnough || isColoredEnough) filled += 1;
+      }
+
+      return { total, filled, transparent, dark, colored };
+    }
+
+    function analyzeCanvas(canvas) {
+      const ctx = canvas.getContext('2d', { willReadFrequently: true });
+      if (!ctx || !canvas.width || !canvas.height) {
+        return { total: 0, filled: 0, transparent: 0, dark: 0, colored: 0 };
+      }
+
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      return countFilledPixelsFromRgba(imageData.data, true);
+    }
+
+    function updateResults(totals, pageStats, kind, pdfPages = 0) {
+      const percent = getFillPercent(totals);
+      const empty = 100 - percent;
+      const risk = getRisk(percent);
+
+      el.score.textContent = formatPercent(percent);
+      el.barFill.style.width = clamp(percent, 0, 100) + '%';
+      el.badge.textContent = risk.badge;
+      el.riskTitle.textContent = risk.title;
+      el.riskText.textContent = risk.text;
+
+      el.metricsTop.style.display = 'grid';
+      el.emptyPercent.textContent = formatPercent(empty);
+      el.formatName.textContent = kind.toUpperCase();
+
+      el.details.style.display = 'grid';
+      el.totalPixels.textContent = totals.total.toLocaleString('ru-RU');
+      el.filledPixels.textContent = totals.filled.toLocaleString('ru-RU');
+      el.pdfPages.textContent = pdfPages ? String(pdfPages) : '—';
+      el.analyzedPages.textContent = String(pageStats.length);
+
+      if (pageStats.length > 1) {
+        el.pagesBlock.style.display = 'block';
+        el.pagesList.innerHTML = pageStats.map((page) => {
+          const width = clamp(page.percent, 0, 100);
+          return `
+            <div class="page-row">
+              <span>Стр. ${page.page}</span>
+              <div class="mini"><div style="width:${width}%"></div></div>
+              <span style="text-align:right;font-weight:800">${formatPercent(page.percent)}</span>
+            </div>
+          `;
+        }).join('');
+      } else {
+        el.pagesBlock.style.display = 'none';
+        el.pagesList.innerHTML = '';
+      }
+    }
+
+    function showImagePreview(url) {
+      el.emptyPreview.style.display = 'none';
+      el.previewPdf.style.display = 'none';
+      el.previewImage.src = url;
+      el.previewImage.style.display = 'block';
+    }
+
+    function showPdfPreview() {
+      el.emptyPreview.style.display = 'none';
+      el.previewImage.style.display = 'none';
+      el.previewPdf.style.display = 'block';
+    }
+
+    function resetPreview() {
+      el.emptyPreview.style.display = 'block';
+      el.previewImage.style.display = 'none';
+      el.previewPdf.style.display = 'none';
+      el.previewImage.removeAttribute('src');
+      el.pagesBlock.style.display = 'none';
+      el.pagesList.innerHTML = '';
+    }
+
+    async function analyzeImage(file) {
+      setBusy(true);
+      setError('');
+      setStatus('Открываю изображение...');
+
+      try {
+        if (state.previewUrl) URL.revokeObjectURL(state.previewUrl);
+        state.previewUrl = URL.createObjectURL(file);
+
+        const img = new Image();
+        img.src = state.previewUrl;
+
+        await new Promise((resolve, reject) => {
+          img.onload = resolve;
+          img.onerror = reject;
+        });
+
+        const maxSide = 1600;
+        const ratio = Math.min(1, maxSide / Math.max(img.naturalWidth, img.naturalHeight));
+        const width = Math.max(1, Math.round(img.naturalWidth * ratio));
+        const height = Math.max(1, Math.round(img.naturalHeight * ratio));
+
+        el.workCanvas.width = width;
+        el.workCanvas.height = height;
+
+        const ctx = el.workCanvas.getContext('2d', { willReadFrequently: true });
+        ctx.clearRect(0, 0, width, height);
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const totals = analyzeCanvas(el.workCanvas);
+        const pageStats = [{ page: 1, percent: getFillPercent(totals) }];
+
+        showImagePreview(state.previewUrl);
+        updateResults(totals, pageStats, 'image', 0);
+        setStatus('Готово.');
+      } catch (error) {
+        console.error(error);
+        setError('Не получилось открыть изображение. Попробуйте другой PNG или JPG файл.\n' + (error.message || String(error)));
+      } finally {
+        setBusy(false);
+      }
+    }
+
+    async function renderPdfPage(pdf, pageNumber, canvas, maxSide = 1600) {
+      const page = await pdf.getPage(pageNumber);
+      const viewport = page.getViewport({ scale: 1 });
+      const ratio = Math.min(maxSide / Math.max(viewport.width, viewport.height), 2);
+      const scaled = page.getViewport({ scale: ratio });
+
+      canvas.width = Math.round(scaled.width);
+      canvas.height = Math.round(scaled.height);
+
+      const ctx = canvas.getContext('2d', { willReadFrequently: true });
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      await page.render({ canvasContext: ctx, viewport: scaled }).promise;
+    }
+
+    async function analyzePdf(file) {
+      setBusy(true);
+      setError('');
+      setStatus('Читаю PDF...');
+
+      try {
+        const buffer = await file.arrayBuffer();
+
+        const loadingTask = pdfjsLib.getDocument({
+          data: buffer,
+          useWorkerFetch: false,
+          isEvalSupported: false,
+        });
+
+        const pdf = await loadingTask.promise;
+        const pagesToAnalyze = state.pdfMode === 'first' ? 1 : pdf.numPages;
+
+        const totals = { total: 0, filled: 0, transparent: 0, dark: 0, colored: 0 };
+        const pageStats = [];
+
+        for (let pageNumber = 1; pageNumber <= pagesToAnalyze; pageNumber += 1) {
+          setStatus(`Анализ PDF: страница ${pageNumber} из ${pagesToAnalyze}...`);
+
+          await renderPdfPage(pdf, pageNumber, el.workCanvas);
+          const result = analyzeCanvas(el.workCanvas);
+
+          totals.total += result.total;
+          totals.filled += result.filled;
+          totals.transparent += result.transparent;
+          totals.dark += result.dark;
+          totals.colored += result.colored;
+
+          pageStats.push({
+            page: pageNumber,
+            percent: getFillPercent(result),
+          });
+
+          if (pageNumber === 1) {
+            el.previewPdf.width = el.workCanvas.width;
+            el.previewPdf.height = el.workCanvas.height;
+
+            const previewCtx = el.previewPdf.getContext('2d');
+            previewCtx.clearRect(0, 0, el.previewPdf.width, el.previewPdf.height);
+            previewCtx.drawImage(el.workCanvas, 0, 0);
+          }
+        }
+
+        showPdfPreview();
+        updateResults(totals, pageStats, 'pdf', pdf.numPages);
+        setStatus('Готово.');
+      } catch (error) {
+        console.error(error);
+        setError(
+          'Не получилось прочитать PDF.\n\n' +
+          'Проверьте, что рядом с index.html лежат файлы pdf.min.mjs и pdf.worker.min.mjs.\n' +
+          'Также сайт нужно открывать через GitHub Pages или локальный сервер, а не просто двойным кликом по файлу.\n\n' +
+          'Детали ошибки: ' + (error.message || String(error))
+        );
+        setStatus('');
+      } finally {
+        setBusy(false);
+      }
+    }
+
+    async function handleFile(file) {
+      if (!file) return;
+
+      state.file = file;
+      el.fileName.textContent = file.name;
+      el.recalc.disabled = false;
+      setError('');
+      setStatus('');
+
+      const ext = (file.name.split('.').pop() || '').toLowerCase();
+      const isPdf = file.type === 'application/pdf' || ext === 'pdf';
+      const isImage = file.type.startsWith('image/') || ['png', 'jpg', 'jpeg'].includes(ext);
+
+      if (isPdf) {
+        state.fileType = 'pdf';
+        await analyzePdf(file);
+        return;
+      }
+
+      if (isImage) {
+        state.fileType = 'image';
+        await analyzeImage(file);
+        return;
+      }
+
+      state.fileType = '';
+      setError('Поддерживаются только PNG, JPG/JPEG и PDF.');
+    }
+
+    async function recalc() {
+      if (!state.file) return;
+      if (state.fileType === 'pdf') await analyzePdf(state.file);
+      if (state.fileType === 'image') await analyzeImage(state.file);
+    }
+
+    function updatePdfModeButtons() {
+      el.modeFirst.classList.toggle('active', state.pdfMode === 'first');
+      el.modeAll.classList.toggle('active', state.pdfMode === 'all');
+    }
+
+    function resetAll() {
+      if (state.previewUrl) URL.revokeObjectURL(state.previewUrl);
+
+      state.file = null;
+      state.fileType = '';
+      state.previewUrl = '';
+      state.pdfMode = 'all';
+
+      el.fileInput.value = '';
+      el.fileName.textContent = 'PNG, JPG/JPEG или PDF';
+      el.recalc.disabled = true;
+
+      setError('');
+      setStatus('');
+      resetPreview();
+      updatePdfModeButtons();
+
+      el.score.textContent = '0.00%';
+      el.barFill.style.width = '0%';
+      el.badge.textContent = 'Минимально';
+      el.riskTitle.textContent = 'Почти пустой файл';
+      el.riskText.textContent = 'Большая часть файла похожа на белый или почти белый фон.';
+      el.metricsTop.style.display = 'none';
+      el.details.style.display = 'none';
+    }
+
+    el.fileInput.addEventListener('change', (event) => {
+      handleFile(event.target.files[0]);
+    });
+
+    el.drop.addEventListener('dragover', (event) => {
+      event.preventDefault();
+      el.drop.classList.add('drag');
+    });
+
+    el.drop.addEventListener('dragleave', () => {
+      el.drop.classList.remove('drag');
+    });
+
+    el.drop.addEventListener('drop', (event) => {
+      event.preventDefault();
+      el.drop.classList.remove('drag');
+      handleFile(event.dataTransfer.files[0]);
+    });
+
+    el.modeFirst.addEventListener('click', () => {
+      state.pdfMode = 'first';
+      updatePdfModeButtons();
+      if (state.fileType === 'pdf') recalc();
+    });
+
+    el.modeAll.addEventListener('click', () => {
+      state.pdfMode = 'all';
+      updatePdfModeButtons();
+      if (state.fileType === 'pdf') recalc();
+    });
+
+    el.recalc.addEventListener('click', recalc);
+    el.reset.addEventListener('click', resetAll);
+
+    runTests();
+  </script>
+</body>
+</html>

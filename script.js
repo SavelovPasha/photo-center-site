@@ -975,6 +975,10 @@ function renderPaperFields() {
     <p class="calculator-builder-note">
       Если часть листов с заливкой, а часть без неё, добавляйте их отдельными строками.
     </p>
+    <p class="calculator-builder-note">
+      <a class="calculator-tool-link" href="./fill-check/index.html" target="_blank" rel="noreferrer">Проверить заливку файла</a>
+      перед расчётом, если не уверены, превышает ли макет 50%.
+    </p>
   `;
 }
 
@@ -1104,6 +1108,10 @@ function renderPrintFields() {
       </label>
       <p class="calculator-builder-note">
         Если часть листов с заливкой, а часть без неё, добавьте их двумя отдельными позициями.
+      </p>
+      <p class="calculator-builder-note">
+        <a class="calculator-tool-link" href="./fill-check/index.html" target="_blank" rel="noreferrer">Проверить заливку файла</a>
+        можно заранее, чтобы понять, есть ли надбавка за 50%+.
       </p>
     `
         : `
