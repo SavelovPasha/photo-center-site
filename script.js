@@ -3112,8 +3112,10 @@ function calculateCartTotals() {
   const unresolvedItems = calculatorCart.filter((item) => item.requiresConfirmation);
   const tierDiscounts = calculateTierDiscounts(calculatorCart);
   const promoDiscounts = calculateAppliedDiscounts(calculatorCart);
+  const tierDiscountAmount = tierDiscounts.reduce((sum, discount) => sum + discount.amount, 0);
+  const promoDiscountAmount = promoDiscounts.reduce((sum, discount) => sum + discount.amount, 0);
   const appliedDiscounts = [...tierDiscounts, ...promoDiscounts];
-  const appliedDiscountAmount = appliedDiscounts.reduce((sum, discount) => sum + discount.amount, 0);
+  const appliedDiscountAmount = tierDiscountAmount + promoDiscountAmount;
   const reviewLimit = Math.max(0, Math.round(originalSubtotal * 0.2) - appliedDiscountAmount);
   const reviewPotentialAmount = isReviewPromoEnabled() ? Math.round(originalSubtotal * 0.15) : 0;
   const reviewDiscountAmount = isReviewPromoEnabled()
@@ -3122,8 +3124,8 @@ function calculateCartTotals() {
   const reviewBlockedAmount = isReviewPromoEnabled()
     ? Math.max(0, reviewPotentialAmount - reviewDiscountAmount)
     : 0;
-  const discountAmount = appliedDiscountAmount + reviewDiscountAmount;
-  const total = subtotal - discountAmount;
+  const discountAmount = tierDiscountAmount + promoDiscountAmount + reviewDiscountAmount;
+  const total = subtotal - promoDiscountAmount - reviewDiscountAmount;
 
   return {
     subtotal,
@@ -3132,6 +3134,8 @@ function calculateCartTotals() {
     tierDiscounts,
     promoDiscounts,
     appliedDiscounts,
+    tierDiscountAmount,
+    promoDiscountAmount,
     appliedDiscountAmount,
     reviewPotentialAmount,
     reviewDiscountAmount,
