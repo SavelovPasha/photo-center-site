@@ -99,6 +99,16 @@ function setPriceSubcategoriesOpen(card, isOpen) {
   });
 }
 
+function openFirstPriceSubcategory(card) {
+  const firstRow = card?.querySelector(".price-subcategory-row");
+  if (!firstRow) {
+    return;
+  }
+
+  closeSiblingSubcategories(firstRow);
+  setPriceSubcategoryOpen(firstRow, true);
+}
+
 function resetPriceExpansion() {
   closePriceCards();
   priceTableCards.forEach((card) => setPriceSubcategoriesOpen(card, false));
@@ -1049,6 +1059,15 @@ function renderDigitalFields() {
       <span>${quantityLabel}</span>
       <input id="calcDigitalQuantity" type="number" min="1" step="1" value="${currentQuantity}" inputmode="numeric" />
     </label>
+    ${
+      currentMode === "video"
+        ? `
+      <p class="calculator-builder-note">
+        С декодированием считается отдельно: 30 ₽/мин до 99 мин., 29 ₽/мин от 100 мин., 27 ₽/мин от 300 мин. Требуется для кассет с электронным кодированием или защитой видеосигнала и определяется после проверки кассеты.
+      </p>
+    `
+        : ""
+    }
   `;
 }
 
@@ -3674,6 +3693,25 @@ function setPriceFilter(filter) {
   applyFilters();
 }
 
+function openPriceCardForFilter(filter) {
+  if (!filter || filter === "all") {
+    return;
+  }
+
+  const targetCard = Array.from(priceTableCards).find((card) => {
+    const categories = card.dataset.category?.split(/\s+/) || [];
+    return categories.includes(filter) && !card.classList.contains("hidden");
+  });
+
+  if (!targetCard) {
+    return;
+  }
+
+  closeSiblingPriceCards(targetCard);
+  setPriceCardOpen(targetCard, true);
+  openFirstPriceSubcategory(targetCard);
+}
+
 function selectOrderService(serviceName) {
   if (!serviceName || !orderService) {
     return;
@@ -3743,7 +3781,9 @@ setupPriceSubcategories();
 
 tabs.forEach((tab) => {
   tab.addEventListener("click", () => {
-    setPriceFilter(tab.dataset.filter);
+    const filter = tab.dataset.filter || "all";
+    setPriceFilter(filter);
+    openPriceCardForFilter(filter);
   });
 });
 
@@ -3775,6 +3815,7 @@ serviceCards.forEach((card) => {
   card.addEventListener("click", () => {
     const filter = card.dataset.targetFilter || "all";
     setPriceFilter(filter);
+    openPriceCardForFilter(filter);
     selectOrderService(card.dataset.orderService);
     document.querySelector("#prices").scrollIntoView({ behavior: "smooth", block: "start" });
   });

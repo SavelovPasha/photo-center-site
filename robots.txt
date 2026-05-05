@@ -2,4 +2,7 @@ User-agent: *
 Allow: /
 
 Disallow: /fill-check/
+Disallow: /send-order.php
 Disallow: /thanks.html
+
+Sitemap: https://fotouslugi-vidnoe.ru/sitemap.xml

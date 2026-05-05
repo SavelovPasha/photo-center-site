@@ -3881,6 +3881,39 @@ h2 {
     gap: 8px;
   }
 
+  .price-table tr.price-video-row {
+    grid-template-columns: 1fr;
+  }
+
+  .price-table tr.price-video-row td:last-child {
+    grid-column: 1;
+    grid-row: auto;
+    justify-self: stretch;
+    width: 100%;
+    max-width: none;
+    margin: 8px 0 0;
+  }
+
+  .price-video-row .price-group-stack--video {
+    max-width: none;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .price-video-row .price-group-stack--video .price-group {
+    flex: 1 1 142px;
+    min-width: 0;
+  }
+
+  .price-video-row .price-group-title {
+    min-height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.15;
+  }
+
   .price-group-stack:has(.price-detail-list-single):not(:has(.price-detail-list:not(.price-detail-list-single))) {
     flex-direction: row;
   }

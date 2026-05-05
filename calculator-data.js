@@ -23,8 +23,8 @@ window.photoCenterCalculatorData = {
       value: 15,
       scope: "next_order",
       notes: [
-        "Скидка действует на следующий заказ.",
-        "По текущим условиям суммируется с акциями 5% и 10%.",
+        "Скидка до 15% применяется после остальных акций.",
+        "Если общий лимит скидок 20% уже почти выбран, скидка за отзыв уменьшается до доступного остатка.",
       ],
     },
     {
@@ -465,9 +465,9 @@ window.photoCenterCalculatorData = {
           pricingMode: "tiered",
           options: [],
           tiers: [
-            { min: 1, max: 99, price: 20, label: "1-99 мин." },
-            { min: 100, max: 299, price: 19, label: "100-299 мин." },
-            { min: 300, max: null, price: 18, label: "300+ мин." },
+            { min: 1, max: 99, price: 22, label: "1-99 мин." },
+            { min: 100, max: 299, price: 21, label: "100-299 мин." },
+            { min: 300, max: null, price: 20, label: "300+ мин." },
           ],
           adjustments: [],
           autoDiscounts: ["digitization_bulk"],
@@ -475,6 +475,8 @@ window.photoCenterCalculatorData = {
           notes: [
             "Цена указана за минуту записи.",
             "Минимальная стоимость кассеты - 900 ₽.",
+            "С декодированием: 30 ₽/мин до 99 мин., 29 ₽/мин от 100 мин., 27 ₽/мин от 300 мин.",
+            "Декодирование требуется для кассет с электронным кодированием или защитой видеосигнала. Определяется после проверки кассеты.",
           ],
         },
         {
@@ -653,7 +655,7 @@ window.photoCenterCalculatorData = {
           options: [],
           tiers: [],
           adjustments: [],
-          price: 10,
+          price: 20,
           autoDiscounts: [],
           manualPromos: [],
           notes: [],
