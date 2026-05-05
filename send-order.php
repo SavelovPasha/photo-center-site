@@ -104,9 +104,22 @@ if (!is_array($config)) {
 
 $name = post_value('Имя', 120);
 $phone = post_value('Телефон', 80);
-$service = post_value('Услуга', 160);
-$details = post_value('Детали', 2000);
-$time = post_value('Удобное время', 300);
+$contactMethod = post_value('contact_method', 120);
+if ($contactMethod === '') {
+    $contactMethod = post_value('Удобный способ связи', 120);
+}
+$service = post_value('order_service', 160);
+if ($service === '') {
+    $service = post_value('Услуга', 160);
+}
+$details = post_value('order_details', 2000);
+if ($details === '') {
+    $details = post_value('Детали', 2000);
+}
+$time = post_value('order_time', 300);
+if ($time === '') {
+    $time = post_value('Удобное время', 300);
+}
 
 if ($name === '' || $phone === '') {
     redirect_to('./index.html#order');
@@ -114,12 +127,14 @@ if ($name === '' || $phone === '') {
 
 $detailsValue = $details !== '' ? $details : 'не указаны';
 $timeValue = $time !== '' ? $time : 'не указано';
+$contactMethodValue = $contactMethod !== '' ? $contactMethod : 'не указан';
 
 $textBody = implode("\n", array(
     'Новая заявка с сайта ' . SITE_NAME,
     '------------------------------',
     'Имя: ' . $name,
     'Телефон: ' . $phone,
+    'Удобный способ связи: ' . $contactMethodValue,
     'Услуга: ' . ($service !== '' ? $service : 'не указана'),
     'Детали: ' . $detailsValue,
     'Удобное время: ' . $timeValue,
@@ -132,6 +147,7 @@ $htmlBody = '<!doctype html><html><body style="margin:0;padding:0;background:#f6
     . '<table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;font-size:16px;line-height:1.5;">'
     . '<tr><td style="padding:10px 0;color:#687086;width:150px;border-top:1px solid #edf0f5;">Имя</td><td style="padding:10px 0;border-top:1px solid #edf0f5;"><strong>' . html_escape($name) . '</strong></td></tr>'
     . '<tr><td style="padding:10px 0;color:#687086;border-top:1px solid #edf0f5;">Телефон</td><td style="padding:10px 0;border-top:1px solid #edf0f5;"><strong>' . html_escape($phone) . '</strong></td></tr>'
+    . '<tr><td style="padding:10px 0;color:#687086;border-top:1px solid #edf0f5;">Связаться</td><td style="padding:10px 0;border-top:1px solid #edf0f5;"><strong>' . html_escape($contactMethodValue) . '</strong></td></tr>'
     . '<tr><td style="padding:10px 0;color:#687086;border-top:1px solid #edf0f5;">Услуга</td><td style="padding:10px 0;border-top:1px solid #edf0f5;">' . html_escape($service !== '' ? $service : 'не указана') . '</td></tr>'
     . '<tr><td style="padding:10px 0;color:#687086;border-top:1px solid #edf0f5;">Детали</td><td style="padding:10px 0;border-top:1px solid #edf0f5;">' . nl2br(html_escape($detailsValue)) . '</td></tr>'
     . '<tr><td style="padding:10px 0;color:#687086;border-top:1px solid #edf0f5;">Удобное время</td><td style="padding:10px 0;border-top:1px solid #edf0f5;">' . html_escape($timeValue) . '</td></tr>'

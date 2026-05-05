@@ -897,10 +897,14 @@
               <span><strong>3</strong>Мы свяжемся и уточним детали</span>
             </div>
           </div>
-          <form class="order-form" id="orderForm" action="./send-order.php" method="POST">
+          <form class="order-form" id="orderForm" action="./send-order.php" method="POST" novalidate>
             <input type="hidden" name="redirect" id="orderRedirect" value="" />
             <input type="checkbox" name="botcheck" class="hidden-botcheck" tabindex="-1" autocomplete="off" />
             <input type="hidden" name="Сообщение" id="orderMessageInput" />
+            <input type="hidden" name="contact_method" id="orderContactMethodInput" value="Позвонить" />
+            <input type="hidden" name="order_service" id="orderServiceInput" value="Печать фото" />
+            <input type="hidden" name="order_details" id="orderDetailsInput" value="" />
+            <input type="hidden" name="order_time" id="orderTimeInput" value="" />
             <div class="form-row">
               <label>
                 <span>Имя *</span>
@@ -911,6 +915,29 @@
                 <input id="orderPhone" name="Телефон" type="tel" placeholder="+7 ___ ___-__-__" autocomplete="tel" required />
               </label>
             </div>
+            <fieldset class="contact-method-picker">
+              <legend>Как удобнее связаться *</legend>
+              <label>
+                <input type="radio" name="Удобный способ связи" value="Позвонить" checked />
+                <span>Позвонить</span>
+              </label>
+              <label>
+                <input type="radio" name="Удобный способ связи" value="VK" />
+                <span>VK</span>
+              </label>
+              <label>
+                <input type="radio" name="Удобный способ связи" value="Telegram" />
+                <span>Telegram</span>
+              </label>
+              <label>
+                <input type="radio" name="Удобный способ связи" value="MAX" />
+                <span>MAX</span>
+              </label>
+              <label>
+                <input type="radio" name="Удобный способ связи" value="WhatsApp" />
+                <span>WhatsApp</span>
+              </label>
+            </fieldset>
             <div class="service-picker" aria-label="Быстрый выбор услуги">
               <button type="button" data-service-choice="Печать фото">Печать фото</button>
               <button type="button" data-service-choice="Фото на документы">Фото на документы</button>

@@ -10,11 +10,17 @@ const contactSection = document.querySelector(".contact-section");
 const priceSection = document.querySelector(".price-section");
 const orderName = document.querySelector("#orderName");
 const orderPhone = document.querySelector("#orderPhone");
+const orderContactMethods = document.querySelectorAll('input[name="Удобный способ связи"]');
+const orderContactMethodInput = document.querySelector("#orderContactMethodInput");
 const orderService = document.querySelector("#orderService");
 const orderDetails = document.querySelector("#orderDetails");
 const orderTime = document.querySelector("#orderTime");
+const orderConsent = document.querySelector('input[name="Согласие на обработку персональных данных"]');
 const orderMessageInput = document.querySelector("#orderMessageInput");
 const orderRedirect = document.querySelector("#orderRedirect");
+const orderServiceInput = document.querySelector("#orderServiceInput");
+const orderDetailsInput = document.querySelector("#orderDetailsInput");
+const orderTimeInput = document.querySelector("#orderTimeInput");
 const copyStatus = document.querySelector("#copyStatus");
 const priceFilterStatus = document.querySelector("#priceFilterStatus");
 const priceEmptyMessage = document.querySelector("#priceEmptyMessage");
@@ -3669,6 +3675,16 @@ function formatPhoneValue(value) {
   return result;
 }
 
+function getPhoneDigits(value) {
+  return value.replace(/\D/g, "");
+}
+
+function isPhoneComplete(value) {
+  const digits = getPhoneDigits(value);
+  const normalized = digits.startsWith("8") ? "7" + digits.slice(1) : digits;
+  return normalized.length === 11 && normalized.startsWith("7");
+}
+
 function setPriceFilter(filter) {
   activeFilter = filter;
   tabs.forEach((tab) => {
@@ -3789,6 +3805,7 @@ orderPhone.addEventListener("focus", () => {
 });
 
 orderPhone.addEventListener("input", () => {
+  orderPhone.setCustomValidity("");
   orderPhone.value = formatPhoneValue(orderPhone.value);
   updateOrderMessage();
 });
@@ -3819,23 +3836,46 @@ serviceChoiceButtons.forEach((button) => {
 function buildOrderMessage() {
   const name = orderName.value.trim() || "не указано";
   const phone = orderPhone.value.trim() || "не указан";
+  const contactMethod = Array.from(orderContactMethods).find((field) => field.checked)?.value || "не указан";
   const service = orderService.value;
   const details = orderDetails.value.trim() || "уточню в сообщениях";
   const time = orderTime.value.trim() || "уточню в сообщениях";
 
-  return `Здравствуйте! Хочу оставить заявку. Имя: ${name}. Телефон: ${phone}. Услуга: ${service}. Детали: ${details}. Забрать удобно: ${time}.`;
+  return `Здравствуйте! Хочу оставить заявку. Имя: ${name}. Телефон: ${phone}. Удобнее связаться: ${contactMethod}. Услуга: ${service}. Детали: ${details}. Забрать удобно: ${time}.`;
 }
 
 function updateOrderMessage(clearStatus = true) {
   const message = buildOrderMessage();
   orderMessageInput.value = message;
+  orderContactMethodInput.value = Array.from(orderContactMethods).find((field) => field.checked)?.value || "Позвонить";
+  orderServiceInput.value = orderService.value;
+  orderDetailsInput.value = orderDetails.value.trim();
+  orderTimeInput.value = orderTime.value.trim();
   if (clearStatus) {
     copyStatus.textContent = "";
+    copyStatus.classList.remove("error");
+    [orderName, orderPhone, orderConsent].forEach((field) => {
+      field?.classList.remove("field-error");
+      field?.setCustomValidity("");
+    });
   }
+}
+
+function showOrderError(message, field) {
+  copyStatus.classList.add("error");
+  copyStatus.textContent = message;
+  field?.classList.add("field-error");
+  field?.setCustomValidity(message);
+  field?.focus();
+  field?.reportValidity();
 }
 
 [orderName, orderDetails, orderTime].forEach((field) => {
   field.addEventListener("input", updateOrderMessage);
+});
+
+orderContactMethods.forEach((field) => {
+  field.addEventListener("change", updateOrderMessage);
 });
 
 orderService.addEventListener("input", () => {
@@ -3848,10 +3888,28 @@ syncServiceChoiceButtons();
 orderForm.addEventListener("submit", (event) => {
   event.preventDefault();
   copyStatus.classList.remove("error");
+  [orderName, orderPhone, orderConsent].forEach((field) => {
+    field?.classList.remove("field-error");
+    field?.setCustomValidity("");
+  });
 
-  if (!orderName.value.trim() || !orderPhone.value.trim()) {
-    copyStatus.classList.add("error");
-    copyStatus.textContent = "Заполните имя и телефон, чтобы оставить заявку.";
+  if (!orderName.value.trim()) {
+    showOrderError("Вы забыли указать имя.", orderName);
+    return;
+  }
+
+  if (!orderPhone.value.trim()) {
+    showOrderError("Вы забыли указать телефон.", orderPhone);
+    return;
+  }
+
+  if (!isPhoneComplete(orderPhone.value)) {
+    showOrderError("Проверьте телефон: нужно указать номер полностью.", orderPhone);
+    return;
+  }
+
+  if (!orderConsent.checked) {
+    showOrderError("Подтвердите согласие на обработку персональных данных.", orderConsent);
     return;
   }
 
