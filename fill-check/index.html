@@ -845,11 +845,10 @@
         state.previewUrl = URL.createObjectURL(file);
 
         const img = new Image();
-        img.src = state.previewUrl;
-
         await new Promise((resolve, reject) => {
           img.onload = resolve;
-          img.onerror = reject;
+          img.onerror = () => reject(new Error('Браузер заблокировал или не смог прочитать файл изображения.'));
+          img.src = state.previewUrl;
         });
 
         const maxSide = 1600;
