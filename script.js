@@ -99,16 +99,6 @@ function setPriceSubcategoriesOpen(card, isOpen) {
   });
 }
 
-function openFirstPriceSubcategory(card) {
-  const firstRow = card?.querySelector(".price-subcategory-row");
-  if (!firstRow) {
-    return;
-  }
-
-  closeSiblingSubcategories(firstRow);
-  setPriceSubcategoryOpen(firstRow, true);
-}
-
 function resetPriceExpansion() {
   closePriceCards();
   priceTableCards.forEach((card) => setPriceSubcategoriesOpen(card, false));
@@ -3709,7 +3699,6 @@ function openPriceCardForFilter(filter) {
 
   closeSiblingPriceCards(targetCard);
   setPriceCardOpen(targetCard, true);
-  openFirstPriceSubcategory(targetCard);
 }
 
 function selectOrderService(serviceName) {

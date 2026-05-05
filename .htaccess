@@ -1,5 +1,8 @@
 Options -Indexes
 
+AddType text/javascript .mjs
+AddType application/pdf .pdf
+
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteCond %{HTTPS} !=on

@@ -597,10 +597,19 @@
     </section>
   </main>
 
-  <script type="module">
-    import * as pdfjsLib from './pdf.min.mjs';
+  <script>
+    let pdfjsLibPromise = null;
 
-    pdfjsLib.GlobalWorkerOptions.workerSrc = './pdf.worker.min.mjs';
+    async function loadPdfJs() {
+      if (!pdfjsLibPromise) {
+        pdfjsLibPromise = import('./pdf.min.mjs').then((module) => {
+          module.GlobalWorkerOptions.workerSrc = './pdf.worker.min.mjs';
+          return module;
+        });
+      }
+
+      return pdfjsLibPromise;
+    }
 
     const WHITE_THRESHOLD = 245;
 
@@ -891,6 +900,7 @@
       setStatus('Читаю PDF...');
 
       try {
+        const pdfjsLib = await loadPdfJs();
         const buffer = await file.arrayBuffer();
 
         const loadingTask = pdfjsLib.getDocument({
